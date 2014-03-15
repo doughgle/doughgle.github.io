@@ -1,0 +1,47 @@
+diff --git a/src/GameOfLife.js b/src/GameOfLife.js
+index 2af21a2..ae6bcd0 100644
+--- a/src/GameOfLife.js
++++ b/src/GameOfLife.js
+@@ -5,6 +5,38 @@
+ };
+ 
+ myapp.World.prototype.tick = function() {
+-       
++    
++	// find size of square world
++	var dimensions = [];
++	for(var cell in this.liveCellCoordinates) {
++		dimensions = dimensions.concat(this.liveCellCoordinates[cell]);
++//		jstestdriver.console.log("all dimensions together", dimensions);
++	}
++	
++	var squareWorldDimension = Math.max.apply(Math, dimensions);
++//	jstestdriver.console.log("max x or y dimension=", squareWorldDimension);
++	
++	// for each cell in world
++	for(var x=0; x<squareWorldDimension; x++) {
++		for(var y=0; y<squareWorldDimension; y++) {
++			// calculate live neighbours
++			jstestdriver.console.log("numLiveNeighbours", this.getNumLiveNeighbours(x, y));
++			// calculate newState
++		}
++	}
++	
+ 	return this.liveCellCoordinates.slice(1, this.liveCellCoordinates.length-1);
+-};
+\ No newline at end of file
++};
++
++myapp.World.prototype.getNumLiveNeighbours = function(x, y) {
++	var liveNeighbours = 0;
++	for(var cell in this.liveCellCoordinates) {
++		liveX = this.liveCellCoordinates[cell][0];
++		liveY = this.liveCellCoordinates[cell][1];
++//		jstestdriver.console.log(liveX, ',', liveY);
++	}
++	if([x,y] in this.liveCellCoordinates) {
++		return 1;
++	}
++	return liveNeighbours;
++}
+\ No newline at end of file
