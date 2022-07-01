@@ -1,0 +1,37 @@
+baseURL: https://doughgle.github.io
+languageCode: en-us
+title: Douglas Hellinger
+theme: mediumish-gohugo-theme
+summaryLength: 25
+copyright: Douglas Hellinger 2022
+enableEmoji: true
+params:
+  logo: /images/icon.jpg
+  description: Helping you have fun and maximise impact by learning containers and kubernetes!
+  author:
+    name: Douglas Hellinger
+    thumbnail: /images/profile.jpg
+    description: Creator of this blog.
+  index:
+    picture: /images/profile.jpg
+    title: Douglas Hellinger
+    subtitle: Helping you have fun and maximise impact by learning containers and kubernetes!
+    mdtext: >
+      I'm a professional and principled technologist, experienced in a range of computing layers.
+      I started with hardware interfacing and device driver development, moving up the OSI stack to infrastructure, system administration, middleware and enterprise server apps.
+
+      I believe in agile methods, open source, and everything as (clean) code.
+    alertbar: false
+  social:
+    linkedin: doughellinger
+    github: doughgle
+menu:
+  main:
+    - name: Home
+      weight: 100
+      identifier: blog
+      url: /blog
+    - name: About
+      identifier: about
+      weight: 200
+      url: /
