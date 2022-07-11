@@ -5,6 +5,7 @@ theme: mediumish-gohugo-theme
 summaryLength: 25
 copyright: Douglas Hellinger 2022
 enableEmoji: true
+googleAnalytics: "G-TEH3VGXMRY"
 params:
   logo: /images/icon.jpg
   description: Helping you have fun and maximise impact by learning containers and kubernetes!
