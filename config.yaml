@@ -27,7 +27,7 @@ params:
     github: doughgle
 menu:
   main:
-    - name: Home
+    - name: Blog
       weight: 100
       identifier: blog
       url: /blog
