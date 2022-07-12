@@ -1,7 +1,7 @@
 ---
 title: "What is Attribute Based Encryption? ABE explained using the 1000 most used English words"
 date: 2022-07-08T11:39:34+08:00
-publishdate: 2022-07-08T11:39:34+08:00
+publishdate: 2022-07-12T10:39:34+08:00
 tags: ["encryption", "security", "cloud"]
 comments: true
 draft: false
