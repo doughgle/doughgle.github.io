@@ -32,6 +32,10 @@ menu:
       weight: 100
       identifier: blog
       url: /blog
+    - name: How to Guides
+      weight: 100
+      identifier: how-to
+      url: /how-to
     - name: About
       identifier: about
       weight: 200
