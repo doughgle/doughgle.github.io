@@ -366,7 +366,7 @@ Here we can see the driver is the open source under MIT/GPL license and version 
 
 Alternatively, you can launch the Additional Drivers settings:
 
-![Ubuntu Additional Drivers configuration](additional-drivers.png)
+![Ubuntu Additional Drivers configuration](additional-drivers.png "Using open source nVidia GPU driver")
 
 ## 7. Verify the nVidia Driver is Working
 
@@ -436,13 +436,13 @@ ERROR: nvidia-settings could not find the registry key file or the X server is n
 ```
 Or alternatively from the launcher "NVIDIA X Server Settings":
 
-![nvidia settings on Thinkpad X1 Extreme Gen 4](nvidia-settings.png)
+![nvidia settings on Thinkpad X1 Extreme Gen 4](nvidia-settings.png "GPU: plenty of slack")
 
 If you can see the "GPU 0" and stats, you're done.
 
 Now connect your HDMI device and go to Settings -> Displays to configure the resolution and layout.
 
-![Ubuntu Settings -> Displays on Thinkpad X1 Extreme Gen 4](displays.png)
+![Ubuntu Settings -> Displays on Thinkpad X1 Extreme Gen 4](displays.png "Dual displays: Plug and Play-around-until-it-works")
 
 
 ---
