@@ -7,7 +7,7 @@ comments: true
 draft: false
 ---
 
-**Goal: You're running Ubuntu. You wanna use HDMI, but the TV or monitor says something like "Check Device Power".**
+**You're running Ubuntu on a Thinkpad X1 Extreme (Gen 4). You wanna use HDMI, but the TV or monitor says something like "Check Device Power".**
 
 ## Check the hardware details
 
