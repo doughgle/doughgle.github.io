@@ -9,7 +9,7 @@ draft: false
 
 **You're running Ubuntu on a Thinkpad X1 Extreme (Gen 4). You wanna use HDMI, but the TV or monitor says something like "Check Device Power".**
 
-## Check the hardware details
+## 1. Check the hardware details
 
 ### List Video Devices
 
@@ -62,7 +62,7 @@ Monitors: 2
 
 Here, I have an external monitor connected through a docking station. That uses the DisplayLink driver. That was another troubleshooting journey that deserves its own how to guide!
 
-## Check which Video Driver is Loaded
+## 2. Check which Video Driver is Loaded
 
 ```sh
 $ lsmod | grep vid
@@ -78,7 +78,7 @@ video                  53248  3 thinkpad_acpi,i915,nouveau
 
 If `nouveau` is loaded, Ubuntu Settings -> Displays may detect the HDMI display, but its too laggy to use! I tried Join, Mirror and Single display, but I wasn't able to find a resolution that worked.
 
-## Check which Video Driver is Recommended
+## 3. Check which Video Driver is Recommended
 
 Following this excellent [nvidia drivers on Ubuntu guide](https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux), I found its simple to use the `ubuntu-drivers` utility.
 
@@ -103,7 +103,7 @@ driver   : oem-sutton.simon-baba-meta - third-party free
 
 It lists the compatible drivers and highlights the `recommended` driver.
 
-## Install the Recommended Driver
+## 4. Install the Recommended Driver
 
 ```sh
 $ sudo ubuntu-drivers autoinstall
@@ -320,14 +320,14 @@ lrwxrwxrwx 1 root root       28 Dec  4 06:30 /boot/initrd.img -> initrd.img-5.4.
 -rw-r--r-- 1 root root 74635959 Dec  6 13:22 /boot/initrd.img-5.15.0-56-generic
 ```
 
-## Reboot the System
+## 5. Reboot the System
 
 After installing, reboot:
 ```sh
 $ sudo reboot
 ```
 
-## Verify the nVidia Driver is Loaded
+## 6. Verify the nVidia Driver is Loaded
 
 List the kernel modules that are loaded. For the `video` driver, `nouveau` should be absent. `nvidia` should be loaded instead. You can't have both loaded.
 ```sh
@@ -368,7 +368,7 @@ Alternatively, you can launch the Additional Drivers settings:
 
 ![Ubuntu Additional Drivers configuration](additional-drivers.png)
 
-## Verify the nVidia Driver is Working
+## 7. Verify the nVidia Driver is Working
 
 The driver may be loaded, but is it working correctly?
 Open the nvidia settings in read-only mode (i.e. non-sudo)
@@ -408,7 +408,7 @@ The message is saying that the open nvidia.ko (v 525.60.11) only support data ce
 For our case, `ubuntu-drivers` recommended it and the [Compatible GPUs](https://github.com/NVIDIA/open-gpu-kernel-modules/tree/525.60.11#compatible-gpus) section of the README says that
 GeForce RTX 3050 Ti Mobile (PCI Device ID: 25a0) is indeed compatible.
 
-## Enable Unsupported GPUs
+## 8. Enable Unsupported GPUs
 
 Change to root user and create the `nvidia.conf` modprobe configuration file:
 
