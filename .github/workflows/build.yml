@@ -30,5 +30,10 @@ jobs:
         continue-on-error: true
         working-directory: content
 
+      - name: Lint Markdown
+        run: markdownlint-cli2 '**/*.md'
+        continue-on-error: true
+        working-directory: content
+
       # Build the site
       - run: hugo
