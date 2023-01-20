@@ -24,7 +24,7 @@ jobs:
         working-directory: content
 
       - name: Check spelling
-        run: mdspell --report --en-gb **/*.md
+        run: mdspell --report --en-gb '**/*.md'
         working-directory: content
 
       # Build the site
