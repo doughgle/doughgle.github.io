@@ -1,0 +1,25 @@
+name: Build and test Hugo site
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/doughgle/docs-as-code:main
+
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v2
+
+      # Show tool versions
+      - run: |
+          mdspell --version
+          write-good --version
+          markdownlint-cli2 | head -1
+          htmltest --version
+          hugo version
+
+      # Build the site
+      - run: hugo
