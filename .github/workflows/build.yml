@@ -20,6 +20,8 @@ jobs:
           htmltest --version
           hugo version
 
+      - run: pwd;ls -lah
+
       - name: Check spelling
         run: mdspell --report --en-gb **/*.md
         working-directory: content
