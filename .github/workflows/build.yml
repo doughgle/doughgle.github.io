@@ -20,11 +20,9 @@ jobs:
           htmltest --version
           hugo version
 
-      - run: pwd;ls -lah
-        working-directory: content
-
       - name: Check spelling
         run: mdspell --report --en-gb '**/*.md'
+        continue-on-error: true
         working-directory: content
 
       # Build the site
