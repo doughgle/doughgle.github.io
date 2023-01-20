@@ -10,7 +10,7 @@ jobs:
 
     steps:
       # Checkout the code
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Show tool versions
         run: |
@@ -19,6 +19,8 @@ jobs:
           markdownlint-cli2 | head -1
           htmltest --version
           hugo version
+
+
 
       # Build the site
       - run: hugo
