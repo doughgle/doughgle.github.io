@@ -25,5 +25,10 @@ jobs:
         continue-on-error: true
         working-directory: content
 
+      - name: Check prose
+        run: write-good --parse content/*/*/*.md
+        continue-on-error: true
+        working-directory: content
+
       # Build the site
       - run: hugo
