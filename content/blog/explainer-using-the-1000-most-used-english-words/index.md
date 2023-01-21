@@ -4,7 +4,7 @@ date: 2022-07-12T08:45:44+08:00
 publishdate: 2022-07-12T08:45:44+08:00
 tags: []
 comments: true
-draft: true
+draft: false
 ---
 
 The other day, I learned about the [Up-Goer Five Editor](https://splasho.com/upgoer5/) - a text editor that challenges you to explain something using only the 1000 most-used English words.
