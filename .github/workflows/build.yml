@@ -37,3 +37,7 @@ jobs:
 
       # Build the site
       - run: hugo
+
+      # htmltest (configured in .htmltest.yml)
+      - name: Test HTML
+        run: htmltest
