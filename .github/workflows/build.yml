@@ -1,0 +1,39 @@
+name: Build and test Hugo site
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/doughgle/docs-as-code:main
+
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v3
+
+      - name: Show tool versions
+        run: |
+          echo -n "mdshell " && mdspell --version
+          echo -n "write-good " && write-good --version
+          markdownlint-cli2 | head -1
+          htmltest --version
+          hugo version
+
+      - name: Check spelling
+        run: mdspell --report --en-gb '**/*.md'
+        continue-on-error: true
+        working-directory: content
+
+      - name: Check prose
+        run: write-good --parse */*/*.md
+        continue-on-error: true
+        working-directory: content
+
+      - name: Lint Markdown
+        run: markdownlint-cli2 '**/*.md'
+        continue-on-error: true
+        working-directory: content
+
+      # Build the site
+      - run: hugo
