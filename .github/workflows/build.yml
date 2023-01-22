@@ -42,7 +42,4 @@ jobs:
 
       # htmltest (configured in .htmltest.yml)
       - name: Test HTML
-        run: |
-          pwd; ls -lah
-          ls -lah public
-          htmltest
+        run: htmltest
