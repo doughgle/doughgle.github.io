@@ -1,0 +1,13 @@
+DirectoryPath: "public"
+EnforceHTTPS: true
+CheckInternalHash: false
+IgnoreURLs:
+- "douglashellinger.com"
+- "https://linkedin.com/in/doughellinger"
+- "https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux"
+- "^/misc/js/script.js$"
+IgnoreAltMissing: true
+CacheExpires: "6h"
+IgnoreDirectoryMissingTrailingSlash: true
+IgnoreCanonicalBrokenLinks: true
+ExternalTimeout: 5

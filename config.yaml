@@ -36,6 +36,10 @@ menu:
       weight: 100
       identifier: how-to
       url: /how-to
+    - name: Explainers
+      weight: 100
+      identifier: explainer
+      url: /explainer
     - name: About
       identifier: about
       weight: 200

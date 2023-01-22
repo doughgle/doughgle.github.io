@@ -11,6 +11,8 @@ jobs:
     steps:
       # Checkout the code
       - uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Show tool versions
         run: |
@@ -37,3 +39,7 @@ jobs:
 
       # Build the site
       - run: hugo
+
+      # htmltest (configured in .htmltest.yml)
+      - name: Test HTML
+        run: htmltest
