@@ -15,6 +15,6 @@ Back in 2019, I submitted a masters thesis about Attribute Based Encryption (ABE
 
 Engineers and technologists might appreciate a plain English explanation. If not for their own understanding, but to share the ideas with non-tech people. Enterprises might benefit from ABE.
 
-So I decided to [explain ABE only the 1000 most used English words](../what-is-attribute-based-encryption/). Its a lot harder than it sounds, but its also a lot of fun! Because of that, I improved my writing. The exercise also inspired me to get my new blog from 0 to 1!
+So I decided to [explain ABE only the 1000 most used English words](../../explainer/what-is-attribute-based-encryption/). Its a lot harder than it sounds, but its also a lot of fun! Because of that, I improved my writing. The exercise also inspired me to get my new blog from 0 to 1!
 
 With that simple constraint, you can really improve your writing and your understanding of the topic. If you're a technologist, try it yourself. Technology is an absolute goldmine of topics!
