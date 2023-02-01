@@ -22,9 +22,11 @@ That's it!
 ## 1 Create a builder image for docs-as-code
 
 ### 1.1 Create a Git repository
+
 Create a [new public repository](https://github.com/new) for the builder image.
 
 ### 1.2 Create a Containerfile (Dockerfile)
+
 Create a new file called `Containerfile` in the root of the working directory. Paste this content:
 
 ```Dockerfile
@@ -39,14 +41,13 @@ RUN npm install markdownlint-cli2 --global
 # + spell checker (https://github.com/lukeapage/node-markdown-spellcheck)
 RUN npm install markdown-spellcheck --global
 
-# to be installed and configured
 # + hemingway scorer (https://github.com/btford/write-good)
 RUN npm install write-good --global
 ```
 
 Again, you can do this directly in Github in the new repo.
 
-> This image is based on [klakegg/hugo:ext-alpine-ci](https://github.com/klakegg/docker-hugo) which is a minimal Hugo Extended Edition image for CI builds. [Hugo](https://gohugo.io/) is a fast static site generator which is equally great for building blogs or technial product docs like the [Kubernetes.io](https://kubernetes.io/) website.
+> This image is based on [klakegg/hugo:ext-alpine-ci](https://github.com/klakegg/docker-hugo). Its a minimal Hugo Extended Edition image for CI builds. [Hugo](https://gohugo.io/) is a fast static site generator which is equally great for building blogs or technial product docs like the [Kubernetes.io](https://kubernetes.io/) website.
 
 ### 1.3 Create an image build pipeline
 
@@ -60,23 +61,16 @@ Create a `build.yml` and paste the following Github workflow yaml:
 ```yaml
 name: Weekly build, publish and sign
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 on:
   schedule:
     - cron: '44 13 * * 1'
   push:
     branches: [ "main" ]
-    # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "main" ]
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
@@ -158,6 +152,7 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
 ```
+
 </details>
 
 This creates a template Github workflow to Build, sign and push the image.
@@ -165,6 +160,7 @@ This creates a template Github workflow to Build, sign and push the image.
 > The workflow is actually Github's suggested workflow "*Publish Docker Container*" with a bugfix.
 >
 > Edit the workflow yaml to ensure the cosign version is `v1.13.1` or later like this:
+>
 >```yaml
 >         uses: sigstore/cosign-installer@main
 >         with:
@@ -176,6 +172,7 @@ This creates a template Github workflow to Build, sign and push the image.
 > Ref: [cosign-installer issue 100](https://github.com/sigstore/cosign-installer/issues/100)
 >
 > Another slight mod prints out the version of cosign.
+>
 > ```yaml
 >       - name: Show cosign version
 >         if: github.event_name != 'pull_request'
@@ -188,10 +185,11 @@ This creates a template Github workflow to Build, sign and push the image.
 The workflow will run upon saving the `build.yml` and commiting to `main`. It will also run weekly on a schedule to build with the latest dependency versions. Add `workflow_dispatch:` to the `on:` triggers to enable manual a trigger for the workflow.
 
 ## 2 Create a docs-as-code build pipeline
+
 Use the docs-as-code tools in synergy in a build and test pipeline.
 
 ## 3 Build and test the docs
 
-## Next Steps...
+## Next Steps
 
 ## CTA
