@@ -8,20 +8,20 @@ draft: true
 
 ---
 
-**Before you publish written content, you wanna check spelling, lint markdown, get feedback on the prose, and check if there are any broken links.**
+### **Before you publish written content, you wanna check spelling, lint markdown, get feedback on the prose, and check if there are any broken links.**
 
 This approach uses a builder image specialised for your docs-as-code workflow. Pre-install and configure your docs-as-code tools in the image. Finally, use them in synergy in a build and test pipeline.
 
-## You'll need
+### You'll need
 
-+ some written content in markdown format
-+ a free Github Account
+1. some written content in markdown format
+1. a free Github Account
 
 That's it!
 
 ## 1 Create a builder image for docs-as-code
 
-### 1.1 Create a Git repository
+### 1.1 Create a Git repository for the builder image
 
 Create a [new public repository](https://github.com/new) for the builder image.
 
@@ -55,6 +55,7 @@ Go to Actions -> New Workflow -> Skip this and set up a workflow yourself
 
 Create a `build.yml` and paste the following Github workflow yaml:
 
+{{< details "expand `build.yml`" >}}
 <details>
 <summary>build.yml</summary>
 
@@ -154,6 +155,8 @@ jobs:
 ```
 
 </details>
+<p>
+{{< /details >}}
 
 This creates a template Github workflow to Build, sign and push the image.
 
@@ -186,9 +189,112 @@ The workflow will run upon saving the `build.yml` and commiting to `main`. It wi
 
 ## 2 Create a docs-as-code build pipeline
 
-Use the docs-as-code tools in synergy in a build and test pipeline.
+Now all the tools we need are installed in our docs-as-code builder image. We can use the docs-as-code tools together, in synergy, in a build and test pipeline.
+
+### 2.1 Create a new Hugo site
+
+Initialise a new hugo site in the base of the repo:
+
+```sh
+$ hugo new site mysite
+Congratulations! Your new Hugo site is created in /src/mysite.
+```
+
+> Checkout [Hugo's official docs](https://gohugo.io/) to learn more about Hugo themes, ways to structure your content and configuration options.
+
+### 2.2 Put down some markdown
+For the purpose of testing a docs-as-code pipeline, simply put your markdown in the `content` folder in `WRITEME.md`.
+
+```sh
+hugo:/src/mysite$ tree content
+content
+└── WRITEME.md
+
+0 directories, 1 file
+```
+
+```sh
+$ cat content/WRITEME.md
+## A butiful peom
+Lorem ipsum ip dolor.
+```
+
+### 2.3 Create a docs as code build pipeline
+
+Create a new github workflow called `build.yml` in a `.github/workflows` folder. Paste the follow yaml and remember to read it:
+
+```yaml
+name: Build and test Hugo site
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/doughgle/docs-as-code:main
+
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Show tool versions
+        run: |
+          echo -n "mdshell " && mdspell --version
+          echo -n "write-good " && write-good --version
+          markdownlint-cli2 | head -1
+          htmltest --version
+          hugo version
+
+      - name: Check spelling
+        run: mdspell --report --en-gb '**/*.md'
+        continue-on-error: true
+        working-directory: content
+
+      - name: Check prose
+        run: write-good --parse */*/*.md
+        continue-on-error: true
+        working-directory: content
+
+      - name: Lint Markdown
+        run: markdownlint-cli2 '**/*.md'
+        continue-on-error: true
+        working-directory: content
+
+      # Build the site
+      - run: hugo
+
+      # htmltest (configured in .htmltest.yml)
+      - name: Test HTML
+        run: htmltest
+        working-directory: content
+```
+
+### 2.4 Push to Github
+
+Make the `mysite` directory a new git repo. Hugo's `config.toml` and the `content` folder should be in the root of the repo.
+
+Create a [new](https://github.com/new) empty Github repo.
+
+Push the hugo site repository to Github using the provided instructions. Example:
+
+```sh
+git remote add origin git@github.com:doughgle/upgraded-palm-tree.git
+git branch -M main
+git push -u origin main
+```
+
+The workflow will run upon pushing the code to any branch.
+
+To see it, navigate to the repo on github.com -> Actions -> workflow runs (latest) -> `build`
+
+![View Github Build Workflow](view-github-build-workflow.png)
 
 ## 3 Build and test the docs
+
+Q: How many spelling errors, style blunders, format crimes, and broken links are there in this `WRITEME.md` ?
 
 ## Next Steps
 
