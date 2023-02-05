@@ -265,12 +265,11 @@ jobs:
         working-directory: content
 
       # Build the site
-      - run: hugo
+      - run: hugo --buildDrafts --buildFuture
 
       # htmltest (configured in .htmltest.yml)
       - name: Test HTML
         run: htmltest
-        working-directory: content
 ```
 
 ### 2.4 Push to Github
