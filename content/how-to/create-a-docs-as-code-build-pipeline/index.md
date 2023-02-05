@@ -333,19 +333,27 @@ To see it, navigate to the repo on github.com -> Actions -> workflow runs (lates
 
 ![Check spelling](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/7dfa4d0f-8e9d-4004-833e-79e19f6f6da9.gif?ClientID=vimeo-core-prod&Date=1675568350&Signature=9961949e39c0656bf0a87bd92040547fe7a37cea)
 
+`mdspell` says there are 5 (deliberate) spelling errors.
+
 ### 3.3 Check Prose
 
 ![Check prose](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/af2f3fd4-ec80-4b00-8284-ac8f7cfd762c.gif?ClientID=vimeo-core-prod&Date=1675568708&Signature=736f7b48de9ef4b18bb4324858f4b6ece86dc515)
+
+`write-good` highlights some passive voice, wordy and redundant phrases.
 
 ### 3.3 Lint Markdown
 
 ![Lint markdown](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/9cd4b341-9cc2-4eed-8e83-fc89cb876839.gif?ClientID=vimeo-core-prod&Date=1675568805&Signature=116893c44713ae5483e52a238160fff5536712dc)
 
+`markdownlint` found 7 markdown rule violations. Rules can be configured in a `.markdownlint.yaml` configuration file.
+
 ### 3.4 Test HTML
 
 ![Test HTML](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/21faa4c9-608e-46e3-ad66-f10472639cc5.gif?ClientID=vimeo-core-prod&Date=1675568987&Signature=3dde2e40a6bc083ab6050527148689bb49e47c91)
 
+`htmltest` found nothing.
 
+---
 
 Thank you for reading this article right to the end.
 If you enjoyed it and if you think others can benefit, please like and share. 
