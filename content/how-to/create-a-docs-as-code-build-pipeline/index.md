@@ -203,6 +203,7 @@ Congratulations! Your new Hugo site is created in /src/mysite.
 > Checkout [Hugo's official docs](https://gohugo.io/) to learn more about Hugo themes, ways to structure your content and configuration options.
 
 ### 2.2 Put down some markdown
+
 For the purpose of testing a docs-as-code pipeline, simply put your markdown in the `content` folder in `WRITEME.md`.
 
 ```sh
@@ -356,5 +357,5 @@ To see it, navigate to the repo on github.com -> Actions -> workflow runs (lates
 ---
 
 Thank you for reading this article right to the end.
-If you enjoyed it and if you think others can benefit, please like and share. 
+If you enjoyed it and if you think others can benefit, please like and share.
 Or if you foresee a problem, have an alternative solution, or you just wanna share some comments to improve the usefulness of this article, I'd appreciate your feedback.
