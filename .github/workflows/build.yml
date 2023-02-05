@@ -23,7 +23,13 @@ jobs:
           hugo version
 
       - name: Check spelling
-        run: mdspell --report --en-gb '**/*.md'
+        run: >-
+          mdspell
+          --report
+          --en-gb
+          --ignore-numbers
+          --ignore-acronyms
+          '**/*.md'
         continue-on-error: true
         working-directory: content
 
