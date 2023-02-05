@@ -8,7 +8,7 @@ draft: true
 
 ---
 
-### **Before you publish written content, you wanna check spelling, lint markdown, get feedback on the prose, and check if there are any broken links.**
+### **Before you publish written content, you wanna check spelling, lint markdown, improve prose, and fix broken links.**
 
 This approach uses a builder image specialised for your docs-as-code workflow. Pre-install and configure your docs-as-code tools in the image. Finally, use them in synergy in a build and test pipeline.
 
@@ -294,8 +294,59 @@ To see it, navigate to the repo on github.com -> Actions -> workflow runs (lates
 
 ## 3 Build and test the docs
 
-Q: How many spelling errors, style blunders, format crimes, and broken links are there in this `WRITEME.md` ?
+Here's a challenge...
 
-## Next Steps
+Q: How many spelling errors, style blunders, format crimes, and broken links have been introduced in this `WRITEME.md` ?
 
-## CTA
+> ```markdown
+> ## WRITEME
+> This sentence has five words. Here are five more words. Five-word sentences are fine.
+> But severel together become monotonous. Listen to what is happenning.
+> The writing is getting boring. The sound of it drones. It’s like a stuck record.
+> The ear demands some variety.
+>
+> Now listen. I vary the sentence length, and I create musick. Music. The writing sings.
+> It has a pleasant rhythm, a lilt, a harmony. I use short sentences.
+> And I use sentences of medium length. And sometimes when I am certain the reader is 
+> rested, I will engage him with a sentence of considerable length, a sentence that burns 
+> with energy and builds with all the impetus of a crescendo, the roll of the drums, the
+> crash of the cymbals–sounds that say listen to this, it is important.
+>
+> So write with a combination of short, medium, and long sentences. Create a sound that 
+> pleases the reader’s ear. Don’t just write words. Write music.
+>
+>> *Credit: [Gary Provost](https://www.garyprovost.com/404) 
+>> 100 Ways to Improve Your Writing*
+> ```
+
+### 3.1 Test it
+
+Put the markdown in the `content` folder in `WRITEME.md`.
+
+Commit and push the change to Github.
+
+The workflow will run upon pushing the code to any branch.
+
+To see it, navigate to the repo on github.com -> Actions -> workflow runs (latest) -> `build`
+
+### 3.2 Check Spelling
+
+![Check spelling](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/7dfa4d0f-8e9d-4004-833e-79e19f6f6da9.gif?ClientID=vimeo-core-prod&Date=1675568350&Signature=9961949e39c0656bf0a87bd92040547fe7a37cea)
+
+### 3.3 Check Prose
+
+![Check prose](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/af2f3fd4-ec80-4b00-8284-ac8f7cfd762c.gif?ClientID=vimeo-core-prod&Date=1675568708&Signature=736f7b48de9ef4b18bb4324858f4b6ece86dc515)
+
+### 3.3 Lint Markdown
+
+![Lint markdown](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/9cd4b341-9cc2-4eed-8e83-fc89cb876839.gif?ClientID=vimeo-core-prod&Date=1675568805&Signature=116893c44713ae5483e52a238160fff5536712dc)
+
+### 3.4 Test HTML
+
+![Test HTML](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/21faa4c9-608e-46e3-ad66-f10472639cc5.gif?ClientID=vimeo-core-prod&Date=1675568987&Signature=3dde2e40a6bc083ab6050527148689bb49e47c91)
+
+
+
+Thank you for reading this article right to the end.
+If you enjoyed it and if you think others can benefit, please like and share. 
+Or if you foresee a problem, have an alternative solution, or you just wanna share some comments to improve the usefulness of this article, I'd appreciate your feedback.
