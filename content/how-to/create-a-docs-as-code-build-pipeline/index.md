@@ -185,7 +185,7 @@ This creates a template Github workflow to Build, sign and push the image.
 
 ### 1.4 Build and publish the image
 
-The workflow will run upon saving the `build.yml` and commiting to `main`. It will also run weekly on a schedule to build with the latest dependency versions. Add `workflow_dispatch:` to the `on:` triggers to enable manual a trigger for the workflow.
+The workflow will run upon saving the `build.yml` and committing to `main`. It will also run weekly on a schedule to build with the latest dependency versions. Add `workflow_dispatch:` to the `on:` triggers to enable manual a trigger for the workflow.
 
 ## 2 Create a docs-as-code build pipeline
 
