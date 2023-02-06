@@ -43,8 +43,8 @@ jobs:
         continue-on-error: true
         working-directory: content
 
-      # Build the site
-      - run: hugo --buildDrafts --buildFuture
+      - name: Build the site
+        run: hugo --buildDrafts --buildFuture
 
       # htmltest (configured in .htmltest.yml)
       - name: Test HTML
