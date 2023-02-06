@@ -19,7 +19,7 @@ This approach uses a builder image specialised for your docs-as-code workflow. P
 
 That's it!
 
-## 1 Create a builder image for docs-as-code
+## 1 Create A Builder Image For Docs-As-Code
 
 ### 1.1 Create a Git repository for the builder image
 
@@ -187,7 +187,7 @@ This creates a template Github workflow to Build, sign and push the image.
 
 The workflow will run upon saving the `build.yml` and committing to `main`. It will also run weekly on a schedule to build with the latest dependency versions. Add `workflow_dispatch:` to the `on:` triggers to enable manual a trigger for the workflow.
 
-## 2 Create a docs-as-code build pipeline
+## 2 Create A Docs-As-Code Build Pipeline
 
 Now all the tools we need are installed in our docs-as-code builder image. We can use the docs-as-code tools together, in synergy, in a build and test pipeline.
 
@@ -236,7 +236,6 @@ jobs:
     container: ghcr.io/doughgle/docs-as-code:main
 
     steps:
-      # Checkout the code
       - uses: actions/checkout@v3
         with:
           submodules: true
@@ -264,8 +263,8 @@ jobs:
         continue-on-error: true
         working-directory: content
 
-      # Build the site
-      - run: hugo --buildDrafts --buildFuture
+      - name: Build the site
+        run: hugo --buildDrafts --buildFuture
 
       # htmltest (configured in .htmltest.yml)
       - name: Test HTML
@@ -290,9 +289,9 @@ The workflow will run upon pushing the code to any branch.
 
 To see it, navigate to the repo on github.com -> Actions -> workflow runs (latest) -> `build`
 
-![View Github Build Workflow](view-github-build-workflow.png)
+![View Github Build Workflow](view-github-build-workflow.png "machines: finding typos, humans: making typos!")
 
-## 3 Build and test the docs
+## 3 Build And Test The Docs
 
 Here's a challenge...
 
