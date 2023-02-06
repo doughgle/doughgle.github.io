@@ -1,0 +1,208 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.110.0"><link rel=icon href=/images/icon.jpg><title>Create a Docs as Code Build Pipeline | Douglas Hellinger</title><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://www.douglashellinger.com/how-to/create-a-docs-as-code-build-pipeline/docs-as-code-build-pipeline-steps-cover.png"><meta name=twitter:title content="Create a Docs as Code Build Pipeline"><meta name=twitter:description content="Before you publish written content, you wanna check spelling, lint markdown, improve prose, and fix broken links. This approach uses a builder image specialised for your docs-as-code workflow."><meta property="og:title" content="Create a Docs as Code Build Pipeline"><meta property="og:description" content="Before you publish written content, you wanna check spelling, lint markdown, improve prose, and fix broken links. This approach uses a builder image specialised for your docs-as-code workflow."><meta property="og:type" content="article"><meta property="og:url" content="https://www.douglashellinger.com/how-to/create-a-docs-as-code-build-pipeline/"><meta property="og:image" content="https://www.douglashellinger.com/how-to/create-a-docs-as-code-build-pipeline/docs-as-code-build-pipeline-steps-cover.png"><meta property="article:section" content="how-to"><meta property="article:published_time" content="2023-02-05T15:12:45+08:00"><meta property="article:modified_time" content="2023-01-29T15:48:45+08:00"><link href=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css rel=stylesheet integrity=sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T crossorigin=anonymous><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.0.13/css/all.css integrity=sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp crossorigin=anonymous><link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel=stylesheet><link rel=stylesheet href=https://www.douglashellinger.com/css/medium.a3d5489836b19de22a81ddc6bd21c17547d07529e67b266427378a04fa3ea727.css integrity="sha256-o9VImDaxneIqgd3GvSHBdUfQdSnmeyZkJzeKBPo+pyc="><link rel=stylesheet href=https://www.douglashellinger.com/css/additional.8819b6defcdc6d21280f9b402b00df87ca779135901de6c22e708c62e20184b9.css integrity="sha256-iBm23vzcbSEoD5tAKwDfh8p3kTWQHebCLnCMYuIBhLk="></head><body><nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down"><div class="container pr-0"><a class=navbar-brand href=https://www.douglashellinger.com/><img src=/images/icon.jpg alt=logo></a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarMediumish aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse" id=navbarMediumish><ul class="navbar-nav ml-auto"><li class=nav-item><a class=nav-link href=/blog>Blog</a></li><li class=nav-item><a class=nav-link href=/explainer>Explainers</a></li><li class=nav-item><a class=nav-link href=/how-to>How to Guides</a></li><li class=nav-item><a class=nav-link href=/>About</a></li></ul></div></div></nav><div class=site-content><div class=container><div class=mainheading><h1 class=sitetitle>Douglas Hellinger</h1><p class=lead>Helping you have fun and maximise impact by learning containers and kubernetes!</p></div><div class=main-content><div class=container><div class=row><div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset"><p>Share</p><ul><li class="ml-1 mr-1"><a target=_blank href="https://twitter.com/intent/tweet?text=Create%20a%20Docs%20as%20Code%20Build%20Pipeline&url=https%3a%2f%2fwww.douglashellinger.com%2fhow-to%2fcreate-a-docs-as-code-build-pipeline%2f" onclick='return window.open(this.href,"twitter-share","width=550,height=435"),!1'><i class="fab fa-twitter"></i></a></li><li class="ml-1 mr-1"><a target=_blank href="https://facebook.com/sharer.php?u=https%3a%2f%2fwww.douglashellinger.com%2fhow-to%2fcreate-a-docs-as-code-build-pipeline%2f" onclick='return window.open(this.href,"facebook-share","width=550,height=435"),!1'><i class="fab fa-facebook-f"></i></a></li><li class="ml-1 mr-1"><a target=_blank href="https://www.xing.com/spi/shares/new?url=https%3a%2f%2fwww.douglashellinger.com%2fhow-to%2fcreate-a-docs-as-code-build-pipeline%2f" onclick='return window.open(this.href,"xing-share","width=550,height=435"),!1'><i class="fab fa-xing"></i></a></li></ul><div class=sep></div><ul><li><a class="small smoothscroll" href=#disqus_thread></a></li></ul></div></div><div class="col-md-9 flex-first flex-md-unordered"><div class=mainheading><div class="row post-top-meta"><div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right"><img class=author-thumb src=/images/profile.jpg alt="Douglas Hellinger"></div><div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left"><a target=_blank class=link-dark>Douglas Hellinger</a><br><span class=author-description>Creator of this blog.<br><i class="far fa-star"></i>
+Feb 5, 2023
+<i class="far fa-clock clock"></i>
+7 min read</span></div></div><h1 class=posttitle>Create a Docs as Code Build Pipeline</h1></div><img class="featured-image img-fluid" src=https://www.douglashellinger.com/how-to/create-a-docs-as-code-build-pipeline/docs-as-code-build-pipeline-steps-cover.png alt="thumbnail for this post"><div class=article-post><h3 id=before-you-publish-written-content-you-wanna-check-spelling-lint-markdown-improve-prose-and-fix-broken-links><strong>Before you publish written content, you wanna check spelling, lint markdown, improve prose, and fix broken links.</strong></h3><p>This approach uses a builder image specialised for your docs-as-code workflow. Pre-install and configure your docs-as-code tools in the image. Finally, use them in synergy in a build and test pipeline.</p><h3 id=youll-need>You&rsquo;ll need</h3><ol><li>some written content in markdown format</li><li>a free Github Account</li></ol><p>That&rsquo;s it!</p><h2 id=1-create-a-builder-image-for-docs-as-code>1 Create A Builder Image For Docs-As-Code</h2><h3 id=11-create-a-git-repository-for-the-builder-image>1.1 Create a Git repository for the builder image</h3><p>Create a <a href=https://github.com/new>new public repository</a> for the builder image.</p><h3 id=12-create-a-containerfile-dockerfile>1.2 Create a Containerfile (Dockerfile)</h3><p>Create a new file called <code>Containerfile</code> in the root of the working directory. Paste this content:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Dockerfile data-lang=Dockerfile><span style=display:flex><span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> klakegg/hugo:ext-alpine-ci</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># + link checker e.g. https://github.com/wjdp/htmltest</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> wget https://htmltest.wjdp.uk -O - | bash -s -- -b /usr/local/bin<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># + markdown linter (https://github.com/DavidAnson/markdownlint-cli2)</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm install markdownlint-cli2 --global<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># + spell checker (https://github.com/lukeapage/node-markdown-spellcheck)</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm install markdown-spellcheck --global<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># + hemingway scorer (https://github.com/btford/write-good)</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm install write-good --global<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><p>Again, you can do this directly in Github in the new repo.</p><blockquote><p>This image is based on <a href=https://github.com/klakegg/docker-hugo>klakegg/hugo:ext-alpine-ci</a>. Its a minimal Hugo Extended Edition image for CI builds. <a href=https://gohugo.io/>Hugo</a> is a fast static site generator which is equally great for building blogs or technial product docs like the <a href=https://kubernetes.io/>Kubernetes.io</a> website.</p></blockquote><h3 id=13-create-an-image-build-pipeline>1.3 Create an image build pipeline</h3><p>Go to Actions -> New Workflow -> Skip this and set up a workflow yourself</p><p>Create a <code>build.yml</code> and paste the following Github workflow yaml:</p><details><summary>expand <code>build.yml</code></summary><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Weekly build, publish and sign</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>schedule</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>cron</span>: <span style=color:#e6db74>&#39;44 13 * * 1&#39;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>: [ <span style=color:#e6db74>&#34;main&#34;</span> ]
+</span></span><span style=display:flex><span>    <span style=color:#f92672>tags</span>: [ <span style=color:#e6db74>&#39;v*.*.*&#39;</span> ]
+</span></span><span style=display:flex><span>  <span style=color:#f92672>pull_request</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>: [ <span style=color:#e6db74>&#34;main&#34;</span> ]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>REGISTRY</span>: <span style=color:#ae81ff>ghcr.io</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># github.repository as &lt;account&gt;/&lt;repo&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>IMAGE_NAME</span>: <span style=color:#ae81ff>${{ github.repository }}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>build</span>:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>permissions</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>contents</span>: <span style=color:#ae81ff>read</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>packages</span>: <span style=color:#ae81ff>write</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># This is used to complete the identity challenge</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># with sigstore/fulcio when running outside of PRs.</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>id-token</span>: <span style=color:#ae81ff>write</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Checkout repository</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># Install the cosign tool except on PR</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># https://github.com/sigstore/cosign-installer</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Install cosign</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>github.event_name != &#39;pull_request&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>sigstore/cosign-installer@main</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cosign-release</span>: <span style=color:#e6db74>&#39;v1.13.1&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Show cosign version</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>cosign version</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># Workaround: https://github.com/docker/build-push-action/issues/461</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Setup Docker buildx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># Login against a Docker registry except on PR</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># https://github.com/docker/login-action</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Log into registry ${{ env.REGISTRY }}</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>github.event_name != &#39;pull_request&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>registry</span>: <span style=color:#ae81ff>${{ env.REGISTRY }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>username</span>: <span style=color:#ae81ff>${{ github.actor }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>password</span>: <span style=color:#ae81ff>${{ secrets.GITHUB_TOKEN }}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># Extract metadata (tags, labels) for Docker</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># https://github.com/docker/metadata-action</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Extract Docker metadata</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>id</span>: <span style=color:#ae81ff>meta</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>images</span>: <span style=color:#ae81ff>${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># Build and push Docker image with Buildx (don&#39;t push on PR)</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># https://github.com/docker/build-push-action</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build and push Docker image</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>id</span>: <span style=color:#ae81ff>build-and-push</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>context</span>: <span style=color:#ae81ff>.</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>file</span>: <span style=color:#ae81ff>Containerfile</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>push</span>: <span style=color:#ae81ff>${{ github.event_name != &#39;pull_request&#39; }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>tags</span>: <span style=color:#ae81ff>${{ steps.meta.outputs.tags }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>labels</span>: <span style=color:#ae81ff>${{ steps.meta.outputs.labels }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cache-from</span>: <span style=color:#ae81ff>type=gha</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cache-to</span>: <span style=color:#ae81ff>type=gha,mode=max</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># Sign the resulting Docker image digest except on PRs.</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># This will only write to the public Rekor transparency log when the Docker</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># repository is public to avoid leaking data.  If you would like to publish</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># transparency data even for private images, pass --force to cosign below.</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># https://github.com/sigstore/cosign</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Sign the published Docker image</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>${{ github.event_name != &#39;pull_request&#39; }}</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>COSIGN_EXPERIMENTAL</span>: <span style=color:#e6db74>&#34;true&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e># This step uses the identity token to provision an ephemeral certificate</span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e># against the sigstore community Fulcio instance.</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>echo &#34;${{ steps.meta.outputs.tags }}&#34; | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}</span>
+</span></span></code></pre></div></details><p>This creates a template Github workflow to Build, sign and push the image.</p><blockquote><p>The workflow is actually Github&rsquo;s suggested workflow &ldquo;<em>Publish Docker Container</em>&rdquo; with a bugfix.</p><p>Edit the workflow yaml to ensure the cosign version is <code>v1.13.1</code> or later like this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>sigstore/cosign-installer@main</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cosign-release</span>: <span style=color:#e6db74>&#39;v1.13.1&#39;</span>
+</span></span></code></pre></div><p>This fixes &ldquo;tuf: invalid key&rdquo; on Sign the published Docker image step.</p><p>Ref: <a href=https://github.com/sigstore/cosign-installer/issues/100>cosign-installer issue 100</a></p><p>Another slight mod prints out the version of cosign.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Show cosign version</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>github.event_name != &#39;pull_request&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>cosign version</span>
+</span></span></code></pre></div></blockquote><h3 id=14-build-and-publish-the-image>1.4 Build and publish the image</h3><p>The workflow will run upon saving the <code>build.yml</code> and committing to <code>main</code>. It will also run weekly on a schedule to build with the latest dependency versions. Add <code>workflow_dispatch:</code> to the <code>on:</code> triggers to enable manual a trigger for the workflow.</p><h2 id=2-create-a-docs-as-code-build-pipeline>2 Create A Docs-As-Code Build Pipeline</h2><p>Now all the tools we need are installed in our docs-as-code builder image. We can use the docs-as-code tools together, in synergy, in a build and test pipeline.</p><h3 id=21-create-a-new-hugo-site>2.1 Create a new Hugo site</h3><p>Initialise a new hugo site in the base of the repo:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ hugo new site mysite
+</span></span><span style=display:flex><span>Congratulations! Your new Hugo site is created in /src/mysite.
+</span></span></code></pre></div><blockquote><p>Checkout <a href=https://gohugo.io/>Hugo&rsquo;s official docs</a> to learn more about Hugo themes, ways to structure your content and configuration options.</p></blockquote><h3 id=22-put-down-some-markdown>2.2 Put down some markdown</h3><p>For the purpose of testing a docs-as-code pipeline, simply put your markdown in the <code>content</code> folder in <code>WRITEME.md</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>hugo:/src/mysite$ tree content
+</span></span><span style=display:flex><span>content
+</span></span><span style=display:flex><span>└── WRITEME.md
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>0</span> directories, <span style=color:#ae81ff>1</span> file
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ cat content/WRITEME.md
+</span></span><span style=display:flex><span><span style=color:#75715e>## A butiful peom</span>
+</span></span><span style=display:flex><span>Lorem ipsum ip dolor.
+</span></span></code></pre></div><h3 id=23-create-a-docs-as-code-build-pipeline>2.3 Create a docs as code build pipeline</h3><p>Create a new github workflow called <code>build.yml</code> in a <code>.github/workflows</code> folder. Paste the follow yaml and remember to read it:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build and test Hugo site</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>: <span style=color:#ae81ff>push</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>build</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container</span>: <span style=color:#ae81ff>ghcr.io/doughgle/docs-as-code:main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>submodules</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Show tool versions</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo -n &#34;mdshell &#34; &amp;&amp; mdspell --version
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo -n &#34;write-good &#34; &amp;&amp; write-good --version
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          markdownlint-cli2 | head -1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          htmltest --version
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          hugo version</span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Check spelling</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>mdspell --report --en-gb &#39;**/*.md&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>continue-on-error</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>working-directory</span>: <span style=color:#ae81ff>content</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Check prose</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>write-good --parse */*/*.md</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>continue-on-error</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>working-directory</span>: <span style=color:#ae81ff>content</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Lint Markdown</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>markdownlint-cli2 &#39;**/*.md&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>continue-on-error</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>working-directory</span>: <span style=color:#ae81ff>content</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build the site</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>hugo --buildDrafts --buildFuture</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e># htmltest (configured in .htmltest.yml)</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Test HTML</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>htmltest</span>
+</span></span></code></pre></div><h3 id=24-push-to-github>2.4 Push to Github</h3><p>Make the <code>mysite</code> directory a new git repo. Hugo&rsquo;s <code>config.toml</code> and the <code>content</code> folder should be in the root of the repo.</p><p>Create a <a href=https://github.com/new>new</a> empty Github repo.</p><p>Push the hugo site repository to Github using the provided instructions. Example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>git remote add origin git@github.com:doughgle/upgraded-palm-tree.git
+</span></span><span style=display:flex><span>git branch -M main
+</span></span><span style=display:flex><span>git push -u origin main
+</span></span></code></pre></div><p>The workflow will run upon pushing the code to any branch.</p><p>To see it, navigate to the repo on github.com -> Actions -> workflow runs (latest) -> <code>build</code></p><p><img src=view-github-build-workflow.png alt="View Github Build Workflow" title="machines: finding typos, humans: making typos!"></p><h2 id=3-build-and-test-the-docs>3 Build And Test The Docs</h2><p>Here&rsquo;s a challenge&mldr;</p><p>Q: How many spelling errors, style blunders, format crimes, and broken links have been introduced in this <code>WRITEME.md</code> ?</p><blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=display:flex><span><span style=color:#75715e>## WRITEME
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>This sentence has five words. Here are five more words. Five-word sentences are fine.
+</span></span><span style=display:flex><span>But severel together become monotonous. Listen to what is happenning.
+</span></span><span style=display:flex><span>The writing is getting boring. The sound of it drones. It’s like a stuck record.
+</span></span><span style=display:flex><span>The ear demands some variety.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Now listen. I vary the sentence length, and I create musick. Music. The writing sings.
+</span></span><span style=display:flex><span>It has a pleasant rhythm, a lilt, a harmony. I use short sentences.
+</span></span><span style=display:flex><span>And I use sentences of medium length. And sometimes when I am certain the reader is 
+</span></span><span style=display:flex><span>rested, I will engage him with a sentence of considerable length, a sentence that burns 
+</span></span><span style=display:flex><span>with energy and builds with all the impetus of a crescendo, the roll of the drums, the
+</span></span><span style=display:flex><span>crash of the cymbals–sounds that say listen to this, it is important.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>So write with a combination of short, medium, and long sentences. Create a sound that 
+</span></span><span style=display:flex><span>pleases the reader’s ear. Don’t just write words. Write music.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>
+</span></span></span><span style=display:flex><span><span style=color:#66d9ef>&gt; </span><span style=font-style:italic>*Credit: [Gary Provost](https://www.garyprovost.com/404) 
+</span></span></span><span style=display:flex><span><span style=font-style:italic></span><span style=color:#66d9ef>&gt; </span><span style=font-style:italic>100 Ways to Improve Your Writing*
+</span></span></span></code></pre></div></blockquote><h3 id=31-test-it>3.1 Test it</h3><p>Put the markdown in the <code>content</code> folder in <code>WRITEME.md</code>.</p><p>Commit and push the change to Github.</p><p>The workflow will run upon pushing the code to any branch.</p><p>To see it, navigate to the repo on github.com -> Actions -> workflow runs (latest) -> <code>build</code></p><h3 id=32-check-spelling>3.2 Check Spelling</h3><p><img src="https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/7dfa4d0f-8e9d-4004-833e-79e19f6f6da9.gif?ClientID=vimeo-core-prod&Date=1675568350&Signature=9961949e39c0656bf0a87bd92040547fe7a37cea" alt="Check spelling"></p><p><code>mdspell</code> says there are 5 (deliberate) spelling errors.</p><h3 id=33-check-prose>3.3 Check Prose</h3><p><img src="https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/af2f3fd4-ec80-4b00-8284-ac8f7cfd762c.gif?ClientID=vimeo-core-prod&Date=1675568708&Signature=736f7b48de9ef4b18bb4324858f4b6ece86dc515" alt="Check prose"></p><p><code>write-good</code> highlights some passive voice, wordy and redundant phrases.</p><h3 id=33-lint-markdown>3.3 Lint Markdown</h3><p><img src="https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/9cd4b341-9cc2-4eed-8e83-fc89cb876839.gif?ClientID=vimeo-core-prod&Date=1675568805&Signature=116893c44713ae5483e52a238160fff5536712dc" alt="Lint markdown"></p><p><code>markdownlint</code> found 7 markdown rule violations. Rules can be configured in a <code>.markdownlint.yaml</code> configuration file.</p><h3 id=34-test-html>3.4 Test HTML</h3><p><img src="https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/21faa4c9-608e-46e3-ad66-f10472639cc5.gif?ClientID=vimeo-core-prod&Date=1675568987&Signature=3dde2e40a6bc083ab6050527148689bb49e47c91" alt="Test HTML"></p><p><code>htmltest</code> found nothing.</p><hr><p>Thank you for reading this article right to the end.
+If you enjoyed it and if you think others can benefit, please like and share.
+Or if you foresee a problem, have an alternative solution, or you just wanna share some comments to improve the usefulness of this article, I&rsquo;d appreciate your feedback.</p></div><div class=after-post-tags><ul class=tags><li><a href=/tags/builder-image>builder-image</a></li><li><a href=/tags/build-pipeline>build-pipeline</a></li><li><a href=/tags/containers>containers</a></li><li><a href=/tags/docs-as-code>docs-as-code</a></li></ul></div><div class="row PageNavigation d-flex justify-content-between font-weight-bold"><a class="d-block col-md-6 text-lg-right" href=https://www.douglashellinger.com/how-to/enable-hdmi-on-thinkpad-x1-extreme-gen-4/>How to Enable HDMI on Thinkpad X1 Extreme Gen 4 &#187;</a><div class=clearfix></div></div></div></div></div><div class=container><div id=comments class="row justify-content-center mb-5"><div class=col-md-8></div></div></div></div></div><div class="jumbotron fortags"><div class="d-md-flex h-100"><div class="col-md-4 transpdark align-self-center text-center h-100"><div class="d-md-flex align-items-center justify-content-center h-100"><h2 class="d-md-block d-none align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2></div></div><div class="col-md-8 p-5 align-self-center text-center"><a class="mt-1 mb-1" href=/tags/build-pipeline>build-pipeline</a>
+<a class="mt-1 mb-1" href=/tags/builder-image>builder-image</a>
+<a class="mt-1 mb-1" href=/tags/cloud>cloud</a>
+<a class="mt-1 mb-1" href=/tags/containers>containers</a>
+<a class="mt-1 mb-1" href=/tags/docs-as-code>docs-as-code</a>
+<a class="mt-1 mb-1" href=/tags/encryption>encryption</a>
+<a class="mt-1 mb-1" href=/tags/security>security</a>
+<a class="mt-1 mb-1" href=/tags/thinkpad>thinkpad</a>
+<a class="mt-1 mb-1" href=/tags/troubleshooting>troubleshooting</a>
+<a class="mt-1 mb-1" href=/tags/ubuntu>ubuntu</a></div></div></div><footer class=footer><div class=container><div class=row><div class="col-md-6 col-sm-6 text-center text-lg-left">&copy; Copyright Douglas Hellinger 2022</div><div class="col-md-6 col-sm-6 text-center text-lg-right"><a target=_blank rel=noopener href=https://www.wowthemes.net>Mediumish Theme</a> by WowThemes.net</div></div></div></footer></div><script src=https://code.jquery.com/jquery-3.4.1.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js integrity=sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut crossorigin=anonymous></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script>
+<script src=https://www.douglashellinger.com/js/mediumish.84218587c174fd40bce82544b98851670f0b124a7324b349c54a4065e2b32ffc.js integrity="sha256-hCGFh8F0/UC86CVEuYhRZw8LEkpzJLNJxUpAZeKzL/w="></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TEH3VGXMRY"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-TEH3VGXMRY",{anonymize_ip:!1})}</script></body></html>
