@@ -1,5 +1,5 @@
 ---
-title: "Create a Docs as Code Build Pipeline"
+title: "How To Create a Docs as Code Build Pipeline"
 date: 2023-01-29T15:48:45+08:00
 publishdate: 2023-02-05T15:12:45+08:00
 tags: ['builder-image','build-pipeline','containers','docs-as-code']
