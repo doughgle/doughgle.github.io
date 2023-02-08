@@ -1,7 +1,7 @@
 ---
 title: "Creating A Docs As Code Pipeline"
 date: 2023-01-20T16:58:09+08:00
-publishdate: 2023-01-20T16:58:09+08:00
+publishdate: 2023-02-08T13:00:09+08:00
 tags: ['docs-as-code']
 comments: true
 draft: false
