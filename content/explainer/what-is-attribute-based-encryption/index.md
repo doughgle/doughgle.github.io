@@ -9,7 +9,7 @@ draft: false
 
 **Attribute-Based Encryption (ABE)** is a way to lock something away using “**key”-words**. Only people who have the keywords in their key can open the lock. The name of the approach comes from; ‘**Attributes**’, which are really keywords like those you enter into the search box; and, ‘**Encryption**’, which hides the thing. It's different from other ways to hide something, because when you pick the keywords, that’s also ‘**Access Control**’. That’s great, because with ABE, you can store all the things at some outsider place without the need for trusted guards!
 
-***
+---
 
 ## You can hide something with a “**key”-word** expression
 
@@ -23,19 +23,15 @@ ABE is a different way to hide it. It uses a different kind of lock. The lock on
 
 There's more. When you set the lock, you can join the keywords together with ANDs and ORs. Something like:
 
-
 ```python
     (Scientist or Researcher) and location=Area51
 ```
-
 
 This simple expression allows only people with either the **Scientist** or **Researcher** keyword to see the picture when they’re at **Area51**.
 
 Notice that, as the **picture owner**, you don’t need to know who each **key owner** actually is. You simply write an expression that controls which keywords will open the picture, on that picture alone. That's important because you can use what you know about the picture and the situation in which it may be seen.
 
 So, the picture is hidden in a box with the lock set to open when you use:
-
-
 
 1. Scientist and location=Area51 together; or
 2. Researcher and location=Area51 together.
@@ -46,14 +42,13 @@ Making and sharing ABE keys is handled by a **Trusted Key Party**. The trusted k
 
 So the trusted key party shares keys with people it learns to trust. Some of those keys contain the keywords **Scientist**, **Researcher** and **Location**. The party can make keys with more of the same keywords. That's okay. Now, people who’s keys contain the correct keywords can open the lock and see the hidden picture.
 
-
 ## The Key Escrow Problem
 
 But there’s a known problem with the trusted key party idea. If a single party is able to make all the keys needed to open a hidden thing then the trust placed on that party is too high. This is **The Key Escrow Problem**. With a single trusted key party, the party could read the keyword expression on any box and have the power to make a key that passes it. Even if the single key party is trusted, there's a chance it may be attacked. In that case, an attacker may get the power to make a key that opens any box she wants.
 
 One way to fix the key escrow problem is to have more parties make keywords and keys, and require one keyword from each in the lock expression. Another way is to split the decryption into stages and have each stage done by a different party.
 
-***
+---
 
 ## You don’t need wasteful copies or expensive guards
 
@@ -61,12 +56,11 @@ You've probably seen those mailboxes at the bottom of an apartment block. If you
 
 ![A photo of mailboxes](mailboxes.jpg "ABE: like mailboxes, but without the junk.")
 
-
 What if you want to ask everyone in the apartment block to your party? With mailboxes, you might need to make many letters and drop one in each mailbox. That would be **one-to-one**: one letter, one receiver. Here’s where ABE's a little different. ABE lets you hide one thing to share with many. It's a **one-to-many** lock. What’s different is that you don’t need to make multiple copies to share with many. You can drop it in one place and those with a correct key can open and read it.
 
-With ABE, there's no need for someone to stand guarding the boxes. There’s also no need for people to show who they are before they can see any locked boxes. The lock alone is enough. If someone’s key passes the lock expression, they can open it. If it doesn’t, they can't. ABE is ‘**Cryptographic Access Control**’ and it's one reason why it's said to be great for storing and sharing things outside (like in a** Cloud**) without paying trusted guards.
+With ABE, there's no need for someone to stand guarding the boxes. There’s also no need for people to show who they are before they can see any locked boxes. The lock alone is enough. If someone’s key passes the lock expression, they can open it. If it doesn’t, they can't. ABE is ‘**Cryptographic Access Control**’ and it's one reason why it's said to be great for storing and sharing things outside (like in a **Cloud**) without paying trusted guards.
 
-***
+---
 
 ## The problem with RBAC
 
@@ -81,7 +75,6 @@ In an RBAC’ed system, a System Administrator may make a new role with finer re
 One problem with RBAC that follows from making more and more fine fitting roles is **Role Explosion**. It can become hard to manage when the number of roles gets near or greater than the number of users in the system.
 
 ABE has often been suggested as an answer to these troubles, especially in **Cloud Computing**. ABE offers you fine control over any decided “group” of people reading and writing stuff.
-
 
 ## You can experiment with ABE for your use case
 

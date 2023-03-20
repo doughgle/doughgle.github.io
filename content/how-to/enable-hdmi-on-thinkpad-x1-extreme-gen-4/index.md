@@ -80,7 +80,7 @@ If `nouveau` is loaded, Ubuntu Settings -> Displays may detect the HDMI display,
 
 ## 3. Check which Video Driver is Recommended
 
-Following this excellent [nvidia drivers on Ubuntu guide](https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux), I found its simple to use the `ubuntu-drivers` utility.
+Following this excellent [nVidia drivers on Ubuntu guide](https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux), I found its simple to use the `ubuntu-drivers` utility.
 
 ```sh
 $ ubuntu-drivers devices
@@ -371,7 +371,7 @@ Alternatively, you can launch the Additional Drivers settings:
 ## 7. Verify the nVidia Driver is Working
 
 The driver may be loaded, but is it working correctly?
-Open the nvidia settings in read-only mode (i.e. non-sudo)
+Open the nVidia settings in read-only mode (i.e. non-sudo)
 
 ```sh
 $ nvidia-settings 
@@ -451,14 +451,14 @@ Now connect your HDMI device and go to Settings -> Displays to configure the res
 
 ### Blank screen after booting Ubuntu
 
-This may happen if the wrong nvidia driver or version is installed.
+This may happen if the wrong nVidia driver or version is installed.
 1. Boot to recovery mode.
 1. Enable networking. 
 1. Drop to root shell.
-1. Check if nvidia driver is loaded `lsmod | grep nvidia`
-1. Uninstall purge nvidia packages.
+1. Check if nVidia driver is loaded `lsmod | grep nvidia`
+1. Uninstall purge nVidia packages.
 1. Reboot
-1. Plug hdmi cable
+1. Plug HDMI cable
 1. Mirror display 
 
-Refer to steps from https://askubuntu.com/a/1245075/278849
+Refer to steps from [this guide](https://askubuntu.com/a/1245075/278849)
