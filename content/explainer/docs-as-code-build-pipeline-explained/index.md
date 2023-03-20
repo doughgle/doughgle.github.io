@@ -58,8 +58,7 @@ I'll be removing `mdspell` from the pipeline soon...
 
 ### 3 Check Prose
 
-Tools like the Hemingway Editor and Writers diet give feedback on your prose. The Hemingway editor is an online interactive editor that grades your prose by school reading age. It shows Readability as Grade 6 to 18, where lower is generally better. It follows simple rules, and highlights parts of the prose that make it hard to read or less impactful.
-
+Tools like the [Hemingway Editor](https://hemingwayapp.com/) give feedback on your prose. The Hemingway editor is an online interactive editor that grades your prose by school reading age. It shows Readability as Grade 6 to 18, where lower is generally better. It follows simple rules, and highlights parts of the prose that make it hard to read or less impactful.
 
 ---
 ![example of feedback on prose using Hemingway Editor](hemingway-editor.png "Hemingway Editor: my writing was flagged for passive voice violations")
@@ -93,7 +92,7 @@ hinking about what might benefit from a plain English explanation.
                          ^^^^^^^^^^^^
 "benefit from" is wordy or unneeded on line 12 at column 36
 -------------
-ased Encryption (ABE). I was excited by what I learned. I wrote carefully, tryin
+ased Encryption (ABE). I was excited by what I learned. I wrote carefully, trying
                          ^^^^^^^^^^^
 "was excited" may be passive voice on line 14 at column 85
 -------------
@@ -102,8 +101,8 @@ ased Encryption (ABE). I was excited by what I learned. I wrote carefully, tryin
 As an noob writer, I frequently make those mistakes, so those checks really help me.
 One thing missing from `write-good` is the overall readability grade. Another is the coloured highlights for hard to read and very hard to read sentences.
 
-Like the check spelling stage, perhaps it makes sense to bring feedbach to the IDE and simply eyeball the highlights.
-In CI build though, for docs with multiple conributors, you might wanna fail the build if the Readability (lower is better) goes above Grade 9.
+Like the check spelling stage, perhaps it makes sense to bring feedback to the IDE and simply eyeball the highlights.
+In CI build though, for docs with multiple contributors, you might wanna fail the build if the Readability (lower is better) goes above Grade 9.
 
 ### 4 Lint Markdown
 
