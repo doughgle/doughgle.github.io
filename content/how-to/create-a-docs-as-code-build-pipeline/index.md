@@ -47,7 +47,7 @@ RUN npm install write-good --global
 
 Again, you can do this directly in Github in the new repo.
 
-> This image is based on [klakegg/hugo:ext-alpine-ci](https://github.com/klakegg/docker-hugo). Its a minimal Hugo Extended Edition image for CI builds. [Hugo](https://gohugo.io/) is a fast static site generator which is equally great for building blogs or technial product docs like the [Kubernetes.io](https://kubernetes.io/) website.
+> This image is based on [klakegg/hugo:ext-alpine-ci](https://github.com/klakegg/docker-hugo). Its a minimal Hugo Extended Edition image for CI builds. [Hugo](https://gohugo.io/) is a fast static site generator which is equally great for building blogs or technical product docs like the [Kubernetes.io](https://kubernetes.io/) website.
 
 ### 1.3 Create an image build pipeline
 

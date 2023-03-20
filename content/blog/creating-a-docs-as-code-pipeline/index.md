@@ -14,7 +14,7 @@ Before you publish written content, you wanna check spelling, lint markdown, imp
 
 Inspired by the practical how tos on [docslikecode.com](https://www.docslikecode.com/), I decided to get hands on keyboard and explore it myself.
 
-I had a conversation with chatgpt on this. The back and forth enabled a few thought iterations. What came out was the simplest thing that could possibly work.
+I had a conversation with ChatGPT on this. The back and forth enabled a few thought iterations. What came out was the simplest thing that could possibly work.
 
 This approach uses a builder image specialised for your docs-as-code workflow. You can pre-install and configure your docs-as-code tools in the image. Finally, use them in synergy in a build pipeline for catching typos, standardising format, improving prose, and catching broken links.
 
