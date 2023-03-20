@@ -9,11 +9,9 @@ draft: true
     Show don't tell
 ---
 
-Here's an example docs-as-code build pipeline. It describes a process for checking and testing documentation written in markdown format. After committing and pushing markdown changes to Github, the pipeline will run.
+Here's an example docs-as-code build pipeline. It describes a process for checking and testing documentation written in markdown format. After committing and pushing markdown changes to Github, the pipeline will run. The output of the build pipeline is a complete static HTML site.
 
-In this explainer, we'll list the Tools, learn the Technique, consider the Tradeoffs, and lastly, take away the Tao of docs-as-code.
-
-Let's get into it...
+Let's examine some tools and techniques of the docs as code build pipeline...
 
 ### 1. Show Tool Versions
 
@@ -21,8 +19,7 @@ The first stage of the pipeline prints a complete list of tool versions. You can
 
 ![screenshot of a Show Tool Versions stage in a build pipeline](show-tool-versions.png "the engineer eats low hanging fruits first")
 
-If your build and deployment pipelines don't have that, do it! Its one of the lowest hanging fruits on the CI/CD tree!
-I learnt this from Elton Stoneman in the [Jenkins Pipelines course](https://github.com/sixeyed/jenkins-pipeline-demos/blob/master/m3/demo3/Jenkinsfile#L16). Its a simple, but powerful technique.
+If your build and deployment pipelines don't have that, do it! I learnt this technique from Elton Stoneman in the [Using Declarative Jenkins Pipelines course](https://www.pluralsight.com/courses/using-declarative-jenkins-pipelines).
 
 Besides a code-under-build bug or the CI server bonking, tool upgrades are a common reason for build failures. A Show Tool Versions stage enables you to see if a tool upgrade introduced a build failure. Simply find the builds before and after it started failing and compare the tool versions.
 
@@ -101,13 +98,13 @@ ased Encryption (ABE). I was excited by what I learned. I wrote carefully, tryin
 As an noob writer, I frequently make those mistakes, so those checks really help me.
 One thing missing from `write-good` is the overall readability grade. Another is the coloured highlights for hard to read and very hard to read sentences.
 
-Like the check spelling stage, perhaps it makes sense to bring feedback to the IDE and simply eyeball the highlights.
-In CI build though, for docs with multiple contributors, you might wanna fail the build if the Readability (lower is better) goes above Grade 9.
+You might consider bringing prose feedback to the IDE too, where you can eyeball the highlights.
+For docs with multiple contributors though, you might wanna fail the CI build if the Readability (lower is better) goes above Grade 9.
 
 ### 4 Lint Markdown
 
 `markdownlint` highlights the fluff in your markdown.
-It can help with standardising the source markdown to make it easier for editing and writing. The whole docs codebase can look like its written by one person. The reduced variability reduces cognitive load on the writer and editor. You can focus on the content while your brain sub-consciously parses the familiar structure.
+It can help with standardising the source markdown to make it easier for writing and editing. The whole docs codebase can look like its written by one person. The reduced variability reduces extraneous cognitive load. You can focus on the content while your brain sub-consciously parses the familiar structure.
 
 [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2) is a CLI for markdown lint that doesn't follow standard posix options. Instead, its configured using a configuration file. It has a large set of rules that can be enabled/disabled and configured.
 In particular, it has rules to check for multiple blank lines, line length, inline HTML and emphasis style.
@@ -144,6 +141,8 @@ index.md:108:579 MD033/no-inline-html Inline HTML [Element: a]
 index.md:108:705 MD047/single-trailing-newline Files should end with a single newline character
 ```
 
+Unlike spelling and prose feedback, I believe this type of feedback should get out of the write/edit workflow. That editing is about clarity of expression and not about markdown formatting. One view is that whitespace formatting is a separate commit and can come at the point where multiple authors integrate. Alternatively, you could consider running `markdownlint-cli2-fix` on a pre-push git hook.
+
 The drawback that stands out with `markdownlint-cli2` is the initial investment in configuring the rules. Besides that, it rules!
 
 ### 5 Build Static Site
@@ -154,7 +153,7 @@ Its the build stage of the pipeline. The stage that converts input source to a d
 
 There are 3 ways to build depending on the stage of the workflow:
 
-1. build and test interactively.
+1. Build and test interactively
 1. Build a branch to get feedback
 1. Build a Release Candidate
 
@@ -291,30 +290,20 @@ Overall, `htmltest` is great for catching errors and regressions in nightly buil
 
 ## Take Away The Tao of Docs-as-code
 
-Is your reference documentation currently in sync with your code? Are your how-tos in sync with the product? Every supported version? How confident are you that the tutorials still work for people on Mac, Linux and Windows?
+Managing docs like code can bring many of the same benefits as managing *code* like code. For example, standardising language, formatting and style can reduce extraneous cognitive load to make reading and writing easier.
 
-Managing docs like code can bring many of the same benefits as managing *code* like code. For example, standardising language, formatting and style can reduce cognitive load to make reading and writing easier.
+What Uncle Bob says about the primary value of software is also true about the docs-as-code. The primary value of docs-as-code is it makes documentation soft. Easy to change today and continue to change tomorrow as the volume and complexity grows. Just like code, you can start from hard-coded and soften aspects in response to user requests.
 
-Docs must evolve with the product and its easy to acknowledge and trace people's contributions.
+Treat docs as part of the software product. As the product grows, counter the growth in complexity by evolving a docs as code build pipeline to offload and standardise repetitive parts.
 
-The primary value of docs-as-code is it makes documentation soft. Easy to change today and continue to change tomorrow as the volume and complexity grows. Just like code, you can start from hard-coded and soften aspects in response to change requests, aligned with different users.
+A build pipeline gives you confidence to restructure parts of the documentation without undetected broken links.
 
-For example, different versions of the product, different languages, different delivery channels (in IDE, web, man pages, excel spreadsheets).
+Its also easy to acknowledge and trace people's contributions. Cloudflare acknowledged that, saying "Having our documentation open to external contributions has helped us improve our documentation over time"
 
-Easy to change the structure.
+Finally, if you enjoy saying "shift left", you can enjoy saying it some more for docs! Run tests, review and approve through pull requests, right at the source. You wanna get to know about broken links before publishing. Or every day. Perhaps one of the public links broke? Get to know which site put a paywall, a CAPTCHA, or a WAF in front of your favourite link!
 
-It brings many of the non-functional qualities that we invest a great deal of effort into as we develop executable software.
-A secure workflow. A complete version history. Same IDE. Less waste on minutiae.
-Iterative and incremental. Doable and undoable. Auditable and acknowledgeable.
+---
 
-## Version Align your docs
-+ maintainability - version control history. Manage parallel versions of the docs that correspond to versions of the product.
-Let's examine that. As the product evolves, you'll likely have early adopters on the latest version, and laggards on an unsupported version. Docs as code enables you to manage documentation versions in-sync with product versions. You can speak to each of these groups of users through their version of the docs. For example, you can share a banner to remind those that are on an unsupported version to consider upgrading.
-
-## Add A Dimension
-You can serve even more dimensions of users with localisation (l10n) and internationalisation (i18n). You can build from the same source and publish to different channels. Write once, publish many. That means you can offer your docs as a Confluence page, man page, Hugo page, or my personal favourite, a pdf embedded in an excel spreadsheet! Without managing docs as code, how else would you do it?!
-
-## Enjoy saying shift left
-If you enjoy saying "shift left", you can enjoy saying it some more for docs! Run tests, review and approve through pull requests, right at the source. You wanna get to know about broken links before publishing. Or every day. Perhaps one of the public links broke? Get to know which site put a paywall, a CAPTCHA, or a WAF in front of your favourite link!
-
-How often do you deploy and update docs? Is the frequency in sync with the product releases? Which docs (or types of docs) have the most churn? Why?
+Thank you for reading this article right to the end.
+If you enjoyed it and if you think others can benefit, please like and share.
+Or if you foresee a problem, have an alternative solution, or you just wanna share some comments to improve the usefulness of this article, I'd appreciate your feedback. You can reach me on LinkedIn.
