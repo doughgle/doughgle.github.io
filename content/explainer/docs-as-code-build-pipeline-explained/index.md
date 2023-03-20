@@ -13,7 +13,7 @@ Here's an example docs-as-code build pipeline. It describes a process for checki
 
 Let's examine some tools and techniques of the docs as code build pipeline...
 
-### 1. Show Tool Versions
+## 1. Show Tool Versions
 
 The first stage of the pipeline prints a complete list of tool versions. You can apply this on any pipeline. Keep it short and consistent - one tool and version per line. If your build tool has a bunch of plugins, show their versions too. Like this:
 
@@ -27,7 +27,7 @@ Its a useful technique because it reduces your anxiety about making that upgrade
 
 And, if you're using builder containers, you can simply rollback to a previous image version.
 
-### 2 Check Spelling
+## 2 Check Spelling
 
 This stage uses [`mdspell`](https://github.com/lukeapage/node-markdown-spellcheck) to check for spelling errors.
 Interacting with it on the command line looks like this:
@@ -53,7 +53,7 @@ I just spent over an hour on an interactive `mdspell` check, adding words to the
 My recommendation would be to use an in IDE spell checker, pre-commit and just eyeball the squigglies.
 I'll be removing `mdspell` from the pipeline soon...
 
-### 3 Check Prose
+## 3 Check Prose
 
 Tools like the [Hemingway Editor](https://hemingwayapp.com/) give feedback on your prose. The Hemingway editor is an online interactive editor that grades your prose by school reading age. It shows Readability as Grade 6 to 18, where lower is generally better. It follows simple rules, and highlights parts of the prose that make it hard to read or less impactful.
 
@@ -67,6 +67,7 @@ Inspired by [Writing With Confidence](https://www.udemy.com/course/writing-for-b
 One tool that can help with this is `write-good`.
 
 [`write-good`](https://github.com/btford/write-good) helps with highlighting:
+
 + adverbs, which can weaken meaning. Prefer a forceful verb.
 + passive voice, which can make the writing distant and less engaging.
 + wordy phrases, which can make the sentence too complex to digest.
@@ -101,7 +102,7 @@ One thing missing from `write-good` is the overall readability grade. Another is
 You might consider bringing prose feedback to the IDE too, where you can eyeball the highlights.
 For docs with multiple contributors though, you might wanna fail the CI build if the Readability (lower is better) goes above Grade 9.
 
-### 4 Lint Markdown
+## 4 Lint Markdown
 
 `markdownlint` highlights the fluff in your markdown.
 It can help with standardising the source markdown to make it easier for writing and editing. The whole docs codebase can look like its written by one person. The reduced variability reduces extraneous cognitive load. You can focus on the content while your brain sub-consciously parses the familiar structure.
@@ -145,7 +146,7 @@ Unlike spelling and prose feedback, I believe this type of feedback should get o
 
 The drawback that stands out with `markdownlint-cli2` is the initial investment in configuring the rules. Besides that, it rules!
 
-### 5 Build Static Site
+## 5 Build Static Site
 
 [Hugo](https://gohugo.io/) produces a complete static HTML site from markdown.
 
@@ -157,7 +158,7 @@ There are 3 ways to build depending on the stage of the workflow:
 1. Build a branch to get feedback
 1. Build a Release Candidate
 
-#### 1. Build And Test Interactively
+### 1. Build And Test Interactively
 
  If you use a docs-as-code builder image, you can run it interactively. **Interactive is the fastest feedback!**
  See what you're creating as you edit. Especially useful for changes across multiple pages.
@@ -179,7 +180,7 @@ There are 3 ways to build depending on the stage of the workflow:
 
   ![Interact with Hugo](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/4f06d880-45b6-4451-9102-d8d816943022.gif?ClientID=vimeo-core-prod&Date=1679235418&Signature=dfd86d96581e49cbd5288ff449b405d4a81d8813)
 
-#### 2. Build A Branch To Get Feedback
+### 2. Build A Branch To Get Feedback
 
   In this case, the build makes draft and future-dated pages visible. Its important for feedback because post-build tests will run on the deployable output. If drafts and future-dated content isn't in the deployable output, it won't get tested!
   
@@ -219,12 +220,12 @@ There are 3 ways to build depending on the stage of the workflow:
   Total in 111 ms
   ```
 
-#### 3. Build a Release Candidate
+### 3. Build a Release Candidate
 
 Finally, build a release candidate identifiable by commit metadata tagged in its source.
 
   ```sh
-  $ hugo --minify
+  hugo --minify
   ```
 
   ```sh
@@ -249,7 +250,7 @@ Finally, build a release candidate identifiable by commit metadata tagged in its
 It wont include drafts. It can include future dated content if that is your strategy. Maybe you have a release train that leaves every Monday at 8pm?
 For trunk-based development, this of build step will be done only from `master` branch.
 
-### 6 Test HTML
+## 6 Test HTML
 
 [`htmltest`](https://github.com/wjdp/htmltest) tests the static HTML site for broken links, insecure (http) links, ensures images have alt descriptions and more.
 
