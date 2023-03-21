@@ -10,6 +10,7 @@ draft: false
 ![hard to read sentence](hard-to-read-passive-voice.png)
 
 The [Hemingway Editor](https://hemingwayapp.com/) says that sentence is:
+
 1. hard to read (yellow highlight), and;
 1. uses passive voice (green highlight).
 
