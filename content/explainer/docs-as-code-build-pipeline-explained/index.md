@@ -158,7 +158,7 @@ There are 3 ways to build depending on the stage of the workflow:
 1. Build a branch to get feedback
 1. Build a Release Candidate
 
-### 1. Build And Test Interactively
+### 5.1. Build And Test Interactively
 
  If you use a docs-as-code builder image, you can run it interactively. **Interactive is the fastest feedback!**
  See what you're creating as you edit. Especially useful for changes across multiple pages.
@@ -180,7 +180,7 @@ There are 3 ways to build depending on the stage of the workflow:
 
   ![Interact with Hugo](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/4f06d880-45b6-4451-9102-d8d816943022.gif?ClientID=vimeo-core-prod&Date=1679235418&Signature=dfd86d96581e49cbd5288ff449b405d4a81d8813)
 
-### 2. Build A Branch To Get Feedback
+### 5.2. Build A Branch To Get Feedback
 
   In this case, the build makes draft and future-dated pages visible. Its important for feedback because post-build tests will run on the deployable output. If drafts and future-dated content isn't in the deployable output, it won't get tested!
   
@@ -220,7 +220,7 @@ There are 3 ways to build depending on the stage of the workflow:
   Total in 111 ms
   ```
 
-### 3. Build a Release Candidate
+### 5.3. Build a Release Candidate
 
 Finally, build a release candidate identifiable by commit metadata tagged in its source.
 
