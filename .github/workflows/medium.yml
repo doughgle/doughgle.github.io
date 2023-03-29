@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       file:
-        description: 'HTML file to publish'
+        description: 'Markdown file to publish'
         required: true
         type: string
 
@@ -21,7 +21,7 @@ jobs:
         with:
           integration_token: "${{ secrets.MEDIUM_INTEGRATION_TOKEN }}"
           file: "${{ inputs.file }}"
-          content_format: "html"
+          content_format: "markdown"
           notify_followers: "false"
           tags: "test,tag"
           title: "${{ inputs.file }}"
