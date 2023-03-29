@@ -1,0 +1,29 @@
+name: Medium
+
+on:
+  workflow_dispatch:
+    inputs:
+      file:
+        description: 'HTML file to publish'
+        required: true
+        type: string
+
+jobs:
+  post-to-medium:
+    name: Post to Medium
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Source
+        uses: actions/checkout@v3
+
+      - name: Create Medium Post
+        uses: philips-software/post-to-medium-action@v0.4.1
+        with:
+          integration_token: "${{ secrets.MEDIUM_INTEGRATION_TOKEN }}"
+          file: "${{ inputs.file }}"
+          content_format: "html"
+          notify_followers: "false"
+          tags: "test,tag"
+          title: "${{ inputs.file }}"
+          license: "all-rights-reserved"
+          publish_status: "draft"
