@@ -27,3 +27,4 @@ jobs:
           title: "${{ inputs.file }}"
           license: "all-rights-reserved"
           publish_status: "draft"
+          parse_frontmatter: "true"
