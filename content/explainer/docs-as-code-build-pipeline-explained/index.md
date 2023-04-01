@@ -5,8 +5,6 @@ publishdate: 2023-03-20T04:44:36+08:00
 tags: ['docs-as-code', 'build-pipeline', 'writing']
 comments: true
 draft: true
-
-    Show don't tell
 ---
 
 Here's an example docs-as-code build pipeline. It describes a process for checking and testing documentation written in markdown format. After committing and pushing markdown changes to Github, the pipeline will run. The output of the build pipeline is a complete static HTML site.
