@@ -1,6 +1,11 @@
 name: Build and test Hugo site
 
-on: push
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
 
 jobs:
   build:
@@ -31,7 +36,7 @@ jobs:
         continue-on-error: true
         working-directory: content
 
-      - name: Build the site
+      - name: Build the site including drafts and future posts
         run: hugo --buildDrafts --buildFuture
 
       # htmltest (configured in .htmltest.yml)
