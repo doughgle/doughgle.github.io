@@ -38,6 +38,11 @@ jobs:
 
       - name: Build the site including drafts and future posts
         run: hugo --buildDrafts --buildFuture
+        if: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Build site excluding drafts and future posts
+        run: hugo --minify
+        if: ${{ github.ref == 'refs/heads/main' }}
 
       # htmltest (configured in .htmltest.yml)
       - name: Test HTML
@@ -47,3 +52,4 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
+        if: ${{ github.ref == 'refs/heads/main' }}
