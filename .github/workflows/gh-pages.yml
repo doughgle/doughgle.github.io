@@ -1,36 +1,29 @@
 name: GitHub Pages
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main  # Set a branch name to trigger deployment
+      - gh-pages
 
 jobs:
   deploy:
-    runs-on: ubuntu-22.04
-    container: ghcr.io/doughgle/docs-as-code:main
-    permissions:
-      contents: write
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          fetch-depth: 0
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
 
-      - name: Show tool versions
-        run: |
-          hugo version
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-      - name: Build site excluding drafts and future posts
-        run: hugo --minify
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          commit_message: ${{ github.event.head_commit.message }}
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
