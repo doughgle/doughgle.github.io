@@ -36,11 +36,11 @@ jobs:
         continue-on-error: true
         working-directory: content
 
-      - name: Build the site including drafts and future posts
+      - name: Build Site (including drafts and future posts)
         run: hugo --buildDrafts --buildFuture
         if: ${{ github.ref != 'refs/heads/main' }}
 
-      - name: Build site excluding drafts and future posts
+      - name: Build Site (excluding drafts and future posts)
         run: hugo --minify
         if: ${{ github.ref == 'refs/heads/main' }}
 
@@ -48,8 +48,10 @@ jobs:
       - name: Test HTML
         run: htmltest
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Publish HTML
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: ./public
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          commit_message: ${{ github.event.head_commit.message }}
         if: ${{ github.ref == 'refs/heads/main' }}
