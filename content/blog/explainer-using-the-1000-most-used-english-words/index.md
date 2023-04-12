@@ -2,7 +2,7 @@
 title: "An Explainer Using the 1000 Most Used English Words"
 date: 2022-07-12T08:45:44+08:00
 publishdate: 2022-07-12T08:45:44+08:00
-tags: []
+tags: ["encryption", "writing", "security"]
 comments: true
 draft: false
 ---
