@@ -17,14 +17,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Create Medium Post
-        uses: philips-software/post-to-medium-action@main
+        uses: philips-software/post-to-medium-action@v0.6.0
         with:
           integration_token: "${{ secrets.MEDIUM_INTEGRATION_TOKEN }}"
           file: "${{ inputs.file }}"
           content_format: "markdown"
           notify_followers: "false"
-          tags: "parsed-from-frontmatter"
-          title: "parsed-from-frontmatter"
           license: "cc-40-by"
           publish_status: "draft"
           parse_frontmatter: "true"
