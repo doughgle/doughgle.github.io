@@ -2,7 +2,7 @@
 title: "How to Enable HDMI on Thinkpad X1 Extreme Gen 4"
 date: 2022-12-13T14:32:17Z
 publishdate: 2022-12-19T12:30:00Z
-tags: ['thinkpad', 'ubuntu']
+tags: ['thinkpad', 'ubuntu', 'driver']
 comments: true
 draft: false
 ---
