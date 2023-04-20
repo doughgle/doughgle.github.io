@@ -222,12 +222,16 @@ Lorem ipsum ip dolor.
 
 ### 2.3 Create a docs as code build pipeline
 
-Create a new github workflow called `build.yml` in a `.github/workflows` folder. Paste the follow yaml and remember to read it:
+Create a new github workflow called `build.yml` in a `.github/workflows` folder. Paste the follow yaml and remember to read it!:
 
 ```yaml
 name: Build and test Hugo site
 
-on: push
+on:
+  push:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -236,22 +240,17 @@ jobs:
     container: ghcr.io/doughgle/docs-as-code:main
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Source
+        uses: actions/checkout@v3
         with:
           submodules: true
 
       - name: Show tool versions
         run: |
-          echo -n "mdshell " && mdspell --version
           echo -n "write-good " && write-good --version
           markdownlint-cli2 | head -1
           htmltest --version
           hugo version
-
-      - name: Check spelling
-        run: mdspell --report --en-gb '**/*.md'
-        continue-on-error: true
-        working-directory: content
 
       - name: Check prose
         run: write-good --parse */*/*.md
@@ -263,12 +262,25 @@ jobs:
         continue-on-error: true
         working-directory: content
 
-      - name: Build the site
+      - name: Build Site (including drafts and future posts)
         run: hugo --buildDrafts --buildFuture
+        if: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Build Site (excluding drafts and future posts)
+        run: hugo --minify
+        if: ${{ github.ref == 'refs/heads/main' }}
 
       # htmltest (configured in .htmltest.yml)
       - name: Test HTML
         run: htmltest
+
+      - name: Publish HTML
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          commit_message: ${{ github.event.head_commit.message }}
+        if: ${{ github.ref == 'refs/heads/main' }}
 ```
 
 ### 2.4 Push to Github
