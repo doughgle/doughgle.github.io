@@ -124,9 +124,13 @@ Feb 5, 2023
 </span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ cat content/WRITEME.md
 </span></span><span style=display:flex><span><span style=color:#75715e>## A butiful peom</span>
 </span></span><span style=display:flex><span>Lorem ipsum ip dolor.
-</span></span></code></pre></div><h3 id=23-create-a-docs-as-code-build-pipeline>2.3 Create a docs as code build pipeline</h3><p>Create a new github workflow called <code>build.yml</code> in a <code>.github/workflows</code> folder. Paste the follow yaml and remember to read it:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build and test Hugo site</span>
+</span></span></code></pre></div><h3 id=23-create-a-docs-as-code-build-pipeline>2.3 Create a docs as code build pipeline</h3><p>Create a new github workflow called <code>build.yml</code> in a <code>.github/workflows</code> folder. Paste the follow yaml and remember to read it!:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build and test Hugo site</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>on</span>: <span style=color:#ae81ff>push</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>pull_request</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>main</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>build</span>:
@@ -135,22 +139,17 @@ Feb 5, 2023
 </span></span><span style=display:flex><span>    <span style=color:#f92672>container</span>: <span style=color:#ae81ff>ghcr.io/doughgle/docs-as-code:main</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Checkout Source</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
 </span></span><span style=display:flex><span>          <span style=color:#f92672>submodules</span>: <span style=color:#66d9ef>true</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Show tool versions</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo -n &#34;mdshell &#34; &amp;&amp; mdspell --version
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo -n &#34;write-good &#34; &amp;&amp; write-good --version
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          markdownlint-cli2 | head -1
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          htmltest --version
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>          hugo version</span>          
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Check spelling</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>mdspell --report --en-gb &#39;**/*.md&#39;</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>continue-on-error</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>        <span style=color:#f92672>working-directory</span>: <span style=color:#ae81ff>content</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Check prose</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>write-good --parse */*/*.md</span>
@@ -162,12 +161,25 @@ Feb 5, 2023
 </span></span><span style=display:flex><span>        <span style=color:#f92672>continue-on-error</span>: <span style=color:#66d9ef>true</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>working-directory</span>: <span style=color:#ae81ff>content</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build the site</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build Site (including drafts and future posts)</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>hugo --buildDrafts --buildFuture</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>${{ github.ref != &#39;refs/heads/main&#39; }}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build Site (excluding drafts and future posts)</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>hugo --minify</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>${{ github.ref == &#39;refs/heads/main&#39; }}</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>      <span style=color:#75715e># htmltest (configured in .htmltest.yml)</span>
 </span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Test HTML</span>
 </span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>htmltest</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Publish HTML</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-gh-pages@v3</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>github_token</span>: <span style=color:#ae81ff>${{ secrets.GITHUB_TOKEN }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>publish_dir</span>: <span style=color:#ae81ff>./public</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>commit_message</span>: <span style=color:#ae81ff>${{ github.event.head_commit.message }}</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>${{ github.ref == &#39;refs/heads/main&#39; }}</span>
 </span></span></code></pre></div><h3 id=24-push-to-github>2.4 Push to Github</h3><p>Make the <code>mysite</code> directory a new git repo. Hugo&rsquo;s <code>config.toml</code> and the <code>content</code> folder should be in the root of the repo.</p><p>Create a <a href=https://github.com/new>new</a> empty Github repo.</p><p>Push the hugo site repository to Github using the provided instructions. Example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>git remote add origin git@github.com:doughgle/upgraded-palm-tree.git
 </span></span><span style=display:flex><span>git branch -M main
 </span></span><span style=display:flex><span>git push -u origin main
