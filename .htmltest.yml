@@ -11,4 +11,4 @@ IgnoreAltMissing: true
 CacheExpires: "6h"
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreCanonicalBrokenLinks: true
-ExternalTimeout: 5
+ExternalTimeout: 6
