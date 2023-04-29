@@ -1,5 +1,5 @@
 ---
-title: "Create A Markdown To Medium Deployment Workflow"
+title: "How To Post To Medium Without The Tedium"
 date: 2023-03-28T21:57:45+08:00
 publishdate: 2023-04-28T22:45:45+08:00
 tags: ['docs-as-code', 'deployment', 'medium']
@@ -7,7 +7,7 @@ comments: true
 draft: false
 ---
 
-## **You've got a Markdown build pipeline and you wanna publish to Medium without the tedium !**
+## **You've got a Markdown build pipeline and you wanna publish to Medium without the tedium!**
 
 If you wanna publish a chosen article to Medium, not an entire static site, this how to is for you.
 
@@ -165,3 +165,9 @@ When you're happy with the drafts, you can change `publish_status` to `public`.
 You're done.
 
 Kettle on, lean back on `<=2` chair legs, hands behind head `== 2` 😉️.
+
+---
+
+Thank you for reading this article right to the end.
+If you enjoyed it and if you think others can benefit, please like and share.
+Or if you foresee a problem, have an alternative solution, or you just wanna share some comments to improve the usefulness of this article, I'd appreciate your feedback. Reach me on LinkedIn, or [Medium](https://medium.com/@doug.hellinger).
