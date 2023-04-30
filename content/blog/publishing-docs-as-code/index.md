@@ -1,10 +1,10 @@
 ---
 title: "Publishing Docs as Code"
 date: 2023-04-29T22:03:21+08:00
-publishdate: 2023-04-29T22:03:21+08:00
+publishdate: 2023-04-30T21:50:21+08:00
 tags: ['docs-as-code','writing']
 comments: true
-draft: true
+draft: false
 ---
 Concluding a delve into docs as code...
 
