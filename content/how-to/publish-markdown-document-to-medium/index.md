@@ -158,7 +158,7 @@ Go to [Medium -> Stories -> Drafts](https://medium.com/me/stories/drafts) to see
 
 When you're happy with the drafts, you can change `publish_status` to `public`.
 
-![review draft on Medium](review-draft.png)
+![review draft on Medium](review-draft.png "My Stories: straight to draft")
 
 ## 8. Click Publish
 
