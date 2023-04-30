@@ -154,6 +154,8 @@ For example, to publish `test.md` from the `contents` directory in the root of t
 
 ## 7. Review Draft
 
+Go to [Medium -> Stories -> Drafts](https://medium.com/me/stories/drafts) to see the draft.
+
 When you're happy with the drafts, you can change `publish_status` to `public`.
 
 ![review draft on Medium](review-draft.png)
