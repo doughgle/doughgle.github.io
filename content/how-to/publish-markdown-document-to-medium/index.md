@@ -166,7 +166,7 @@ When you're happy with the drafts, you can change `publish_status` to `public`.
 
 You're done.
 
-Kettle on, lean back on `<=2` chair legs, hands behind head `== 2` 😉️.
+Kettle on, lean back on <= 2 chair legs, where hands behind head == 2 😉️.
 
 ---
 
