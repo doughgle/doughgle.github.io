@@ -1,0 +1,20 @@
+---
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: dev-public
+servers: 1
+agents: 6
+options:
+  k3d:
+    wait: false
+    disableLoadbalancer: true
+    disableRollback: true
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false
+  runtime: # runtime (docker) specific options
+    ulimits:
+      - name: nofile
+        soft: 26677
+        hard: 26677

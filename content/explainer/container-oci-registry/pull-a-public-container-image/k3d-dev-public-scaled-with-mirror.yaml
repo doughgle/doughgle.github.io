@@ -1,0 +1,28 @@
+---
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: dev-public
+servers: 1
+agents: 6
+options:
+  k3d:
+    wait: false
+    disableLoadbalancer: true
+    disableRollback: true
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false
+  runtime: # runtime (docker) specific options
+    ulimits:
+      - name: nofile
+        soft: 26677
+        hard: 26677
+registries:
+  use:
+    - docker-io-mirror:5000
+  config: | # define contents of the `registries.yaml` file (or reference a file); same as `--registry-config /path/to/config.yaml`
+    mirrors:
+      "docker.io":
+        endpoint:
+          - http://docker-io-mirror:5000  

@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello
+spec:
+  completions: 5
+  parallelism: 5
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+      - image: hello-world:latest
+        name: hello
+        imagePullPolicy: Always
+      - image: hello-world:linux
+        name: hello-linux
+        imagePullPolicy: Always
+      - image: hello-world:nanoserver
+        name: hello-nanoserver
+        imagePullPolicy: Always
+      restartPolicy: Never
