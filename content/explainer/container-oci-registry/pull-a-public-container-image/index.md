@@ -21,6 +21,7 @@ Let's begin with one of the most common use cases of a Container Registry:
 
 Here's the specification for a simple kubernetes cluster.
 
+`k3d-dev-public.yaml`
 ```yaml
 ---
 apiVersion: k3d.io/v1alpha5
@@ -41,7 +42,12 @@ It has access to pull images from the public internet.
 Let's create a simple pod that runs `hello-world` to completion
 
 ```sh
-➜ kubectl run hello --image=hello-world --restart=Never
+➜ kubectl run hello \
+  --image=hello-world \
+  --restart=Never
+```
+
+```sh
 pod/hello created
 ```
 
@@ -50,7 +56,7 @@ pod/hello created
 To find out, we can examine the logs of the high-level container runtime (sometimes called the container engine).
 Our OCI Runtime is Containerd:
 
-> `/var/lib/rancher/k3s/agent/containerd/containerd.log`
+`/var/lib/rancher/k3s/agent/containerd/containerd.log`
 ```json
 msg="PullImage \"hello-world:latest\""
 msg="PullImage using normalized image ref: \"docker.io/library/hello-world:latest\""
@@ -65,11 +71,7 @@ Specifically, its:
 1. prefixed with the default repository `library`
 1. suffixed with the default tag `latest`
 
-  ```jinja
-  docker.io/library/hello-world:latest
-
-  {{registry}}/{{repository}}/hello-world:{{tag}}
-  ```
+![anatomy of an image reference](./1b-normalised-image-reference.drawio.svg)
 
 **A:** Containerd requests the image from `registry-1.docker.io`, better known as DockerHub.
 
@@ -90,17 +92,22 @@ When Containerd receives a request to run a container from an image, here's what
 
 We can also see that in the Containerd logs:
 
-```
-{"desc.digest":"sha256:fc6cf906cbfa013e80938cdf0bb199fbdbb86d6e3e013783e5a766f50f5dbce0","host":"registry-1.docker.io","level":"debug","msg":"resolved","time":"2023-06-10T13:25:33.501807198Z"}
-{"digest":"sha256:fc6cf906cbfa013e80938cdf0bb199fbdbb86d6e3e013783e5a766f50f5dbce0","level":"debug","mediatype":"application/vnd.docker.distribution.manifest.list.v2+json","msg":"fetch","size":2561,"time":
-"2023-06-10T13:25:33.502007442Z"}
-{"digest":"sha256:7e9b6e7ba2842c91cf49f3e214d04a7a496f8214356f41d81a6e6dcad11f11e3","level":"debug","mediatype":"application/vnd.docker.distribution.manifest.v2+json","msg":"fetch","size":525,"time":"2023-
-06-10T13:25:33.523001741Z"}
-{"digest":"sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d","level":"debug","mediatype":"application/vnd.docker.container.image.v1+json","msg":"fetch","size":1470,"time":"2023-06-10
-T13:25:33.533615936Z"}
-{"chainID":"sha256:01bb4fce3eb1b56b05adf99504dafd31907a5aadac736e36b27595c8b92f07f1","config":"sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d","level":"debug","msg":"image unpacked
-","time":"2023-06-10T13:25:33.553332850Z"}
-{"level":"debug","msg":"create image","name":"docker.io/library/hello-world:latest","target":"sha256:fc6cf906cbfa013e80938cdf0bb199fbdbb86d6e3e013783e5a766f50f5dbce0","time":"2023-06-10T13:25:33.553368944Z"}
+```json
+{
+  "desc.digest": "sha256:fc6cf906cbfa013e80938cdf0bb199fbdbb86d6e3e013783e5a766f50f5dbce0",
+  "host": "registry-1.docker.io",
+  "level": "debug",
+  "msg": "resolved",
+  "time": "2023-06-10T13:25:33.501807198Z"
+}
+{
+  "digest": "sha256:fc6cf906cbfa013e80938cdf0bb199fbdbb86d6e3e013783e5a766f50f5dbce0",
+  "level": "debug",
+  "mediatype": "application/vnd.docker.distribution.manifest.list.v2+json",
+  "msg": "fetch",
+  "size": 2561,
+  "time": "2023-06-10T13:25:33.502007442Z"
+}
 ```
 
 > Note: here, DockerHub shares the Image Manifest in `application/vnd.docker.distribution.manifest.v2+json` format and the Configuration in `application/vnd.docker.container.image.v1+json` format.  
@@ -113,7 +120,7 @@ Each team has their own cluster so they can operate independently on their own c
 
 This time the cluster specification look like:
 
-> `k3d-dev-public-scaled.yaml`
+`k3d-dev-public-scaled.yaml`
 ```yaml
 apiVersion: k3d.io/v1alpha5
 kind: Simple
@@ -151,7 +158,7 @@ Additionally, it must run to completion exactly 5 times and must complete quickl
 
 Finally, these are mutable images and its important to test with the freshest.
 
-> `hello-job.yaml`
+`hello-job.yaml`
 ```yaml
 apiVersion: batch/v1
 kind: Job
@@ -188,6 +195,9 @@ Two minutes later, we're seeing ErrImagePull errors...
 
 ```sh
 $ kubectl get events
+```
+
+```sh
 90s         Warning   Failed                    pod/hello-zhkp7               
 Failed to pull image "hello-world:nanoserver": 
 rpc error: code = Unknown desc = failed to pull and unpack image "docker.io/library/hello-world:nanoserver": 
@@ -205,7 +215,10 @@ We can use the handy [Check Docker Hub Limit
 ](https://gitlab.com/gitlab-de/unmaintained/check-docker-hub-limit/?_gl=1%2a11geejw%2a_ga%2aMTY2MTE5MTAxOC4xNjcxMzQ4ODM1%2a_ga_ENFH3X7M5Y%2aMTY4NDI0MTAwMi4zLjEuMTY4NDI0NTk5NC4wLjAuMA..) python script to check docker pulls remaining
 
 ```sh
-❯ python check_docker_hub_limit.py
+❯ python check_docker_hub_limit.
+```
+
+```sh
 CRITICAL - Docker Hub: Limit is 100 remaining 0|'limit'=100 'remaining'=0 'reset'=0
 ```
 
@@ -223,7 +236,7 @@ That's **7 clusters * 5 pods * 3 containers = 105 image pulls**
 ![ErrImagePull: Too Many Clusters Pull From Dockerhub](./3-too-many-workers-pull-from-public.drawio.svg)
 
 
-### Q: What about the 6 worker nodes? Why is that significant?
+### Q: What About The 6 Worker Nodes? Why Is That Significant?
 
 Because the pods are scheduled across the 6 worker nodes, containers cannot be launched from node-local images. 
 None of those images are cached on the worker node. On container birth, each worker must pull the image from DockerHub.
@@ -236,7 +249,7 @@ Let's examine the response from DockerHub.
 
 Again, from the Containerd logs*, the response looks like this:
 
-> `/var/lib/rancher/k3s/agent/containerd/containerd.log`
+`/var/lib/rancher/k3s/agent/containerd/containerd.log`
 ```json
 {
   "host": "registry-1.docker.io",
@@ -277,7 +290,7 @@ and those clusters pull images from Dockerhub through a SNAT gateway,
 in the same way,
 you can hit the limit very quickly.
 
-### Q: How might we mitigate this problem?
+### Q: How Might We Work Around The Pull Limit?
 
 One solution for this is to run your own OCI registry.
 
@@ -297,6 +310,9 @@ The simplest OCI registry is a container running the `registry:2` image from [di
 --proxy-remote-url https://registry-1.docker.io \
 --volume /tmp/reg:/var/lib/registry \
 --no-help
+```
+
+```sh
 INFO[0000] Creating node 'k3d-docker-io-mirror'         
 INFO[0000] Successfully created registry 'k3d-docker-io-mirror' 
 INFO[0000] Starting Node 'k3d-docker-io-mirror'         
@@ -343,14 +359,21 @@ registries:
 Let's create a pod. As before, we'll specify the tag, but omit the registry and repository.
 
 ```sh
-➜ kubectl run --image=nginx:stable nginx
+➜ kubectl run nginx \
+  --image=nginx:stable
+```
+
+```sh
 pod/nginx created
 ```
 
 Describe the pod. We can see the image is expanded to the default registry `docker.io` and default repository `library`.
 
-```yaml
+```sh
 ❯ kubectl describe po nginx
+```
+
+```sh
 Name:         nginx
 Namespace:    default
 Priority:     0
@@ -369,14 +392,13 @@ Containers:
     Image ID:       docker.io/library/nginx@sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec
 ```
 
-### Q: It appears to be pulled from Dockerhub, but what happened at the container runtime layer?
-
+### Q: It Appears To Be Pulled From Dockerhub, But What Happened At The Container Runtime Layer?
 
 Analysing the containerd logs, we can see
 
 request:
 
-```
+```log
 time="2023-05-31T15:38:24.408285894Z" level=info msg="PullImage \"nginx:stable\""
 time="2023-05-31T15:38:24.408305281Z" level=debug msg="PullImage using normalized image ref: \"docker.io/library/nginx:stable\""
 time="2023-05-31T15:38:24.411885467Z" level=debug msg="do request" host="docker-io-mirror:5000" request.header.accept="application/vnd.docker.distribution.manifest.v2+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.oci.image.manifest.v1+json, application/vnd.oci.image.index.v1+json, */*" request.header.user-agent=containerd/v1.6.19-k3s1 request.method=HEAD url="http://docker-io-mirror:5000/v2/library/nginx/manifests/stable?ns=docker.io
@@ -386,7 +408,7 @@ Containerd pulls from the Registry Mirror!
 
 response:
 
-```
+```log
 time="2023-05-31T15:38:26.201099047Z" level=debug msg="fetch response received" host="docker-io-mirror:5000" response.header.content-length=1862 response.header.content-type=application/vnd.docker.distribution.manifest.list.v2+json response.header.date="Wed, 31 May 2023 15:38:26 GMT" response.header.docker-content-digest="sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec" response.header.docker-distribution-api-version=registry/2.0 response.header.etag="\"sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec\"" response.header.x-content-type-options=nosniff response.status="200 OK" url="http://docker-io-mirror:5000/v2/library/nginx/manifests/stable?ns=docker.io"
 time="2023-05-31T15:38:26.238245747Z" level=debug msg="create image" name="docker.io/library/nginx:stable" target="sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec"
 time="2023-05-31T15:38:26.242222206Z" level=info msg="ImageUpdate event &ImageUpdate{Name:docker.io/library/nginx:stable,Labels:map[string]string{io.cri-containerd.image: managed,},XXX_unrecognized:[],}"
@@ -401,9 +423,24 @@ time="2023-05-31T15:38:26.262372294Z" level=info msg="CreateContainer within san
 
 Let's see if `nginx` is there in the docker-io-mirror...
 
+```sh
+/ # wget docker-io-mirror:5000/v2/_catalog \
+    -qO -
 ```
-/ # wget -qO - docker-io-mirror:5000/v2/_catalog
-{"repositories":["library/nginx","rancher/klipper-helm","rancher/klipper-lb","rancher/local-path-provisioner","rancher/mirrored-coredns-coredns","rancher/mirrored-library-traefik","rancher/mirrored-metrics-server","rancher/mirrored-pause"]}
+
+```json
+{
+  "repositories": [
+    "library/nginx",
+    "rancher/klipper-helm",
+    "rancher/klipper-lb",
+    "rancher/local-path-provisioner",
+    "rancher/mirrored-coredns-coredns",
+    "rancher/mirrored-library-traefik",
+    "rancher/mirrored-metrics-server",
+    "rancher/mirrored-pause"
+  ]
+}
 ```
 
 It is! not only is nginx there, but all of the k3d images are there too!
@@ -411,7 +448,7 @@ They're cached.
 
 In the events section, we see that it pulled the image in 17 seconds
 
-```
+```log
 Events:
   Type    Reason     Age    From               Message
   ----    ------     ----   ----               -------
@@ -424,14 +461,20 @@ Events:
 
 If we create another pod, this time with image-pull-policy=Always, what happens?
 
+```sh
+❯ kubectl run nginx2 \
+  --image=nginx:stable \
+  --image-pull-policy=Always
 ```
-❯ kubectl run --image=nginx:stable --image-pull-policy=Always nginx2
+
+```sh
 pod/nginx2 created
 ```
 
 describe the pod events
 
-```Events:
+```log
+Events:
   Type    Reason     Age   From               Message
   ----    ------     ----  ----               -------
   Normal  Scheduled  15s   default-scheduler  Successfully assigned default/nginx2 to k3d-stg-server-0
@@ -453,6 +496,6 @@ Containerd compared the manifest, layers and configuration against those it had 
 
 It determined that nothing had changed. All of the required layers and configuration already exist in our local Registry Mirror.
 
-![alt](./7-seq-pull-public-image-local-registry-hit.drawio.svg)
+![Sequence Diagram showing Pull public image from local registry mirror](./7-seq-pull-public-image-local-registry-hit.drawio.svg)
 
 The result is faster pulls. There are fewer requests to Dockerhub and we get lower latency on requests for manifest and layer downloads from the local Registry Mirror.
