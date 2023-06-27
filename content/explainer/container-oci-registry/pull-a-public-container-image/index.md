@@ -438,6 +438,14 @@ time="2023-05-31T15:38:24.411885467Z" level=debug msg="do request" host="docker-
 
 Containerd pulls from the Registry Mirror!
 
+Notice this time, we *didn't* need to specify the **registry** nor the **repository** explicitly. It did that transparently.
+
+That's useful! Imagine if you wanna experiment with a helm chart that has a bunch of container images whose default registry is Dockerhub.
+
+You don't wanna re-configure each image to come from your private OCI registry just to try the chart! That's toil!
+
+If you configure a registry mirror, you don't have to!
+
 response:
 
 ```log
