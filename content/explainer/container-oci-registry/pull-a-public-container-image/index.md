@@ -243,7 +243,7 @@ None of those images are cached on the worker node. On container birth, each wor
 
 Also, each image pull request originates from a different worker node. Each has a different ip address. 
 
-Q: Why are they sharing the Dockerhub limit?
+### Q: Why Are Workers Sharing The Dockerhub Limit?
 
 Let's examine the response from DockerHub.
 
@@ -277,7 +277,7 @@ Notice the `response.header.docker-ratelimit-source`. Its `58.185.1.1`.
 
 Thats the public IP address of the network's internet gateway. Its the source address that DockerHub sees.
 
-This happend if Source Network Address Translation is configured for outbound internet requests.
+This happens if Source Network Address Translation is configured for outbound internet requests.
 
 ![SNAT: Many Clusters, Same Source IP](./4-pulls-from-snat-gateway.drawio.svg)
 
@@ -292,17 +292,27 @@ you can hit the limit very quickly.
 
 ### Q: How Might We Work Around The Pull Limit?
 
-One solution for this is to run your own OCI registry.
+There are a couple of alternatives to DockerHub here:
 
-This becomes increasingly compelling as your container consumption grows.
+1. Pull from a different public registry.
 
-> Sidebar: If you're using AWS EKS, you can pull the majority of popular docker images from ECR Public Registry.
->
-> For example `docker pull public.ecr.aws/docker/library/busybox:stable-musl`
->
-> On AWS, its logically closer to your infrastructure and you wont encounter any rate limiting.
+    > If you're using AWS EKS, you can pull the majority of popular docker images from ECR Public Registry.
+    >
+    > For example `docker pull public.ecr.aws/docker/library/busybox:stable-musl`
+    >
+    > On AWS, its logically closer to your infrastructure and you wont encounter any rate limiting.
 
-The simplest OCI registry is a container running the `registry:2` image from [distribution/distribution](https://github.com/distribution/distribution/releases/tag/v2.8.2) :
+1. Operate your own private OCI registry.
+
+    > If you already have a central binary repository in your org like a managed Artifactory or Nexus, you're likely already doing this.
+    >
+    > For example `docker pull containers.your.org/library/busybox:stable-musl`
+    >
+    > This solution becomes increasingly compelling as your container consumption grows.
+
+We're gonna choose option #2, but we wont use a vendor product because we wanna learn with the simplest components that meet the OCI specifications!
+
+The simplest OCI Registry is a container running the `registry:2` image from [distribution/distribution](https://github.com/distribution/distribution/releases) :
 
 ```sh
 ➜ k3d registry create docker-io-mirror \
@@ -319,7 +329,29 @@ INFO[0000] Starting Node 'k3d-docker-io-mirror'
 INFO[0000] Successfully created registry 'k3d-docker-io-mirror' 
 ```
 
-Now we can use it in the clusters by configuring `registries.yaml`
+Now we can pull the image from our private OCI Registry like:
+
+```sh
+$ docker pull k3d-docker-io-mirror.localhost:5005/library/hello-world
+```
+
+```sh
+Using default tag: latest
+latest: Pulling from library/hello-world
+719385e32844: Pull complete 
+Digest: sha256:a13ec89cdf897b3e551bd9f89d499db6ff3a7f44c5b9eb8bca40da20eb4ea1fa
+Status: Downloaded newer image for k3d-docker-io-mirror.localhost:5005/library/hello-world:latest
+k3d-docker-io-mirror.localhost:5005/library/hello-world:latest
+```
+
+Notice we need to specify both the **registry** and **repository** prefix explicitly - the full image ref.
+It's not normalised for Dockerhub. That's for backwards compability.
+
+Alternatively, we can configure our private registry as a **Registry Mirror** in the container runtime.
+
+In Containerd, we can [Configure An OCI-Compliant Registry Mirror](https://github.com/containerd/containerd/blob/9b4ed8acc2a04a3f8df140e79052d18b750d757e/docs/hosts.md#setup-a-local-mirror-for-docker) in `/etc/containerd/certs.d/docker.io/hosts.toml`.
+
+In k3d, we can use it in the clusters by configuring `registries.yaml` in the cluster spec:
 
 ```yaml
 apiVersion: k3d.io/v1alpha5
@@ -459,7 +491,7 @@ Events:
   Normal  Started    3m22s  kubelet            Started container 
 ```
 
-If we create another pod, this time with image-pull-policy=Always, what happens?
+If we create another pod, this time with `--image-pull-policy=Always`, what happens?
 
 ```sh
 ❯ kubectl run nginx2 \
