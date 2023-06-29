@@ -83,12 +83,16 @@ When Containerd receives a request to run a container from an image, here's what
 
 ![Sequence Diagram of Pulling an Container Image](./5-pull-public-image-cache-miss.drawio.svg)
 
-1. is the image present on the host?
-1. request the image manifest for the chosen image tag from the registry (this uses a HEAD request)
-1. for each layer in the manifest:
+1. Request the OCI Image Manifest* for the chosen image tag from the registry (this uses a HEAD request)
+1. Check the digest. Is the image already present on the host?
+1. For each layer in the manifest:
     1. download layer
     1. extract layer
-1. verify checksums against those in the manifest
+1. Verify checksums against those in the manifest
+
+\* The registry can respond with an OCI Image Index if there's more than one target platform (architecture and OS) for the image. Omitted here for simplicity.
+
+> Historically, in Docker distribution spec these were called Manifest and Manifest List respectively.
 
 We can also see that in the Containerd logs:
 
@@ -304,7 +308,7 @@ There are a couple of alternatives to DockerHub here:
 
 1. Operate your own private OCI registry.
 
-    > If you already have a central binary repository in your org like a managed Artifactory or Nexus, you're likely already doing this.
+    > If you already have a central binary repository in your org like a managed Artifactory, Nexus or the Harbor, you're likely already doing this.
     >
     > For example `docker pull containers.your.org/library/busybox:stable-musl`
     >
