@@ -218,7 +218,7 @@ How did that happen?
 1. we have 6 clusters
 1. each cluster has 6 worker nodes
 1. each team deployed a job that ran 6 hello-worlds to completion, in parallel - fancy stuff!
-1. for freshness, each of those hello-world jobs `Always` pulls 3* versions of the `hello-world` image.
+1. for freshness, each hello-world pod `Always` attempts to pull 3* versions of the `hello-world` image. That's the `imagePullPolicy`.
 
 > \* Two of `latest`, `linux`, `nanoserver` depends on your host Operating System!
 
