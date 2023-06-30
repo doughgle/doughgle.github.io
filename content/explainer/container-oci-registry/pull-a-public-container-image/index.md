@@ -184,7 +184,21 @@ toomanyrequests: You have reached your pull rate limit. You may increase the lim
 
 If we examine the events, we got a `429 Too Many Requests` response from DockerHub.
 
-For unathenticated users, Dockerhub permits 100 pulls in a 6 hour period.
+Docker Hub [limits](https://docs.docker.com/docker-hub/download-rate-limit/) the number of container image pulls based on the account type of the user pulling the image. Pull rates limits are based on individual IP address.
+
+To summarise:
+
+|Account Type|Limit|
+|---|---|
+|anonymous users| 100 pulls per 6 hours per IP address.|
+|authenticated users| 200 pulls per 6 hour period.|
+|Users with a paid Docker subscription| 5000 pulls per day.|
+
+Its a problem because [devs adding services from helm/upstream are typically unaware of the imagePullSecret requirement](https://github.com/aws/containers-roadmap/issues/1584#issuecomment-994703046) or the need to use an alternative image registry.
+
+For Helm Charts, the params may not exposed from the chart. For charts where they *are* exposed, the registry and image pull secrets may be defined in many places.
+
+When the creds need to change and its urgent, restoring quickly and accurately will be proportional to the number of repos and values file defining them.
 
 We can use the handy [Check Docker Hub Limit
 ](https://gitlab.com/gitlab-de/unmaintained/check-docker-hub-limit/?_gl=1%2a11geejw%2a_ga%2aMTY2MTE5MTAxOC4xNjcxMzQ4ODM1%2a_ga_ENFH3X7M5Y%2aMTY4NDI0MTAwMi4zLjEuMTY4NDI0NTk5NC4wLjAuMA..) python script to check docker pulls remaining
