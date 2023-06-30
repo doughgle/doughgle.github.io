@@ -483,4 +483,14 @@ It determined that nothing had changed. All of the required layers and configura
 
 ![Sequence Diagram showing Pull public image from local registry mirror](./7-seq-pull-public-image-local-registry-hit.drawio.svg)
 
-The result is faster pulls. There are fewer requests to Dockerhub and we get lower latency on requests for manifest and layer downloads from the local Registry Mirror.
+### Some Pros And Cons Of Pulling Public Images Through Your Own OCI Registry
+
+Here are some of the pros and cons of pulling public images through your own private OCI registry configured as a mirror:
+
+|Pros | Cons |
+|---  | --- |
+| Secure your kubernetes clusters. Isolate container runtimes from the public internet or control which public registries are trusted. By using a registry mirror, you can maintain a private, local mirror of container images that can be accessed without relying on external connectivity. | Stale images. The mirror might not always be up to date with the latest versions of container images. If the mirror doesn't sync frequently or experiences delays in updating images, you may encounter situations where the mirror contains older versions of images. This can lead to compatibility issues or missing out on important updates and security patches. |
+| Simple to use. Use public images and charts without the need to override the registry prefix. Imagine if you wanna experiment with a helm chart that has a bunch of container images whose default registry is Dockerhub. | Increased operational complexity. Configuring and managing a registry mirror introduces additional complexity to your infrastructure. You need to set up and maintain the mirror, ensure synchronization with the primary registry, and handle any potential issues that may arise. |
+| Speed up image pulls and reduce request latency. If you pull images from a mirror that is logically or physically closer to your network, this can significantly improve performance. | Runaway Registry Storage. A registry mirror requires storage space to store container images locally. Depending on the number and size of the images, this can consume significant disk space. Can be hard to housekeep safely. |
+| Improve availability of container images. Container runtimes can pull from an ordered list of registry mirrors. If the primary is unavailable, it will try to pull from the secondary | Escalating Costs. Egress costs for images pull across cloud zones.
+| Optimize bandwidth usage. If multiple containers or nodes in your infrastructure are pulling the same image, a registry mirror can serve as a local cache, reducing the need for each container or node to download the image separately. |
