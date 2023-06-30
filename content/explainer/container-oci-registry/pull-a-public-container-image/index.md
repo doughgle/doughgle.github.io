@@ -10,7 +10,7 @@ draft: true
 
 Let's begin with one of the most common use cases of a Container Registry:
 
-### Pull A Public Container Image
+## Pull A Public Container Image
 
 ...from the Wild Wild Web!
 
@@ -270,25 +270,25 @@ and those clusters pull images from Dockerhub through a SNAT gateway,
 in the same way,
 you can hit the limit very quickly.
 
-### Q: How Might We Work Around The Pull Limit?
+## Q: How Might We Work Around The Pull Limit?
 
 There are a couple of alternatives to DockerHub here:
 
-1. Pull from a different public registry.
+### 1. Pull From A Different Public Registry
+> 
+> If you're using AWS EKS, you can pull the majority of popular docker images from ECR Public Registry.
+> 
+> For example `docker pull public.ecr.aws/docker/library/hello-world:latest`
+> 
+> On AWS, its logically closer to your infrastructure and you wont encounter any rate limiting.
 
-    > If you're using AWS EKS, you can pull the majority of popular docker images from ECR Public Registry.
-    >
-    > For example `docker pull public.ecr.aws/docker/library/hello-world:latest`
-    >
-    > On AWS, its logically closer to your infrastructure and you wont encounter any rate limiting.
+### 2. Operate Your Own Private OCI Registry
 
-1. Operate your own private OCI registry.
-
-    > If you already have a central binary repository in your org like a managed Artifactory, Nexus or the Harbor, you're likely already doing this.
-    >
-    > For example `docker pull containers.your.org/library/hello-world:latest`
-    >
-    > This solution becomes increasingly compelling as your container consumption grows.
+> If you already have a central binary repository in your org like a managed Artifactory, Nexus or the Harbor, you're likely already doing this.
+> 
+> For example `docker pull containers.your.org/library/hello-world:latest`
+> 
+> This solution becomes increasingly compelling as your container consumption grows.
 
 We're gonna choose option #2, but we wont use a vendor product because we wanna learn with the simplest components that meet the OCI specifications!
 
@@ -329,6 +329,8 @@ Notice we need to specify both the **registry** and **repository** prefix explic
 It's not normalised for Dockerhub. That's for backwards compability.
 
 Alternatively, we can configure our private registry as a **Registry Mirror** in the container runtime.
+
+## Configure The Container Runtime To Use A Registry Mirror
 
 In Containerd, we can [Configure An OCI-Compliant Registry Mirror](https://github.com/containerd/containerd/blob/9b4ed8acc2a04a3f8df140e79052d18b750d757e/docs/hosts.md#setup-a-local-mirror-for-docker) in `/etc/containerd/certs.d/docker.io/hosts.toml`.
 
