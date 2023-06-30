@@ -405,21 +405,6 @@ You don't wanna re-configure each image to come from your private OCI registry j
 
 If you configure a registry mirror, you don't have to!
 
-response:
-
-```json
-time="2023-05-31T15:38:26.201099047Z" level=debug msg="fetch response received" host="docker-io-mirror:5000" response.header.content-length=1862 response.header.content-type=application/vnd.docker.distribution.manifest.list.v2+json response.header.date="Wed, 31 May 2023 15:38:26 GMT" response.header.docker-content-digest="sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec" response.header.docker-distribution-api-version=registry/2.0 response.header.etag="\"sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec\"" response.header.x-content-type-options=nosniff response.status="200 OK" url="http://docker-io-mirror:5000/v2/library/nginx/manifests/stable?ns=docker.io"
-time="2023-05-31T15:38:26.238245747Z" level=debug msg="create image" name="docker.io/library/nginx:stable" target="sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec"
-time="2023-05-31T15:38:26.242222206Z" level=info msg="ImageUpdate event &ImageUpdate{Name:docker.io/library/nginx:stable,Labels:map[string]string{io.cri-containerd.image: managed,},XXX_unrecognized:[],}"
-time="2023-05-31T15:38:26.250486435Z" level=debug msg="create image" name="docker.io/library/nginx:stable" target="sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec"
-time="2023-05-31T15:38:26.254337194Z" level=info msg="ImageUpdate event &ImageUpdate{Name:docker.io/library/nginx:stable,Labels:map[string]string{io.cri-containerd.image: managed,},XXX_unrecognized:[],}"
-time="2023-05-31T15:38:26.255212409Z" level=debug msg="create image" name="docker.io/library/nginx@sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec" target="sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec"
-time="2023-05-31T15:38:26.259040786Z" level=info msg="ImageUpdate event &ImageUpdate{Name:docker.io/library/nginx@sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec,Labels:map[string]string{io.cri-containerd.image: managed,},XXX_unrecognized:[],}"
-time="2023-05-31T15:38:26.259996466Z" level=debug msg="Pulled image \"nginx:stable\" with image id \"sha256:1e96add5ea29fed5b25c2971895403f050ca1eaa5f614da0ee02106e97805f5f\", repo tag \"docker.io/library/nginx:stable\", repo digest \"docker.io/library/nginx@sha256:f3a9f1641ace4691afed070aadd1115f0e0c4ab4b2c1c447bf938619176c3eec\""
-time="2023-05-31T15:38:26.260038937Z" level=info msg="PullImage \"nginx:stable\" returns image reference \"sha256:1e96add5ea29fed5b25c2971895403f050ca1eaa5f614da0ee02106e97805f5f\""
-time="2023-05-31T15:38:26.262372294Z" level=info msg="CreateContainer within sandbox \"62bf68fc44fefc867bd75805cd9fa75e9bc414da1c3f7ab930df4c51d3d02cd8\" for container &ContainerMetadata{Name:nginx2,Attempt:1,}"
-```
-
 Let's see if `nginx` is there in the docker-io-mirror...
 
 ```sh
