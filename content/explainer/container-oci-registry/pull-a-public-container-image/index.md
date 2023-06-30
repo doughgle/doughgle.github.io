@@ -115,10 +115,9 @@ Again, each cluster has access to pull images from the public internet.
 
 ![Growth: More Clusters Pull From Public Registry](./2-more-clusters-pull-from-public.drawio.svg)
 
-
 Actually, each team wants to run a job that tests a matrix of 3 image versions.
 
-Additionally, it must run to completion exactly 5 times and must complete quickly.
+Additionally, it must run to completion exactly 6 times and must complete quickly.
 
 Finally, these are mutable images and its important to test with the freshest.
 
