@@ -7,6 +7,7 @@ IgnoreURLs:
 - "https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux"
 - "https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/"
 - "^/misc/js/script.js$"
+- "https://www.udemy.com/course/writing-for-business/"
 IgnoreAltMissing: true
 CacheExpires: "6h"
 IgnoreDirectoryMissingTrailingSlash: true
