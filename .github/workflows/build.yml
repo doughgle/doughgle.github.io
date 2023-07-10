@@ -26,10 +26,10 @@ jobs:
           hugo version
 
       - name: Check prose
+        shell: bash
         run: |
           shopt -s globstar
           write-good --parse **/*.md
-          shopt -u globstar
         continue-on-error: true
         working-directory: content
 
