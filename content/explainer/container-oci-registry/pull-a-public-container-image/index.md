@@ -1,8 +1,8 @@
 ---
-title: "OCI Container Registries: Chapter 1: Pull a Public Container Image"
+title: "Exploring OCI Container Registries: Chapter 1: Pull a Public Image to Kubernetes Workers"
 date: 2023-06-10T16:38:31+08:00
 publishdate: 2023-07-09T14:00:31+08:00
-tags: ['oci', 'container', 'runtime', 'registry', 'cri', 'distribution']
+tags: ['oci', 'container', 'runtime', 'registry', 'cri', 'distribution', 'kubernetes']
 comments: true
 draft: true
 ---
@@ -10,11 +10,6 @@ draft: true
 Let's begin with one of the most common use cases of a Container Registry:
 
 ## Pull A Public Container Image
-
-> Side Note: Container standards are evolving fast.
-> In this series, we'll use terminology that embrace modern open standards.
-> In particular, we'll use the Image, Runtime and Distribution Specifications from The OCI (Open Container Initiative).
-> Where appropriate, we may mention other historical terms for the same thing.
 
 Here's a simple kubernetes cluster.
 
@@ -79,17 +74,17 @@ When Containerd receives a request to run a container from an image, here's a mo
 
 ![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-cache-miss-cover.drawio.svg "Container runtime and registry chatting away!")
 
-1. First, Containerd makes a `HEAD` request to DockerHub at `/v2/library/hello-world/manifests/latest?ns=docker.io` for `hello-world:latest`. We say it "fetches the Manifest Digest" for the `latest` tag. 
+1. First, Containerd makes a `HEAD` request to DockerHub at `/v2/library/hello-world/manifests/latest?ns=docker.io` for `hello-world:latest`. We say it "fetches the **Manifest Digest**" for the `latest` tag. 
 
-1. DockerHub responds with the sha256 digest of the OCI Image Manifest.
+1. DockerHub responds with the sha256 digest of the **OCI Image Manifest**.
 
 1. Is the Manifest already present on the Containerd host? Containerd compares the sha256 digest in the response to the digest for the `hello-world:latest` manifest stored locally.
 
 1. Download the Image Manifest. Specifically, Containerd makes a `GET` request to Dockerhub at `/v2/library/hello-world/manifests/sha256:a8281ce42034b078dc7d88a5bfe6d25d75956aad9abba75150798b90fa3d1010?ns=docker.io`. Notice its the same `manifests` API but this time its a `GET` request for the manifest identified by its sha256 digest.
 
-1. Containerd verifies the Manifest's actual digest against the requested one. Has it been modified in transit? In particular, it computes the sha256sum of the manifest json content received and compares it to the sha256 digest that identifies the manifest.
+1. Containerd verifies the Manifest's actual digest against the requested one. Has it been modified in transit? In particular, it computes the sha256sum of the manifest json content (`application/vnd.oci.image.manifest.v1+json`) received and compares it to the sha256 digest that identifies the manifest.
 
-1. Next, for each layer in the manifest:
+1. Next, for each **Filesystem Layer** in the manifest:
 
     1. Is the layer already present on the worker?
 
@@ -99,10 +94,9 @@ When Containerd receives a request to run a container from an image, here's a mo
 
     1. Extract.
 
-> \* if more than one target platform (architecture and os) exists for the image, there's another layer of indirection. Containerd requests and processes an **OCI Image Index**, which itself returns the **Manifest Digest** for the requested target platform. (Omitted here for simplicity)
+> \* If more than one target platform (architecture and os) exists for the image, there's another layer of indirection. Containerd requests and processes an **OCI Image Index** (`application/vnd.oci.image.index.v1+json`), which itself returns the **Manifest Digest** for the requested target platform. (Omitted here for simplicity)
 >
 > \** In practice, downloads happen in parallel. Simplified here for illustration.
-> Note: here, DockerHub shares the Image Manifest in `application/vnd.docker.distribution.manifest.v2+json` format and the Configuration in `application/vnd.docker.container.image.v1+json` format.  
 
 ---
 
@@ -195,6 +189,14 @@ To summarise:
 |authenticated users| 200 pulls per 6 hour period.|
 |Users with a paid Docker subscription| 5000 pulls per day.|
 
+> :bulb: An Image **Pull Request** is [defined by Docker Inc.](https://docs.docker.com/docker-hub/download-rate-limit/#definition-of-limits) as:
+>
+> One or two `GET` requests on registry manifest URLs (`/v2/*/manifests/*`).
+>
+> There'll be two requests if there's an Image Index.
+>
+> `HEAD` requests aren’t counted.
+
 We can visualise the remaining requests with the handy [Docker Hub Rate Limit Exporter for Prometheus](https://gitlab.com/gitlab-de/unmaintained/docker-hub-limit-exporter/?_gl=1%2ay0hdof%2a_ga%2aMTY2MTE5MTAxOC4xNjcxMzQ4ODM1%2a_ga_ENFH3X7M5Y%2aMTY4ODgyNTU4NS42LjAuMTY4ODgyNTYwNC4wLjAuMA..).
 
 ![Grafana Dashboard Showing we hit the Dockerhub Pull Limit!](./hit-the-limit.png "Blow a ton: 100 image pull requests gone in 2 mins!")
@@ -207,7 +209,6 @@ How did that happen?
 1. each cluster has 6 worker nodes
 1. each team deployed a job that ran 6 hello-worlds to completion, in parallel - fancy stuff!
 1. for freshness, each hello-world pod `Always` attempts to pull 3 versions of the `hello-world` image. That's the `imagePullPolicy`.
-1. a pull request is [defined](https://docs.docker.com/docker-hub/download-rate-limit/#definition-of-limits) as up to two `GET` requests on registry manifest URLs (`/v2/*/manifests/*`). `HEAD` requests aren’t counted.
 
 That's **6 clusters * 6 pods * 3 containers = 108 image pulls**
 
@@ -231,7 +232,7 @@ When each image pull request originates from a different worker node, then...
 
 Let's examine the response from DockerHub.
 
-Again, from the Containerd logs*, the response looks like this:
+Again, from the Containerd logs, the response looks like this:
 
 `containerd.log`
 ```json
@@ -256,16 +257,17 @@ Notice the `response.header.docker-ratelimit-source`. Its `58.185.1.1`.
 
 Thats the public IP address of the network's internet gateway. Its the source address that DockerHub sees.
 
-This happens if Source Network Address Translation is configured for outbound internet requests.
+This happens if Source Network Address Translation (SNAT) is configured for outbound internet requests.
 
 ![Diagram showing Many Clusters share the same Source IP address of the NAT Gateway](./4-pulls-from-snat-gateway.drawio.svg "Is that a hole in your network or is it a gateway to heaven?!")
 
 The result is each request has the same IP address no matter which cluster originates the request.
 
-If you're in an organisation with many clusters,
-and those clusters pull images from Dockerhub through a SNAT gateway, 
-in the same way,
-you can hit the limit very quickly!
+If you're in an organisation with many clusters, and those clusters pull images from Dockerhub through a SNAT gateway, 
+in the same way, you can hit the limit very quickly!
+
+Worker nodes behind a NAT gateway share the same public IP address. For unauthenticated requests, Dockerhub identifies users by their public IP address. Dockerhub imposes a rate limit of 100 pull requests in a 6 hour period. A pull request is defined as 1..2 GET requests for the Manifest (2 if there's an Image Index).
+
 
 ## Q: How Might We Work Around The Pull Limit?
 
@@ -326,6 +328,8 @@ k3d-docker-io-mirror.localhost:5005/library/hello-world:latest
 Notice we need to specify both the **registry** and **repository** prefix explicitly in the image identifier.
 It's not normalised for Dockerhub. Indeed, the normalisation to docker.io and library are historical hangovers from the era when Docker's official images on Dockerhub were the only game in town.
 
+## Q: How Do We Use The Private Registry?
+
 Imagine if you wanna experiment with a helm chart that has a bunch of container images whose default registry is Dockerhub.
 
 One drawback here is that you need to change all the image refs you don't know about up front! Its hard to experiment!
@@ -336,7 +340,7 @@ You don't wanna re-configure each image to come from your private OCI registry j
 
 Alternatively, we can configure our private registry as a **Registry Mirror** in the container runtime.
 
-## Open For Experimentation: Configure The Container Runtime To Use A Registry Mirror
+## Configure The Container Runtime To Use A Registry Mirror
 
 In Containerd, we can [Configure An OCI-Compliant Registry Mirror](https://github.com/containerd/containerd/blob/9b4ed8acc2a04a3f8df140e79052d18b750d757e/docs/hosts.md#setup-a-local-mirror-for-docker) in `/etc/containerd/certs.d/docker.io/hosts.toml`.
 
@@ -375,11 +379,11 @@ Containers:
 
 In the `Containers` sections of the output, we can see the image is expanded. Like before, the default registry is `docker.io` and default repository is `library`.
 
-### Q: It Appears To Be Pulled From Dockerhub, But What Happened At The Container Runtime Layer?
+### Q: What Happens At The Container Runtime Layer Now?
 
-Analysing the containerd logs, we can see
+`nginx:stable` appears to be pulled from Dockerhub. But what happened at the Container Runtime layer?
 
-request:
+Analysing the containerd logs, we can see the image pull request:
 
 ```json
 {
@@ -434,11 +438,14 @@ docker exec k3d-use-reg-mirror-server-0 \
 }
 ```
 
-It is! Not only is nginx there, but all of the k3d images are there too!
+It is! Along with a bunch of other images we didn't think about - images our cluster pulled from Dockerhub!
 
 They're cached in our private registry mirror.
 
-## Faster Pulls
+> #### :bulb: Take Away: Improved Usability
+> Registry Mirror enables a better Developer Experience. If we configure the Container Runtime to use a Registry Mirror, we don't have identify and change all the places where public images are referenced.
+
+## Fast And Fresh
 
 In the events, we see that it pulled the image in 17 seconds
 
@@ -455,8 +462,6 @@ Successfully pulled image "nginx:stable" in 17.229833041s (17.229838067s includi
 Created container nginx                                                                         Created  
 Started container                                                                               Started  
 ```
-
-### ImagePullPolicy=Always
 
 `--image-pull-policy=Always` insists Containerd to pull from the registry rather than use the image stored locally on the worker.
 
@@ -493,18 +498,16 @@ The container runtime pulled the image from the local registry mirror.
 
 Here's what happened exactly:
 
-![Sequence Diagram showing Pull Public Image from local registry mirror](./7-seq-pull-public-image-local-registry-hit.drawio.svg "Mirror mirror on the www...")
+![Sequence Diagram showing Pull Public Image from local registry mirror](./7-seq-pull-public-image-registry-mirror-hit.drawio.svg "Mirror mirror on the www...")
 
-1. Fetch the OCI Image Manifest. Containerd makes a HEAD request to the registry mirror at `/v2/library/nginx/manifests/stable?ns=docker.io` for `nginx:stable`.
-1. Mirror responds with the sha256 digest of the Image Manifest.
+1. Fetch the **OCI Image Manifest** digest. Containerd makes a HEAD request to the registry mirror at `/v2/library/nginx/manifests/stable?ns=docker.io` for `nginx:stable`.
+1. Registry Mirror responds with the sha256 digest of the Image Manifest.
 1. Is the image already present on the host? Containerd compares the sha256 digest in the response to the digest for `nginx:stable` stored locally. 
 1. Yup, its already present. Job done!
 
----
+Since `nginx:stable` already exists in the Registry Mirror and on the Worker Node, only one `HEAD` request to the Mirror was required to fetch the identity of the Manifest - its sha256 digest.
 
-Since `nginx:stable` already exists in the Registry Mirror, only one `HEAD` request to Dockerhub was required to fetch the sha256 digest of the manifest.
-
-The manifest's sha256 digest is all that's needed to determine that nothing had changed. All of the required layers and configuration already exist in our local Registry Mirror.
+The manifest's sha256 digest is all that's needed to determine that nothing had changed. All of the required layers and configuration already exist on the Worker node.
 
 The result is faster pulls. There are fewer requests to Dockerhub and we get lower latency on requests for manifest and layer downloads from the local Registry Mirror.
 
