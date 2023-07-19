@@ -74,11 +74,16 @@ When Containerd receives a request to run a container from an image, here's a mo
 
 ![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-cache-miss-cover.drawio.svg "Container runtime and registry chatting away!")
 
+
+{{< details "**expand:** Steps describing Containerd Runtime Pulling a Public Container Image from Dockerhub OCI Registry" >}}
+<details>
+<summary>Steps describing CRI Containerd Pulling a public container image from Dockerhub OCI Registry</summary>
+
 1. First, Containerd makes a `HEAD` request to DockerHub at `/v2/library/hello-world/manifests/latest?ns=docker.io` for `hello-world:latest`. We say it "fetches the **Manifest Digest**" for the `latest` tag. 
 
 1. DockerHub responds with the sha256 digest of the **OCI Image Manifest**.
 
-1. Is the Manifest already present on the Containerd host? Containerd compares the sha256 digest in the response to the digest for the `hello-world:latest` manifest stored locally.
+1. Is the Manifest already present on the Containerd host? Nope. No `hello-world:latest` manifest is stored locally.
 
 1. Download the Image Manifest. Specifically, Containerd makes a `GET` request to Dockerhub at `/v2/library/hello-world/manifests/sha256:a8281ce42034b078dc7d88a5bfe6d25d75956aad9abba75150798b90fa3d1010?ns=docker.io`. Notice its the same `manifests` API but this time its a `GET` request for the manifest identified by its sha256 digest.
 
@@ -97,6 +102,10 @@ When Containerd receives a request to run a container from an image, here's a mo
 > \* If more than one target platform (architecture and os) exists for the image, there's another layer of indirection. Containerd requests and processes an **OCI Image Index** (`application/vnd.oci.image.index.v1+json`), which itself returns the **Manifest Digest** for the requested target platform. (Omitted here for simplicity)
 >
 > \** In practice, downloads happen in parallel. Simplified here for illustration.
+
+</details>
+<p>
+{{< /details >}}
 
 ---
 
