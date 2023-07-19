@@ -87,6 +87,8 @@ When Containerd receives a request to run a container from an image, here's a mo
 
 1. Download the Image Manifest. Specifically, Containerd makes a `GET` request to Dockerhub at `/v2/library/hello-world/manifests/sha256:a8281ce42034b078dc7d88a5bfe6d25d75956aad9abba75150798b90fa3d1010?ns=docker.io`. Notice its the same `manifests` API but this time its a `GET` request for the manifest identified by its sha256 digest.
 
+1. DockerHub responds with the actual **OCI Image Manifest** document.
+
 1. Containerd verifies the Manifest's actual digest against the requested one. Has it been modified in transit? In particular, it computes the sha256sum of the manifest json content (`application/vnd.oci.image.manifest.v1+json`) received and compares it to the sha256 digest that identifies the manifest.
 
 1. Next, for each **Filesystem Layer** in the manifest:
