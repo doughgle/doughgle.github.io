@@ -68,7 +68,7 @@ Containerd requests the image from `registry-1.docker.io`, better known as Docke
 
 ### Q: How Did The Image Get From The Registry To The Container Runtime?
 
-An OCI Image is composed of a **Manifest**, one or more **Filesystem Layers** and an **Image Configuration**.
+An OCI Image is composed of a **Manifest**, one or more **Filesystem Layers** and a **Container Configuration**.
 
 When Containerd receives a request to run a container from an image, here's a model of what happens:
 
@@ -200,14 +200,6 @@ To summarise:
 |authenticated users| 200 pulls per 6 hour period.|
 |Users with a paid Docker subscription| 5000 pulls per day.|
 
-> :bulb: An Image **Pull Request** is [defined by Docker Inc.](https://docs.docker.com/docker-hub/download-rate-limit/#definition-of-limits) as:
->
-> One or two `GET` requests on registry manifest URLs (`/v2/*/manifests/*`).
->
-> There'll be two requests if there's an Image Index.
->
-> `HEAD` requests aren’t counted.
-
 We can visualise the remaining requests with the handy [Docker Hub Rate Limit Exporter for Prometheus](https://gitlab.com/gitlab-de/unmaintained/docker-hub-limit-exporter/?_gl=1%2ay0hdof%2a_ga%2aMTY2MTE5MTAxOC4xNjcxMzQ4ODM1%2a_ga_ENFH3X7M5Y%2aMTY4ODgyNTU4NS42LjAuMTY4ODgyNTYwNC4wLjAuMA..).
 
 ![Grafana Dashboard Showing we hit the Dockerhub Pull Limit!](./hit-the-limit.png "Blow a ton: 100 image pull requests gone in 2 mins!")
@@ -218,13 +210,20 @@ How did that happen?
 
 1. we have 6 clusters
 1. each cluster has 6 worker nodes
-1. each team deployed a job that ran 6 hello-worlds to completion, in parallel - fancy stuff!
-1. for freshness, each hello-world pod `Always` attempts to pull 3 versions of the `hello-world` image. That's the `imagePullPolicy`.
+1. each team deployed a job that ran 6 `hello` pods to completion, in parallel - fancy stuff!
+1. for freshness, each hello-world pod `Always` attempts to pull 3 versions of the `hello-world` image.
 
 That's **6 clusters * 6 pods * 3 containers = 108 image pulls**
 
 ![Diagram showing Too Many Clusters Pull Directly From Dockerhub](./3-too-many-workers-pull-from-public.drawio.svg "Heavy traffic on the Containerway")
 
+### What _is_ An Image Pull Request?
+
+:bulb: An Image **Pull Request** is [defined by Docker Inc.](https://docs.docker.com/docker-hub/download-rate-limit/#definition-of-limits) as:
+
++ One or two `GET` requests on registry manifest URLs (`/v2/*/manifests/*`).
++ There'll be two requests if there's an Image Index.
++ `HEAD` requests aren’t counted.
 
 ### Q: What About The 6 Worker Nodes? Why Is That Significant?
 
@@ -277,9 +276,6 @@ The result is each request has the same IP address no matter which cluster origi
 If you're in an organisation with many clusters, and those clusters pull images from Dockerhub through a SNAT gateway, 
 in the same way, you can hit the limit very quickly!
 
-Worker nodes behind a NAT gateway share the same public IP address. For unauthenticated requests, Dockerhub identifies users by their public IP address. Dockerhub imposes a rate limit of 100 pull requests in a 6 hour period. A pull request is defined as 1..2 GET requests for the Manifest (2 if there's an Image Index).
-
-
 ## Q: How Might We Work Around The Pull Limit?
 
 There are a couple of alternatives to DockerHub here:
@@ -302,12 +298,13 @@ There are a couple of alternatives to DockerHub here:
 
 We're gonna choose option #2, but we wont use a vendor product because we wanna learn with the simplest components that meet the OCI specifications!
 
-The simplest OCI Registry is a container running the `registry:2` image from [distribution/distribution](https://github.com/distribution/distribution/releases) :
-
 ## Create A Private Proxy Cache OCI Registry For Dockerhub
+
+The simplest OCI Registry is a container running the `registry:2` image from [distribution/distribution](https://github.com/distribution/distribution/releases) :
 
 ```sh
 ➜ k3d registry create docker-io-mirror \
+--image docker.io/library/registry:2
 --port 0.0.0.0:5005 \
 --proxy-remote-url https://registry-1.docker.io \
 --volume /tmp/reg:/var/lib/registry \
@@ -337,7 +334,10 @@ k3d-docker-io-mirror.localhost:5005/library/hello-world:latest
 ```
 
 Notice we need to specify both the **registry** and **repository** prefix explicitly in the image identifier.
-It's not normalised for Dockerhub. Indeed, the normalisation to docker.io and library are historical hangovers from the era when Docker's official images on Dockerhub were the only game in town.
+
+![Diagram showing full OCI Image Reference specified for private registry](./6b-specify-full-image-reference.drawio.svg "hello world: 17 points in Scrabble")
+
+Indeed, the normalisation to docker.io and library are historical hangovers from the era when Docker's official images on Dockerhub were the only game in town!
 
 ## Q: How Do We Use The Private Registry?
 
@@ -470,8 +470,6 @@ MESSAGE                                                                         
 Successfully assigned default/nginx to k3d-use-reg-mirror-server-0                              Scheduled
 Pulling image "nginx:stable"                                                                    Pulling  
 Successfully pulled image "nginx:stable" in 17.229833041s (17.229838067s including waiting)     Pulled   
-Created container nginx                                                                         Created  
-Started container                                                                               Started  
 ```
 
 `--image-pull-policy=Always` insists Containerd to pull from the registry rather than use the image stored locally on the worker.
@@ -497,8 +495,6 @@ MESSAGE                                                                         
 Successfully assigned default/nginx2 to k3d-use-reg-mirror-server-0                        Scheduled
 Pulling image "nginx:stable"                                                               Pulling
 Successfully pulled image "nginx:stable" in 1.959082241s (1.95908695s including waiting)   Pulled
-Created container nginx2                                                                   Created
-Started container nginx2                                                                   Started
 ```
 
 Yup! This time its 2 seconds! What happened?
