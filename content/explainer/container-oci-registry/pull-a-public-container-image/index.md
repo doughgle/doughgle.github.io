@@ -528,8 +528,8 @@ Here are some of the pros and cons of pulling public images through your own pri
 
 |Pros | Cons |
 |---  | --- |
-| **Secure against Denial of Service, Spoofing and Repudiation.** Isolate container runtimes from the public internet and control which public registries are trusted. | **Stale images.** The mirror might have the freshest versions of container images. |
-| **Simple to use.** Use public images and charts without the need to override the registry prefix of the image ref. | **Increased Operational Complexity.** Manage registry capacity, availability,performance and cost. Can be hard to housekeep safely. |
-| **Faster image pulls**. If you pull images from a mirror that is logically or physically closer to your network, this can significantly improve performance. | 
-| **Improved availability of container images.** Container runtimes can pull from an ordered list of registry mirrors. If the primary is unavailable, it will try to pull from the secondary. | **Escalating Costs.** Egress costs for image pulls across cloud zones. Storage costs for duplicated or triplicated images.
+| **Secure against Denial of Service, Spoofing and Repudiation.** Isolate container runtimes from the public internet and control which public registries are trusted. | **Stale images.** The mirror might not have the freshest versions of container images. |
+| **Simple to use.** Use public images and charts without the need to override the registry prefix of the image ref. | **Increased Operational Complexity.** Manage registry capacity, availability, performance and cost. Can be hard to housekeep safely. |
+| **Faster image pulls**. If you pull images from a mirror that is logically or physically closer to your compute, this can significantly improve performance. | 
+| **Improved availability of container images.** Container runtimes can pull from an ordered list of registry mirrors. If the primary is unavailable, it will try to pull from the secondary. | **Escalating Costs.** If you're supplying images, egress costs for image pulls across cloud zones could grow big. It did for Dockerhub and for gcr.io! Storage costs for duplicated or triplicated images.
 | **Optimized bandwidth usage.** Reduce requests for popular images by caching. |
