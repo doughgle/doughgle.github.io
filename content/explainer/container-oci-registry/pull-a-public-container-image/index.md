@@ -430,3 +430,14 @@ Here are some of the pros and cons of pulling public images through your own pri
 | **Faster image pulls**. If you pull images from a mirror that is logically or physically closer to your compute, this can significantly improve performance. | 
 | **Improved availability of container images.** Container runtimes can pull from an ordered list of registry mirrors. If the primary is unavailable, it will try to pull from the secondary. | **Escalating Costs.** If you're supplying images, egress costs for image pulls across cloud zones could grow big. It did for Dockerhub and for gcr.io! Storage costs for duplicated or triplicated images.
 | **Optimized bandwidth usage.** Reduce requests for popular images by caching. |
+
+---
+
+Thank you for reading this article right to the end.
+If you enjoyed it and if you think others can benefit, please like and share!
+
+If you foresee a problem, have an alternative solution, I'd appreciate your feedback. Or if you wanna share some comments to improve the usefulness of this article, you can reach me on [LinkedIn](https://www.linkedin.com/in/doughellinger/).
+
+Special thank you to [Dan Polencic](https://www.linkedin.com/in/danielepolencic/). Appreciate the reviews and all your feedback!
+
+Look out for the next chapter...
