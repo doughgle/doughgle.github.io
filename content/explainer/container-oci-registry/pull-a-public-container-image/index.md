@@ -72,10 +72,10 @@ An OCI Image is composed of a **Manifest**, one or more **Filesystem Layers** an
 
 When Containerd receives a request to run a container from an image, here's a model of what happens:
 
-![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-cache-miss-cover.drawio.svg "Container runtime and registry chatting away!")
+![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-sequence-cover.drawio.svg "Container runtime and registry chatting away!")
 
 
-{{< details "**expand:** Steps describing Containerd Runtime Pulling a Public Container Image from Dockerhub OCI Registry" >}}
+{{< details "**Click to Expand:** Steps describing Containerd Runtime Pulling a Public Container Image from Dockerhub OCI Registry" >}}
 <details>
 <summary>Steps describing CRI Containerd Pulling a public container image from Dockerhub OCI Registry</summary>
 
@@ -83,7 +83,7 @@ When Containerd receives a request to run a container from an image, here's a mo
 
 1. DockerHub responds with the sha256 digest of the **OCI Image Manifest**.
 
-1. Is the Manifest already present on the Containerd host? Nope. No `hello-world:latest` manifest is stored locally.
+1. Is the Manifest already present on the Containerd host? Nope. No `hello-world:latest` manifest exists locally.
 
 1. Download the Image Manifest. Specifically, Containerd makes a `GET` request to Dockerhub at `/v2/library/hello-world/manifests/sha256:a8281ce42034b078dc7d88a5bfe6d25d75956aad9abba75150798b90fa3d1010?ns=docker.io`. Notice its the same `manifests` API but this time its a `GET` request for the manifest identified by its sha256 digest.
 
@@ -108,6 +108,24 @@ When Containerd receives a request to run a container from an image, here's a mo
 </details>
 <p>
 {{< /details >}}
+
+Did you notice how Containerd precedes each GET request with a check for local presence?
+
+This enables the opportunity for better **efficiency**.
+
+Containerd applies this knowledge to automatically reduce waste in downloading OCI Image components from the registry. In particular, if a component of the OCI Image exists locally then Containerd skips the download.
+
+The Container Runtime can detect changes in a Manifest, Layer or Configuration by computing the content digest and comparing it to the identifier digest.
+
+Each OCI Image component is identifiable by its sha256 digest. That digest is derived purely from its content, not by its location. 
+
+That means, if the digests match, its the same content. It doesn't matter where it was downloaded from or where its stored! *.
+
+This design choice is called [Content Addressable Storage](https://en.wikipedia.org/wiki/Content-addressable_storage).
+
+OCI Images enable Content Addressable storage for better distribution and storage efficiency in Registry and Runtime.
+
+\* Instead, what matters a way to trust the creator of the image. If the digest of the initial Image Index or Image Manifest cannot be trusted, then the rest of the content cannot be trusted! In practice, this is typically achieved by signing images.
 
 ---
 
@@ -418,7 +436,9 @@ Analysing the containerd logs, we can see the image pull request:
 
 Containerd pulls from `docker-io-mirror:5000`: the Registry Mirror!
 
-Notice this time, we *didn't* need to specify the **registry** nor the **repository** explicitly. It did that transparently.
+Notice this time, we *didn't* need to specify the **registry** nor the **repository** explicitly. 
+
+The image ref was resolved to our private OCI registry.
 
 That's useful! Imagine if you wanna experiment with a helm chart that has a bunch of container images whose default registry is Dockerhub.
 
