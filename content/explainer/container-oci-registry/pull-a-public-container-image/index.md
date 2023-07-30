@@ -91,7 +91,14 @@ When Containerd receives a request to run a container from an image, here's a mo
 
 1. Containerd verifies the Manifest's actual digest against the requested one. Has it been modified in transit? In particular, it computes the sha256sum of the manifest json content (`application/vnd.oci.image.manifest.v1+json`) received and compares it to the sha256 digest that identifies the manifest.
 
-1. Next, for each **Filesystem Layer** in the manifest:
+1. Second, is the **Image Configuration** already present on the Containerd host?
+In particular, Containerd takes the **Image Configuration** digest from the Manifest and searches for it in the `io.containerd.content.v1.content/blobs` directory on the host machine.
+
+    1. Its not present. Download. Specifically, Containerd makes a GET request to the `blobs` API endpoint e.g. `/v2/library/hello-world/blobs/sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d` 
+
+    1. Verify checksum of the **Image Configuration** against manifest.
+
+1. Third, for each **Filesystem Layer** in the manifest:
 
     1. Is the layer already present on the worker?
 
@@ -109,15 +116,35 @@ When Containerd receives a request to run a container from an image, here's a mo
 <p>
 {{< /details >}}
 
+We can see an example of the pull sequence using `ctr`, the [CLI client for Containerd](https://github.com/projectatomic/containerd/blob/master/docs/cli.md).
+
+```sh
+# ctr image pull \
+  --http-dump \
+  docker.io/library/hello-world:latest
+```
+
+```sh
+docker.io/library/hello-world:latest:                                             resolved       |++++++++++++++++++++++++++++++++++++++| 
+index-sha256:926fac19d22aa2d60f1a276b66a20eb765fbeea2db5dbdaafeb456ad8ce81598:    done           |++++++++++++++++++++++++++++++++++++++| 
+manifest-sha256:7e9b6e7ba2842c91cf49f3e214d04a7a496f8214356f41d81a6e6dcad11f11e3: done           |++++++++++++++++++++++++++++++++++++++| 
+layer-sha256:719385e32844401d57ecfd3eacab360bf551a1491c05b85806ed8f1b08d792f6:    done           |++++++++++++++++++++++++++++++++++++++| 
+config-sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d:   done           |++++++++++++++++++++++++++++++++++++++| 
+elapsed: 4.8 s                                                                    total:  2.5 Ki (533.0 B/s)                                       
+unpacking linux/amd64 sha256:926fac19d22aa2d60f1a276b66a20eb765fbeea2db5dbdaafeb456ad8ce81598...
+done: 7.66556ms
+```
+
 Did you notice how Containerd precedes each GET request with a check for local presence?
 
 This enables the opportunity for better **efficiency**.
+
+Each OCI Image component is identifiable by its sha256 digest. That digest is derived purely from its content, not by its location. 
 
 Containerd applies this knowledge to automatically reduce waste in downloading OCI Image components from the registry. In particular, if a component of the OCI Image exists locally then Containerd skips the download.
 
 The Container Runtime can detect changes in a Manifest, Layer or Configuration by computing the content digest and comparing it to the identifier digest.
 
-Each OCI Image component is identifiable by its sha256 digest. That digest is derived purely from its content, not by its location. 
 
 That means, if the digests match, its the same content. It doesn't matter where it was downloaded from or where its stored! *.
 
@@ -245,16 +272,27 @@ That's **6 clusters * 6 pods * 3 containers = 108 image pulls**
 
 ### Q: What About The 6 Worker Nodes? Why Is That Significant?
 
-Because the pods are scheduled across the 6 worker nodes, containers cannot be launched from node-local images. 
-None of those images are cached on the worker node.
+Kubernetes spreads the 6 pods across the worker nodes because of the `podAntiAffinity` rule in the pod spec.
+The rule says pods with the label `app: hello` should repel other pods from being scheduled on a worker with the same `kubernetes.io/hostname`.
+
+Initially, the `hello-world` OCI Images don't exist on the worker nodes.
+Containers cannot be launched from node-local images. 
+
+```sh
+# ctr images list --quiet | grep hello-world
+```
+
+```sh
+
+```
 
 On container start, each worker must pull the image from DockerHub.
 
 Its significant because Dockerhub receives many requests in a short time frame.
 
-Given that Dockerhub identifies unauthenticated pullers by their IP address.
-And each worker node has a different IP address on the network.
-When each image pull request originates from a different worker node, then...
+But each worker has its own IP address on the network.
+
+Why then does Dockerhub identify them as one single unauthenticated puller?
 
 ### Q: Why Are Workers Sharing The Dockerhub Limit?
 
