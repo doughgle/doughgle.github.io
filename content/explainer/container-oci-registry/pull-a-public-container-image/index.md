@@ -116,11 +116,18 @@ In particular, Containerd takes the **Image Configuration** digest from the Mani
 <p>
 {{< /details >}}
 
+Did you notice how Containerd precedes each GET request with a check for local presence?
+
+This enables the opportunity for better **efficiency**.
+
+Each OCI Image component is identifiable by its sha256 digest. That digest is derived purely from its content, not by its location. 
+
+Containerd applies this knowledge to automatically reduce waste in downloading OCI Image components from the registry. In particular, if a component of the OCI Image exists locally then Containerd skips the download.
+
 We can see an example of the pull sequence using `ctr`, the [CLI client for Containerd](https://github.com/projectatomic/containerd/blob/master/docs/cli.md).
 
 ```sh
 # ctr image pull \
-  --http-dump \
   docker.io/library/hello-world:latest
 ```
 
@@ -135,24 +142,17 @@ unpacking linux/amd64 sha256:926fac19d22aa2d60f1a276b66a20eb765fbeea2db5dbdaafeb
 done: 7.66556ms
 ```
 
-Did you notice how Containerd precedes each GET request with a check for local presence?
+The Container Runtime can detect changes in a Manifest, Layer or Configuration by computing the content digest (`sha256sum [FILE]`) and comparing it to the identifier digest.
 
-This enables the opportunity for better **efficiency**.
+If the digests match, there are no changes. Its the same content. It doesn't matter where it was downloaded from or where its stored! *.
 
-Each OCI Image component is identifiable by its sha256 digest. That digest is derived purely from its content, not by its location. 
+:bulb: This design choice is called [Content Addressable Storage](https://en.wikipedia.org/wiki/Content-addressable_storage).
 
-Containerd applies this knowledge to automatically reduce waste in downloading OCI Image components from the registry. In particular, if a component of the OCI Image exists locally then Containerd skips the download.
++ Content Addressable storage can enable better distribution and storage efficiency in Registry and Runtime.
 
-The Container Runtime can detect changes in a Manifest, Layer or Configuration by computing the content digest and comparing it to the identifier digest.
++ It enables an opportunity to design for efficiency at node-local level, by applying [Package Principles of Coupling and Cohesion](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod) to OCI Image Layers, or at organisation level, by applying the Package Principles to the components of a standard platform.
 
-
-That means, if the digests match, its the same content. It doesn't matter where it was downloaded from or where its stored! *.
-
-This design choice is called [Content Addressable Storage](https://en.wikipedia.org/wiki/Content-addressable_storage).
-
-OCI Images enable Content Addressable storage for better distribution and storage efficiency in Registry and Runtime.
-
-\* Instead, what matters a way to trust the creator of the image. If the digest of the initial Image Index or Image Manifest cannot be trusted, then the rest of the content cannot be trusted! In practice, this is typically achieved by signing images.
+> \* Instead, what matters a way to trust the creator of the image. If the digest of the initial Image Index or Image Manifest cannot be trusted, then the rest of the content cannot be trusted! In practice, this is typically achieved by signing images.
 
 ---
 
@@ -275,8 +275,7 @@ That's **6 clusters * 6 pods * 3 containers = 108 image pulls**
 Kubernetes spreads the 6 pods across the worker nodes because of the `podAntiAffinity` rule in the pod spec.
 The rule says pods with the label `app: hello` should repel other pods from being scheduled on a worker with the same `kubernetes.io/hostname`.
 
-Initially, the `hello-world` OCI Images don't exist on the worker nodes.
-Containers cannot be launched from node-local images. 
+The `hello-world` OCI Images don't exist on a worker node by default.
 
 ```sh
 # ctr images list --quiet | grep hello-world
@@ -286,7 +285,7 @@ Containers cannot be launched from node-local images.
 
 ```
 
-On container start, each worker must pull the image from DockerHub.
+Before it can create and start a container, each worker must pull the image from DockerHub.
 
 Its significant because Dockerhub receives many requests in a short time frame.
 
