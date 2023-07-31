@@ -377,7 +377,7 @@ INFO[0000] Successfully created registry 'k3d-docker-io-mirror'
 Initially, the registry is empty:
 
 ```sh
-➜ curl k3d-docker-io-mirror.localhost:5005/v2/_catalog
+# wget k3d-docker-io-mirror:5000/v2/_catalog -qO- | jq
 ```
 ```sh
 {
@@ -385,33 +385,54 @@ Initially, the registry is empty:
 }
 ```
 
-Now we can pull the image from one of our kubernetes worker like:
+Next, let's pull the image again from one of our kubernetes worker using `ctr`.
+
+This time we'll pull it from our brand new private OCI Registry.
 
 ```sh
-$ docker exec k3d-cluster-3-agent-2 \
-    ctr image pull \
-    --plain-http \
-    k3d-docker-io-mirror:5000/library/hello-world:linux
+# ctr image pull \
+  --plain-http \
+  k3d-docker-io-mirror:5000/library/hello-world:linux
 ```
-
-```sh
-k3d-docker-io-mirror:5000/library/hello-world:linux:                              resolved       |++++++++++++++++++++++++++++++++++++++| 
-index-sha256:726023f73a8fc5103fa6776d48090539042cb822531c6b751b1f6dd18cb5705d:    done           |++++++++++++++++++++++++++++++++++++++| 
-manifest-sha256:7e9b6e7ba2842c91cf49f3e214d04a7a496f8214356f41d81a6e6dcad11f11e3: done           |++++++++++++++++++++++++++++++++++++++| 
-layer-sha256:719385e32844401d57ecfd3eacab360bf551a1491c05b85806ed8f1b08d792f6:    done           |++++++++++++++++++++++++++++++++++++++| 
-config-sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d:   done           |++++++++++++++++++++++++++++++++++++++| 
-elapsed: 2.0 s                                                                    total:  2.0 Ki (1.0 KiB/s)                                       
-unpacking linux/amd64 sha256:726023f73a8fc5103fa6776d48090539042cb822531c6b751b1f6dd18cb5705d...
-done: 75.142283ms
-```
-
-TODO: notice that first pull to empty registry takes ~X seconds
 
 Notice we need to specify both the **registry** and **repository** prefix explicitly in the image identifier.
 
 ![Diagram showing full OCI Image Reference specified for private registry](./6b-specify-full-image-reference.svg "hello world: 17 points in Scrabble")
 
 Indeed, the normalisation to docker.io and library are historical hangovers from the era when Docker's official images on Dockerhub were the only game in town!
+
+And here's the output of `ctr image pull`:
+
+```sh
+k3d-docker-io-mirror:5000/library/hello-world:linux:                              resolved       |++++++++++++++++++++++++++++++++++++++| 
+index-sha256:726023f73a8fc5103fa6776d48090539042cb822531c6b751b1f6dd18cb5705d:    done           |++++++++++++++++++++++++++++++++++++++| 
+manifest-sha256:7e9b6e7ba2842c91cf49f3e214d04a7a496f8214356f41d81a6e6dcad11f11e3: done           |++++++++++++++++++++++++++++++++++++++| 
+config-sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d:   done           |++++++++++++++++++++++++++++++++++++++| 
+layer-sha256:719385e32844401d57ecfd3eacab360bf551a1491c05b85806ed8f1b08d792f6:    done           |++++++++++++++++++++++++++++++++++++++| 
+elapsed: 5.3 s                                                                    total:  4.9 Ki (952.0 B/s)                                       
+unpacking linux/amd64 sha256:726023f73a8fc5103fa6776d48090539042cb822531c6b751b1f6dd18cb5705d...
+done: 40.463514ms
+```
+
+Notice also that the first pull from the empty registry took **5.3 seconds**.
+
+Let's see if `hello-world` is there in the k3d-docker-io-mirror...
+
+```sh
+➜ wget k3d-docker-io-mirror:5000/v2/_catalog -qO- | jq
+```
+
+```json
+{
+  "repositories": [
+    "library/hello-world"
+  ]
+}
+```
+
+It is!
+
+The image is cached in our private registry mirror.
 
 ## Repeat the experiment: 6 clusters * 6 pods * 3 containers = 108 image pulls
 
@@ -465,30 +486,9 @@ spec:
 > However, it will still make a GET request to the registry for the Image Index of each.
 > And that will counted as a pull by DockerHub.
 
-After re-applying the `hello` from private registry job definition,
-let's see if `hello-world` is there in the k3d-docker-io-mirror...
+After re-applying the `hello` from private registry job definition, the container runtime should pull the image from our private OCI registry.
 
-```sh
-➜ docker exec k3d-cluster-0-agent-0   wget k3d-docker-io-mirror:5000/v2/_catalog -qO - |   jq
-```
-
-```json
-{
-  "repositories": [
-    "library/hello-world"
-  ]
-}
-```
-
-It is!
-
-The image is cached in our private registry mirror.
-
-### ImagePullPolicy=Always
-
-`--image-pull-policy=Always` insists Containerd to pull from the registry rather than use the image stored locally on the worker.
-
-Since each container in our pod spec has `imagePullPolicy: Always`, we can expect Containerd to pull from our registry mirror on each container create operation.
+![Diagram showing Clusters pull public images from a local registry mirror](./6-pulls-from-local-registry-mirror.svg "Go green: with a registry mirror")
 
 But is there any difference from the first time?
 
@@ -496,7 +496,7 @@ But is there any difference from the first time?
 kubectl describe pod hello-vksvd
 ```
 
-```log
+```sh
 Events:
   Type     Reason     Age                  From               Message
   ----     ------     ----                 ----               -------
@@ -509,22 +509,16 @@ Events:
 
 Yup! This time its 1.3 seconds! What happened?
 
-
-
-The container runtime pulled the image from the local registry mirror.
-
-![Diagram showing Clusters pull public images from a local registry mirror](./6-pulls-from-local-registry-mirror.svg "Go green: with a registry mirror")
-
 Here's what happened exactly:
 
 ![Sequence Diagram showing Pull Public Image from local registry mirror](./7-seq-pull-public-image-registry-mirror-hit.svg "Mirror mirror on the www...")
 
-1. Fetch the **OCI Image Manifest** digest. Containerd makes a HEAD request to the registry mirror at `/v2/library/nginx/manifests/stable?ns=docker.io` for `nginx:stable`.
-1. Registry Mirror responds with the sha256 digest of the Image Manifest.
-1. Is the image already present on the host? Containerd compares the sha256 digest in the response to the digest for `nginx:stable` stored locally. 
+1. Fetch the **OCI Image Manifest** digest. Containerd makes a HEAD request to the registry mirror at `/v2/library/hello-world/manifests/linux?ns=docker.io` for `hello-world:linux`.
+1. Private Registry responds with the sha256 digest of the Image Manifest.
+1. Is the image already present on the host? Containerd compares the sha256 digest in the response to the digest for `hello-world:linux` stored locally. 
 1. Yup, its already present. Job done!
 
-Since `nginx:stable` already exists in the Registry Mirror and on the Worker Node, only one `HEAD` request to the Mirror was required to fetch the identity of the Manifest - its sha256 digest.
+Since `hello-world:linux` already exists in the Registry Mirror and on the Worker Node, only one `HEAD` request to the Mirror was required to fetch the identity of the Manifest - its sha256 digest.
 
 The manifest's sha256 digest is all that's needed to determine that nothing had changed. All of the required layers and configuration already exist on the Worker node.
 
@@ -532,12 +526,15 @@ The result is faster pulls. There are fewer requests to Dockerhub and we get low
 
 ## What happened to our docker pull requests limit now?
 
+`--image-pull-policy=Always` insists Containerd to pull from the registry rather than use the image stored locally on the worker.
+
+Since each container in our pod spec has `imagePullPolicy: Always`, we can expect Containerd to pull from our private registry on each container create operation.
+
 ![alt](./hit-dockerhub-4-requests-used.png)
 
 This time, it used only 4 pull requests.
 
 TODO: repeat and explain why its 4.
-
 
 ## Pros And Cons: Pulling Public Images Through Private OCI Registry
 
