@@ -423,7 +423,7 @@ Let's update the images in the pod spec to pull from our private registry.
 
 Here's the updated job specification:
 
-`hello-job.yaml`
+`hello-job-private-reg.yaml`
 ```yaml
 apiVersion: batch/v1
 kind: Job
