@@ -152,7 +152,7 @@ If the digests match, there are no changes. Its the same content. It doesn't mat
 
 + It enables an opportunity to design for efficiency at node-local level, by applying [Package Principles of Coupling and Cohesion](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod) to OCI Image Layers, or at organisation level, by applying the Package Principles to the components of a standard platform.
 
-> \* Instead, what matters a way to trust the creator of the image. If the digest of the initial Image Index or Image Manifest cannot be trusted, then the rest of the content cannot be trusted! In practice, this is typically achieved by signing images.
+> \* Instead, what matters is a way to trust the creator of the image. If the digest of the initial Image Index or Image Manifest cannot be trusted, then the rest of the content cannot be trusted! In practice, this is typically achieved by signing images.
 
 ---
 
@@ -183,6 +183,7 @@ metadata:
 spec:
   completions: 6
   parallelism: 6
+  activeDeadlineSeconds: 600
   template:
     metadata:
       labels:
@@ -377,7 +378,7 @@ INFO[0000] Successfully created registry 'k3d-docker-io-mirror'
 Initially, the registry is empty:
 
 ```sh
-# wget k3d-docker-io-mirror:5000/v2/_catalog -qO- | jq
+# wget k3d-docker-io-mirror:5000/v2/_catalog -qO-
 ```
 ```sh
 {
@@ -419,7 +420,7 @@ Notice also that the first pull from the empty registry took **5.3 seconds**.
 Let's see if `hello-world` is there in the k3d-docker-io-mirror...
 
 ```sh
-➜ wget k3d-docker-io-mirror:5000/v2/_catalog -qO- | jq
+➜ wget k3d-docker-io-mirror:5000/v2/_catalog -qO-
 ```
 
 ```json
@@ -453,6 +454,7 @@ metadata:
 spec:
   completions: 6
   parallelism: 6
+  activeDeadlineSeconds: 600
   template:
     metadata:
       labels:
@@ -464,9 +466,6 @@ spec:
         imagePullPolicy: Always
       - image: k3d-docker-io-mirror:5000/library/hello-world:nanoserver-ltsc2022
         name: hello-nanoserver
-        imagePullPolicy: Always
-      - image: k3d-docker-io-mirror:5000/library/hello-world:nanoserver-1809
-        name: hello
         imagePullPolicy: Always
       restartPolicy: Never
       affinity:
@@ -530,11 +529,15 @@ The result is faster pulls. There are fewer requests to Dockerhub and we get low
 
 Since each container in our pod spec has `imagePullPolicy: Always`, we can expect Containerd to pull from our private registry on each container create operation.
 
-![alt](./hit-dockerhub-4-requests-used.png)
+![Grafana Dashboard Showing we used only 2 pull requests of our Dockerhub Pull Limit!](./hit-dockerhub-with-2-requests-used.png "Image Pull Requests: Your mileage may vary!")
 
-This time, it used only 4 pull requests.
+This time, it used only 2 pull requests!
 
-TODO: repeat and explain why its 4.
+1. One to GET the Image Index and Manifest for our pre-pull of `hello-world:linux`.
+
+    > Remember: 1 Dockerhub pull request is one or two `GET` requests on registry manifest URLs (`/v2/*/manifests/*`).
+1. One to GET the Image Index for `hello-world:nanoserver-ltsc2022`.
+  Containerd determines it's platform (architecture and os) are not supported for this image.
 
 ## Pros And Cons: Pulling Public Images Through Private OCI Registry
 
