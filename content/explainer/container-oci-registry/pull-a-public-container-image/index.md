@@ -539,18 +539,6 @@ This time, it used only 2 pull requests!
 1. One to GET the Image Index for `hello-world:nanoserver-ltsc2022`.
   Containerd determines it's platform (architecture and os) are not supported for this image.
 
-## Pros And Cons: Pulling Public Images Through Private OCI Registry
-
-Here are some of the pros and cons of pulling public images through your own private OCI registry configured as a mirror:
-
-|Pros | Cons |
-|---  | --- |
-| **Secure against Denial of Service, Spoofing and Repudiation.** Isolate container runtimes from the public internet and control which public registries are trusted. | **Stale images.** The mirror might not have the freshest versions of container images. |
-| **Simple to use.** Use public images and charts without the need to override the registry prefix of the image ref. | **Increased Operational Complexity.** Manage registry capacity, availability, performance and cost. Can be hard to housekeep safely. |
-| **Faster image pulls**. If you pull images from a mirror that is logically or physically closer to your compute, this can significantly improve performance. | 
-| **Improved availability of container images.** Container runtimes can pull from an ordered list of registry mirrors. If the primary is unavailable, it will try to pull from the secondary. | **Escalating Costs.** If you're supplying images, egress costs for image pulls across cloud zones could grow big. It did for Dockerhub and for gcr.io! Storage costs for duplicated or triplicated images.
-| **Optimized bandwidth usage.** Reduce requests for popular images by caching. |
-
 ---
 
 Thank you for reading this article right to the end.
@@ -560,4 +548,4 @@ If you foresee a problem, have an alternative solution, I'd appreciate your feed
 
 Special thank you to [Dan Polencic](https://www.linkedin.com/in/danielepolencic/). Appreciate the reviews and all your feedback!
 
-Look out for the next chapter...
+Look out for the next chapter... Pull a Public Helm Chart
