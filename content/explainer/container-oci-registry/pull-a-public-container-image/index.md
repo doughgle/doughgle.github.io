@@ -544,8 +544,10 @@ This time, it used only 2 pull requests!
 Thank you for reading this article right to the end.
 If you enjoyed it and if you think others can benefit, please like and share!
 
-If you foresee a problem, have an alternative solution, I'd appreciate your feedback. Or if you wanna share some comments to improve the usefulness of this article, you can reach me on [LinkedIn](https://www.linkedin.com/in/doughellinger/).
+If you'd like to learn from a hands-on-keyboard tutorial for this chapter, let me know on [LinkedIn](https://www.linkedin.com/in/doughellinger/).
+
+If you foresee a problem, have an alternative solution, I'd appreciate your feedback. Again, reach me on [LinkedIn](https://www.linkedin.com/in/doughellinger/).
 
 Special thank you to [Dan Polencic](https://www.linkedin.com/in/danielepolencic/). Appreciate the reviews and all your feedback!
 
-Look out for the next chapter... Pull a Public Helm Chart
+Look out for the next chapter... Exploring OCI Container Registries: Chapter 2: Pull a Public Helm Chart
