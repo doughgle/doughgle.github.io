@@ -142,6 +142,8 @@ unpacking linux/amd64 sha256:926fac19d22aa2d60f1a276b66a20eb765fbeea2db5dbdaafeb
 done: 7.66556ms
 ```
 
+The Container Runtime first downloads the Image Index, then the Image Manifest. The Image Manifest contains digests of the Layers and the Configuration. The layers are blobs (binary large objects). The Index, Manifest and Config are JSON documents.
+
 The Container Runtime can detect changes in a Manifest, Layer or Configuration by computing the content digest (`sha256sum [FILE]`) and comparing it to the identifier digest.
 
 If the digests match, there are no changes. Its the same content. It doesn't matter where it was downloaded from or where its stored! *.
