@@ -152,8 +152,6 @@ If the digests match, there are no changes. Its the same content. It doesn't mat
 
 + Content Addressable storage can enable better distribution and storage efficiency in Registry and Runtime.
 
-+ It enables an opportunity to design for efficiency at node-local level, by applying [Package Principles of Coupling and Cohesion](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod) to OCI Image Layers, or at organisation level, by applying the Package Principles to the components of a standard platform.
-
 > \* Instead, what matters is a way to trust the creator of the image. If the digest of the initial Image Index or Image Manifest cannot be trusted, then the rest of the content cannot be trusted! In practice, this is typically achieved by signing images.
 
 ---
