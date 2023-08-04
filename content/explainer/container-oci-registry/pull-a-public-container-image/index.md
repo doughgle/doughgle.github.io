@@ -497,13 +497,13 @@ kubectl describe pod hello-vksvd
 
 ```sh
 Events:
-  Type     Reason     Age                  From               Message
-  ----     ------     ----                 ----               -------
-  Normal   Scheduled  41m                  default-scheduler  Successfully assigned default/hello-vksvd to k3d-cluster-5-agent-2
-  Normal   Pulling    41m                  kubelet            Pulling image "k3d-docker-io-mirror:5000/library/hello-world:linux"
-  Normal   Pulled     41m                  kubelet            Successfully pulled image "k3d-docker-io-mirror:5000/library/hello-world:linux" in 1.316861913s (1.316868009s including waiting)
-  Normal   Created    41m                  kubelet            Created container hello-linux
-  Normal   Started    41m                  kubelet            Started container hello-linux
+  Reason                       Message
+  ------                       -------
+  Scheduled                    Successfully assigned default/hello-vksvd to k3d-cluster-5-agent-2
+  Pulling                      Pulling image "k3d-docker-io-mirror:5000/library/hello-world:linux"
+  Pulled                       Successfully pulled image "k3d-docker-io-mirror:5000/library/hello-world:linux" in 1.316861913s (1.316868009s including waiting)
+  Created                      Created container hello-linux
+  Started                      Started container hello-linux
 ```
 
 Yup! This time its 1.3 seconds! What happened?
