@@ -72,7 +72,7 @@ An OCI Image is composed of a **Manifest**, one or more **Filesystem Layers** an
 
 When Containerd receives a request to run a container from an image, here's a model of what happens:
 
-![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-sequence-cover.svg "Container runtime and registry chatting away!")
+![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-sequence.svg "Container runtime and registry chatting away!")
 
 
 {{< details "**Click to Expand:** Steps describing Containerd Runtime Pulling a Public Container Image from Dockerhub OCI Registry" >}}
