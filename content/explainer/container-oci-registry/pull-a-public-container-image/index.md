@@ -510,16 +510,16 @@ Yup! This time its 1.3 seconds! What happened?
 
 Here's what happened exactly:
 
-![Sequence Diagram showing Pull Public Image from local registry mirror](./7-seq-pull-public-image-registry-mirror-hit.svg "Mirror mirror on the www...")
+![Sequence Diagram showing Pull Public Image from local registry mirror](./7-seq-pull-public-image-from-private-registry.drawio.svg "Mirror mirror on the www...")
 
-1. Fetch the **OCI Image Manifest** digest. Containerd makes a HEAD request to the registry mirror at `/v2/library/hello-world/manifests/linux?ns=docker.io` for `hello-world:linux`.
-1. Private Registry responds with the sha256 digest of the Image Manifest.
-1. Is the image already present on the host? Containerd compares the sha256 digest in the response to the digest for `hello-world:linux` stored locally. 
-1. Yup, its already present. Job done!
+1. Fetch the **OCI Image Manifest** digest. **Containerd** makes a HEAD request to the registry mirror at `/v2/library/hello-world/manifests/linux?ns=docker.io`.
+1. **docker-io-mirror** forwards the HEAD request to Dockerhub to check if the digest for the tag `linux` has changed.
+1. **Dockerhub** responds with the sha256 digest of the Image Manifest.
+1. **docker-io-mirror** then responds with the sha256 digest of the Image Manifest.
 
-Since `hello-world:linux` already exists in the Registry Mirror and on the Worker Node, only one `HEAD` request to the Mirror was required to fetch the identity of the Manifest - its sha256 digest.
+Since `hello-world:linux` already exists in the Private Registry, only one `HEAD` request to Dockerhub was required to fetch the identity of the Manifest - its sha256 digest.
 
-The manifest's sha256 digest is all that's needed to determine that nothing had changed. All of the required layers and configuration already exist on the Worker node.
+The manifest's sha256 digest is all that's needed to determine that nothing had changed. All of the required layers and configuration are already present on docker-io-mirror.
 
 The result is faster pulls. There are fewer requests to Dockerhub and we get lower latency on requests for manifest and layer downloads from the local Registry Mirror.
 
@@ -533,7 +533,7 @@ Since each container in our pod spec has `imagePullPolicy: Always`, we can expec
 
 This time, it used only 2 pull requests!
 
-1. One to GET the Image Index and Manifest for our pre-pull of `hello-world:linux`.
+1. One to GET the Image Index and Manifest for `hello-world:linux`. Containerd made these GET requests when we used `ctr` to pre-pull the image.
 
     > Remember: 1 Dockerhub pull request is one or two `GET` requests on registry manifest URLs (`/v2/*/manifests/*`).
 1. One to GET the Image Index for `hello-world:nanoserver-ltsc2022`.
