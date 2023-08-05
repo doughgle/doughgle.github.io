@@ -263,7 +263,7 @@ That's **6 clusters * 6 pods * 3 containers = 108 image pulls**
 
 ![Diagram showing Too Many Clusters Pull Directly From Dockerhub](./3-too-many-workers-pull-from-public.svg "Heavy traffic on the Containerway")
 
-### What _is_ An Image Pull Request?
+### Q: What _is_ An Image Pull Request?
 
 :bulb: An Image **Pull Request** is [defined by Docker Inc.](https://docs.docker.com/docker-hub/download-rate-limit/#definition-of-limits) as:
 
@@ -435,7 +435,7 @@ It is!
 
 The image is cached in our private registry mirror.
 
-## Repeat the experiment: 6 clusters * 6 pods * 3 containers = 108 image pulls
+## Repeat The Experiment: 6 Clusters * 6 Pods * 3 Containers = 108 Image Pulls
 
 Now we have a private registry working, let's turn our attention back to our multi-cluster test scenario.
 
