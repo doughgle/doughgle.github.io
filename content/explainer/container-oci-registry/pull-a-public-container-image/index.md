@@ -517,7 +517,16 @@ The manifest's sha256 digest is all that's needed to determine that nothing had 
 
 The result is faster pulls. There are fewer requests to Dockerhub and we get lower latency on requests for manifest and layer downloads from the local Registry Mirror.
 
-## What happened to our docker pull requests limit now?
+How about the `nanoserver-ltsc2022` image?
+
+![Sequence Diagram showing Container Runtime Requests Unsupported Platform Image](./8-seq-pull-public-image-platform-not-supported.drawio.svg "a HEAD we GET")
+
+1. Containerd receives the Image Index in reponse to the Manifest Download.
+1. Containerd determines there's no matching **Manifest** for platform (linux, amd64) in the **Image Index**.
+
+It's a Windows image so Containerd won't pull it on Linux and it won't pull it on Mac. However, it will still make a GET request to the registry for the Image Index and that will counted as a pull by DockerHub.
+
+## Q: What Happened To Our Docker Pull Requests Limit Now?
 
 `--image-pull-policy=Always` insists Containerd to pull from the registry rather than use the image stored locally on the worker.
 
