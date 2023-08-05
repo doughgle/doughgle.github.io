@@ -274,7 +274,6 @@ That's **6 clusters * 6 pods * 3 containers = 108 image pulls**
 ### Q: What About The 6 Worker Nodes? Why Is That Significant?
 
 Kubernetes spreads the 6 pods across the worker nodes because of the `podAntiAffinity` rule in the pod spec.
-The rule says pods with the label `app: hello` should repel other pods from being scheduled on a worker with the same `kubernetes.io/hostname`.
 
 The `hello-world` OCI Images don't exist on a worker node by default.
 
@@ -479,11 +478,6 @@ spec:
                 - hello
             topologyKey: kubernetes.io/hostname
 ```
-
-> Note: `hello-world:nanoserver` is a Windows image so Containerd won't pull it on Linux nor on Mac.
-> Likewise `hello-world:linux` won't pull on Windows.
-> However, it will still make a GET request to the registry for the Image Index of each.
-> And that will counted as a pull by DockerHub.
 
 After re-applying the `hello` from private registry job definition, the container runtime should pull the image from our private OCI registry.
 
