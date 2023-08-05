@@ -15,7 +15,7 @@ Here's a simple kubernetes cluster.
 
 It has access to pull images from the public internet.
 
-![Block Diagram showing a Simple Kubernetes Cluster Pulls From DockerHub](./1-simple-k8s-pull-from-public.svg "Lonely world: a 1 node k8s cluster")
+![Block Diagram showing a Simple Kubernetes Cluster Pulls From DockerHub](./1-simple-k8s-pull-from-public.drawio.svg "Lonely world: a 1 node k8s cluster")
 
 Let's create a simple pod that runs `hello-world` to completion
 
@@ -62,7 +62,7 @@ Specifically, its:
 1. prefixed with the default repository `library`
 1. suffixed with the default tag `latest`
 
-![Diagram showing Anatomy Of An OCI Image Reference](./1b-normalised-image-reference.svg "Immortal words: hello world")
+![Diagram showing Anatomy Of An OCI Image Reference](./1b-normalised-image-reference.drawio.svg "Immortal words: hello world")
 
 Containerd requests the image from `registry-1.docker.io`, better known as DockerHub.
 
@@ -72,7 +72,7 @@ An OCI Image is composed of a **Manifest**, one or more **Filesystem Layers** an
 
 When Containerd receives a request to run a container from an image, here's a model of what happens:
 
-![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-sequence.svg "Container runtime and registry chatting away!")
+![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-sequence.drawio.svg "Container runtime and registry chatting away!")
 
 
 {{< details "**Click to Expand:** Steps describing Containerd Runtime Pulling a Public Container Image from Dockerhub OCI Registry" >}}
@@ -164,7 +164,7 @@ Each team has their own cluster so they can operate independently on their own c
 
 Again, each cluster has access to pull images from the public internet.
 
-![Diagram showing Multi-node Clusters Pull From Public Registry](./2-more-clusters-pull-from-public.svg "Pull party: workers all wanna attract the same image!")
+![Diagram showing Multi-node Clusters Pull From Public Registry](./2-more-clusters-pull-from-public.drawio.svg "Pull party: workers all wanna attract the same image!")
 
 Actually, each team wants to run a job that tests a matrix of 3 image versions.
 
@@ -261,7 +261,7 @@ How did that happen?
 
 That's **6 clusters * 6 pods * 3 containers = 108 image pulls**
 
-![Diagram showing Too Many Clusters Pull Directly From Dockerhub](./3-too-many-workers-pull-from-public.svg "Heavy traffic on the Containerway")
+![Diagram showing Too Many Clusters Pull Directly From Dockerhub](./3-too-many-workers-pull-from-public.drawio.svg "Heavy traffic on the Containerway")
 
 ### Q: What _is_ An Image Pull Request?
 
@@ -324,7 +324,7 @@ Thats the public IP address of the network's internet gateway. Its the source ad
 
 This happens if Source Network Address Translation (SNAT) is configured for outbound internet requests.
 
-![Diagram showing Many Clusters share the same Source IP address of the NAT Gateway](./4-pulls-from-snat-gateway.svg "Is that a hole in your network or is it a gateway to heaven?!")
+![Diagram showing Many Clusters share the same Source IP address of the NAT Gateway](./4-pulls-from-snat-gateway.drawio.svg "Is that a hole in your network or is it a gateway to heaven?!")
 
 The result is each request has the same IP address no matter which cluster originates the request.
 
@@ -397,7 +397,7 @@ This time we'll pull it from our brand new private OCI Registry.
 
 Notice we need to specify both the **registry** and **repository** prefix explicitly in the image identifier.
 
-![Diagram showing full OCI Image Reference specified for private registry](./6b-specify-full-image-reference.svg "hello world: 17 points in Scrabble")
+![Diagram showing full OCI Image Reference specified for private registry](./6b-specify-full-image-reference.drawio.svg "hello world: 17 points in Scrabble")
 
 Indeed, the normalisation to docker.io and library are historical hangovers from the era when Docker's official images on Dockerhub were the only game in town!
 
@@ -481,7 +481,7 @@ spec:
 
 After re-applying the `hello` from private registry job definition, the container runtime should pull the image from our private OCI registry.
 
-![Diagram showing Clusters pull public images from a local registry mirror](./6-pulls-from-local-registry-mirror.svg "Go green: with a registry mirror")
+![Diagram showing Clusters pull public images from a local registry mirror](./6-pulls-from-local-registry-mirror.drawio.svg "Go green: with a registry mirror")
 
 But is there any difference from the first time?
 
