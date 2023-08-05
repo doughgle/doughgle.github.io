@@ -146,9 +146,9 @@ The Container Runtime first downloads the Image Index, then the Image Manifest. 
 
 The Container Runtime can detect changes in a Manifest, Layer or Configuration by computing the content digest (`sha256sum [FILE]`) and comparing it to the identifier digest.
 
-If the digests match, there are no changes. Its the same content. It doesn't matter where it was downloaded from or where its stored! *.
+:bulb: If the digests match, there are no changes. Its the same content. It doesn't matter where it was downloaded from or where its stored! *.
 
-:bulb: This design choice is called [Content Addressable Storage](https://en.wikipedia.org/wiki/Content-addressable_storage).
+This design choice is called [Content Addressable Storage](https://en.wikipedia.org/wiki/Content-addressable_storage).
 
 + Content Addressable storage can enable better distribution and storage efficiency in Registry and Runtime.
 
