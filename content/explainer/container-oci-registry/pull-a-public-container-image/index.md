@@ -554,3 +554,7 @@ If you foresee a problem, have an alternative solution, I'd appreciate your feed
 Special thank you to [Dan Polencic](https://www.linkedin.com/in/danielepolencic/). Appreciate the reviews and all your feedback!
 
 Look out for the next chapter... Exploring OCI Container Registries: Chapter 2: Pull a Public Helm Chart
+
+---
+
+{{< cc-by >}}
