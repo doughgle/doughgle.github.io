@@ -35,6 +35,7 @@ To find out, we can examine the logs of the high-level container runtime (someti
 Our OCI Runtime is [Containerd](https://github.com/containerd/containerd).
 
 `containerd.log`
+
 ```json
 {
   "msg": "PullImage \"hello-world:latest\""
@@ -58,6 +59,7 @@ Our OCI Runtime is [Containerd](https://github.com/containerd/containerd).
 In the Containerd logs, we can see the `hello-world` image is **normalised**.
 
 Specifically, its:
+
 1. prefixed with the default registry `docker.io`
 1. prefixed with the default repository `library`
 1. suffixed with the default tag `latest`
@@ -74,12 +76,11 @@ When Containerd receives a request to run a container from an image, here's a mo
 
 ![Sequence Diagram showing CRI Containerd Pulling a public container image from Dockerhub OCI Registry](./5-pull-public-image-sequence.drawio.svg "Container runtime and registry chatting away!")
 
-
 {{< details "**Click to Expand:** Steps describing Containerd Runtime Pulling a Public Container Image from Dockerhub OCI Registry" >}}
 <details>
 <summary>Steps describing CRI Containerd Pulling a public container image from Dockerhub OCI Registry</summary>
 
-1. First, Containerd makes a `HEAD` request to DockerHub at `/v2/library/hello-world/manifests/latest?ns=docker.io` for `hello-world:latest`. We say it "fetches the **Manifest Digest**" for the `latest` tag. 
+1. First, Containerd makes a `HEAD` request to DockerHub at `/v2/library/hello-world/manifests/latest?ns=docker.io` for `hello-world:latest`. We say it "fetches the **Manifest Digest**" for the `latest` tag.
 
 1. DockerHub responds with the sha256 digest of the **OCI Image Manifest**.
 
@@ -94,7 +95,7 @@ When Containerd receives a request to run a container from an image, here's a mo
 1. Second, is the **Image Configuration** already present on the Containerd host?
 In particular, Containerd takes the **Image Configuration** digest from the Manifest and searches for it in the `io.containerd.content.v1.content/blobs` directory on the host machine.
 
-    1. Its not present. Download. Specifically, Containerd makes a GET request to the `blobs` API endpoint e.g. `/v2/library/hello-world/blobs/sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d` 
+    1. Its not present. Download. Specifically, Containerd makes a GET request to the `blobs` API endpoint e.g. `/v2/library/hello-world/blobs/sha256:9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d`
 
     1. Verify checksum of the **Image Configuration** against manifest.
 
@@ -102,7 +103,7 @@ In particular, Containerd takes the **Image Configuration** digest from the Mani
 
     1. Is the layer already present on the worker?
 
-    1. Download. Specifically, Containerd makes a GET request to the `blobs` API endpoint e.g. `/v2/library/hello-world/blobs/sha256:2af0ea4a9556b049337d026dd7df7f9c20661203c634be4f9b976814c05e5c32?ns=docker.io` 
+    1. Download. Specifically, Containerd makes a GET request to the `blobs` API endpoint e.g. `/v2/library/hello-world/blobs/sha256:2af0ea4a9556b049337d026dd7df7f9c20661203c634be4f9b976814c05e5c32?ns=docker.io`
 
     1. Verify checksum against manifest.
 
@@ -113,14 +114,14 @@ In particular, Containerd takes the **Image Configuration** digest from the Mani
 > \** In practice, downloads happen in parallel. Simplified here for illustration.
 
 </details>
-<p>
+
 {{< /details >}}
 
 Did you notice how Containerd precedes each GET request with a check for local presence?
 
 This enables the opportunity for better **efficiency**.
 
-Each OCI Image component is identifiable by its sha256 digest. That digest is derived purely from its content, not by its location. 
+Each OCI Image component is identifiable by its sha256 digest. That digest is derived purely from its content, not by its location.
 
 Containerd applies this knowledge to automatically reduce waste in downloading OCI Image components from the registry. In particular, if a component of the OCI Image exists locally then Containerd skips the download.
 
@@ -175,6 +176,7 @@ Finally, these images have mutable tags and its important to test with the fresh
 Here's the job specification:
 
 `hello-job.yaml`
+
 ```yaml
 apiVersion: batch/v1
 kind: Job
@@ -300,6 +302,7 @@ Let's examine the response from DockerHub.
 Again, from the Containerd logs, the response looks like this:
 
 `containerd.log`
+
 ```json
 {
   "host": "registry-1.docker.io",
@@ -328,7 +331,7 @@ This happens if Source Network Address Translation (SNAT) is configured for outb
 
 The result is each request has the same IP address no matter which cluster originates the request.
 
-If you're in an organisation with many clusters, and those clusters pull images from Dockerhub through a SNAT gateway, 
+If you're in an organisation with many clusters, and those clusters pull images from Dockerhub through a SNAT gateway,
 in the same way, you can hit the limit very quickly!
 
 ## Q: How Might We Work Around The Pull Limit?
@@ -336,19 +339,19 @@ in the same way, you can hit the limit very quickly!
 There are a couple of alternatives to DockerHub here:
 
 ### 1. Pull From A Different Public Registry
-> 
+>
 > If you're using AWS EKS, you can pull the majority of popular docker images from ECR Public Registry.
-> 
+>
 > For example `docker pull public.ecr.aws/docker/library/hello-world:latest`
-> 
+>
 > On AWS, its logically closer to your infrastructure and you wont encounter any rate limiting.
 
 ### 2. Operate Your Own Private OCI Registry
 
 > If you already have a central binary repository in your org like a managed Artifactory, Nexus or the Harbor, you're likely already doing this.
-> 
+>
 > For example `docker pull containers.your.org/library/hello-world:latest`
-> 
+>
 > This solution becomes increasingly compelling as your container consumption grows.
 
 We're gonna choose option #2, but we wont use a vendor product because we wanna learn with the simplest components that meet the OCI specifications!
@@ -379,6 +382,7 @@ Initially, the registry is empty:
 ```sh
 # wget k3d-docker-io-mirror:5000/v2/_catalog -qO-
 ```
+
 ```sh
 {
   "repositories": []
@@ -434,7 +438,7 @@ It is!
 
 The image is cached in our private registry mirror.
 
-## Repeat The Experiment: 6 Clusters * 6 Pods * 3 Containers = 108 Image Pulls
+## Repeat The Experiment: 6 Clusters x 6 Pods x 3 Containers = 108 Image Pulls
 
 Now we have a private registry working, let's turn our attention back to our multi-cluster test scenario.
 
@@ -445,6 +449,7 @@ Let's update the images in the pod spec to pull from our private registry.
 Here's the updated job specification:
 
 `hello-job-private-reg.yaml`
+
 ```yaml
 apiVersion: batch/v1
 kind: Job
