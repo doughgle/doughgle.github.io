@@ -3,10 +3,13 @@ EnforceHTTPS: true
 CheckInternalHash: false
 IgnoreURLs:
 - "douglashellinger.com"
-- "https://linkedin.com/in/doughellinger"
+- "https://(www.)?linkedin.com/in/[a-z]+"
 - "https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux"
 - "https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/"
 - "^/misc/js/script.js$"
+- "https://www.udemy.com/course/writing-for-business/"
+IgnoreHTTPS:
+- "http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod"
 IgnoreAltMissing: true
 CacheExpires: "6h"
 IgnoreDirectoryMissingTrailingSlash: true
