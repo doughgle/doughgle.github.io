@@ -1,10 +1,10 @@
 ---
 title: "Exploring OCI Container Registries: Chapter 1: Pull a Public Image from Kubernetes"
 date: 2023-06-10T16:38:31+08:00
-publishdate: 2023-07-09T14:00:31+08:00
+publishdate: 2023-08-06T16:00:31+08:00
 tags: ['oci', 'container', 'runtime', 'registry', 'cri', 'distribution', 'kubernetes']
 comments: true
-draft: true
+draft: false
 ---
 
 Let's begin with one of the most common use cases of a Container Registry:
