@@ -147,13 +147,13 @@ The Container Runtime first downloads the Image Index, then the Image Manifest. 
 
 The Container Runtime can detect changes in a Manifest, Layer or Configuration by computing the content digest (`sha256sum [FILE]`) and comparing it to the identifier digest.
 
-:bulb: If the digests match, there are no changes. Its the same content. It doesn't matter where it was downloaded from or where its stored! *.
+:bulb: If the digests match, there are no changes. Its the same content. It doesn't matter where you download it from or where you store it! *.
 
 This design choice is called [Content Addressable Storage](https://en.wikipedia.org/wiki/Content-addressable_storage).
 
 + Content Addressable storage can enable better distribution and storage efficiency in Registry and Runtime.
 
-> \* Instead, what matters is a way to trust the creator of the image. If the digest of the initial Image Index or Image Manifest cannot be trusted, then the rest of the content cannot be trusted! In practice, this is typically achieved by signing images.
+> \* Instead, what matters is a way to trust the creator of the image. If you can trust the digest of the initial Image Index or Image Manifest, then you can trust the rest of the content! In practice, this is typically achieved by signing images.
 
 ---
 
@@ -238,7 +238,7 @@ toomanyrequests: You have reached your pull rate limit. You may increase the lim
 
 If we examine the events, we got a `429 Too Many Requests` response from DockerHub.
 
-Docker Hub [limits the number of container image pulls](https://docs.docker.com/docker-hub/download-rate-limit/) based on the account type of the user pulling the image. Anonymous (i.e. unauthenticated) users are idenitifed by their source IP address.
+DockerHub [limits the number of container image pulls](https://docs.docker.com/docker-hub/download-rate-limit/) based on the account type of the user pulling the image. DockerHub identifies anonymous (i.e. unauthenticated) users by their source IP address.
 
 To summarise:
 
@@ -436,7 +436,7 @@ Let's see if `hello-world` is there in the k3d-docker-io-mirror...
 
 It is!
 
-The image is cached in our private registry mirror.
+Our private registry cached the image.
 
 ## Repeat The Experiment: 6 Clusters x 6 Pods x 3 Containers = 108 Image Pulls
 
@@ -516,7 +516,7 @@ Here's what happened exactly:
 1. **Dockerhub** responds with the sha256 digest of the Image Manifest.
 1. **docker-io-mirror** then responds with the sha256 digest of the Image Manifest.
 
-Since `hello-world:linux` already exists in the Private Registry, only one `HEAD` request to Dockerhub was required to fetch the identity of the Manifest - its sha256 digest.
+Since `hello-world:linux` already exists in the Private Registry, it made only one `HEAD` request to Dockerhub to fetch the identity of the Manifest - its sha256 digest.
 
 The manifest's sha256 digest is all that's needed to determine that nothing had changed. All of the required layers and configuration are already present on docker-io-mirror.
 
