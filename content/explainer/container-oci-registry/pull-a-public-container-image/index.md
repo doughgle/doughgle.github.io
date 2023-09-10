@@ -325,7 +325,9 @@ Notice the `response.header.docker-ratelimit-source`. Its `58.185.1.1`.
 
 Thats the public IP address of the network's internet gateway. Its the source address that DockerHub sees.
 
-This happens if Source Network Address Translation (SNAT) is configured for outbound internet requests.
+This happens if [Source Network Address Translation (SNAT)](https://www.netfilter.org/documentation/HOWTO/NAT-HOWTO-6.html#ss6.1) is configured for outbound internet requests.
+
+This is the case on your home internet router. In particular, it uses Masquerading, which is a special case of SNAT where the source address need not be specified - ideal for cases when the networ interface is assigned a public IP address dynamically.
 
 ![Diagram showing Many Clusters share the same Source IP address of the NAT Gateway](./4-pulls-from-snat-gateway.drawio.svg "Is that a hole in your network or is it a gateway to heaven?!")
 
