@@ -4,7 +4,7 @@ date: 2023-07-22T22:22:49+08:00
 publishdate: 2023-09-10T14:30:49+08:00
 tags: ['kubernetes', 'oci', 'registry', 'runtime', container', 'cri', 'distribution', 'CRD']
 comments: true
-draft: true
+draft: false
 ---
 
 Aisha's a Platform Engineer.
