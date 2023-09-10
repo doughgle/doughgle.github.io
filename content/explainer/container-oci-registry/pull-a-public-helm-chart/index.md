@@ -71,8 +71,6 @@ But the private registry can. It operates as a pull-through cache for public ima
 
 The cluster must pull images from the private registry.
 
-The push-based Deployer machine has access to the public internet (for now).
-
 ## Better Update All The Image Refs To Pull From The Private Registry
 
 The default values file reveals images from 2 different public registries: `quay.io` and `docker.io`.
@@ -153,7 +151,7 @@ There's at least 5* containers here that weren't visible in the default values f
 
 > \* (`calico-node-9g7mg` is a Init Container, stuck at pull. Once it completes, there may be more.)
 
-Examining the events, we can see DNS lookup fails, preventing pull of all container images.
+Examining the events, we can see Containerd failed to send to a HEAD request to `registry-1.docker.io`, preventing pull of all container images.
 
 ```sh
 kubectl get events -n calico-system
@@ -250,13 +248,15 @@ calico-apiserver-75fb78b976-chsfj   1/1     Running   10 (123m ago)   2m41s
 
 ---
 
-## Problem Statement: You Need To Know All The Images Used By A Helm Chart Up Front
+## Problem Statement: Devs Need To Identify & Override Image Registries
 
-Now that's tedious and non-standard across Helm Charts and Kubernetes Operators.
+For every public Helm Chart, devs need to update all the image refs to point to our private registry.
 
-Every time we use a public chart, we need to update all the image refs to point to our private registry.
+That's not standardised across Helm Charts and Kubernetes Operators.
 
 Each chart may do it differently. If there are Custom Resource Definitions, there are *custom* ways to specify image registries.
+
+It can take a tedious number tries to deploy and update image refs until a public chart works. 
 
 What alternatives do we have? Is there a better way?
 
