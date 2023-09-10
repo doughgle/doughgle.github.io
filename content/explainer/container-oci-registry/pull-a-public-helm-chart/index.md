@@ -59,7 +59,7 @@ NAME                              READY   STATUS         RESTARTS   AGE
 tigera-operator-5f4668786-tzjkp   0/1     ErrImagePull   0          7s
 ```
 
-## Oh Yeah, Forgot. Route To The Internet Is Blocked.
+## Oh Yeah, Forgot. Route To The Internet Is Blocked
 
 ![Architecture Diagram Showing Private Kubernetes Cluster](./1-route-to-the-internet-is-blocked.drawio.svg "No Pulling Down In Public")
 
@@ -73,7 +73,7 @@ The cluster must pull images from the private registry.
 
 The push-based Deployer machine has access to the public internet (for now).
 
-## Better Update All The Image Refs To Pull From The Private Registry...
+## Better Update All The Image Refs To Pull From The Private Registry
 
 The default values file reveals images are coming from 2 different public registries: `quay.io` and `docker.io`.
 
@@ -254,7 +254,7 @@ Every time we use a public chart, we need to update all the image refs to point 
 
 Each chart may do it differently. If there are Custom Resource Definitions, there are *custom* ways to specify image registries.
 
-What alternatives do we have? Is there a better way? 
+What alternatives do we have? Is there a better way?
 
 Some options here:
 
@@ -276,6 +276,7 @@ We're learning about OCI registries, so let's try that option...
 1. In k3d, we can configure Containerd to use a Resgitry Mirror by configuring `registries.yaml` in the cluster spec:
 
 `k3d-dev-private-use-registry-mirror.yaml`
+
 ```yaml
 apiVersion: k3d.io/v1alpha5
 kind: Simple
@@ -428,6 +429,7 @@ helm repo add cert-manager https://charts.jetstack.io
 ```sh
 helm repo update cert-manager 
 ```
+
 ```sh
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "cert-manager" chart repository
@@ -437,7 +439,7 @@ Update Complete. ⎈Happy Helming!⎈
 ### Create The CRDs In The Cluster
 
 ```sh
-$ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml
 ```
 
 ```sh
@@ -521,7 +523,8 @@ We can enable that, while still complying with standard registry policy, by conf
 
 ---
 
-# Uh Oh! The Private Registry Is Unavailable!
+# Uh Oh! The Private Registry Is Unavailable
+
 Detection: how do we distinguish between registry unavailable and image not found?
 
 good job we prepared for this failure mode! we can mitigate with a failover.
@@ -535,6 +538,7 @@ But where do we make that switch? Options:
 What's the MTRS for each?
 
 ## Mirror Mirror
+
 Kubernetes is self healing. It runs control loops that retry with a backoff algorithm. When the problem is corrected, kubernetes will recover.
 
 But this is not a cluster layer failure, its a container layer failure.
@@ -555,7 +559,7 @@ Options:
 
     1. convert chart index to OCI transparently
 
-1. proxy cache for public oci charts 
+1. proxy cache for public oci charts
 
 This time its a k8s-layer failure mode.
 
