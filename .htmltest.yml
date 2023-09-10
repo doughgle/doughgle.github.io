@@ -8,6 +8,7 @@ IgnoreURLs:
 - "https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/"
 - "^/misc/js/script.js$"
 - "https://www.udemy.com/course/writing-for-business/"
+- "https://www.netfilter.org/documentation/HOWTO/NAT-HOWTO-6.html"
 IgnoreHTTPS:
 - "http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod"
 IgnoreAltMissing: true
