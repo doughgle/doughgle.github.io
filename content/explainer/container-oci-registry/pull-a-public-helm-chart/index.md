@@ -2,7 +2,7 @@
 title: "Exploring OCI Registries: Chapter 2: Pull a Public Helm Chart"
 date: 2023-07-22T22:22:49+08:00
 publishdate: 2023-09-10T14:30:49+08:00
-tags: ['oci', 'registry', 'container', 'runtime', 'cri', 'distribution', 'kubernetes']
+tags: ['kubernetes', 'oci', 'registry', 'runtime', container', 'cri', 'distribution', 'CRD']
 comments: true
 draft: true
 ---
@@ -33,7 +33,8 @@ Aisha picked the [Tigera Operator for Calico](https://artifacthub.io/packages/he
 Let's install it...
 
 ```sh
-helm repo add projectcalico https://docs.projectcalico.org/charts/
+helm repo add projectcalico \
+https://docs.projectcalico.org/charts/
 ```
 
 ```sh
@@ -60,17 +61,17 @@ tigera-operator-5f4668786-tzjkp   0/1     ErrImagePull   0          7s
 
 ## Oh Yeah, Forgot. Route To The Internet Is Blocked.
 
-![alt](./1-route-to-the-internet-is-blocked.drawio.svg)
+![Architecture Diagram Showing Private Kubernetes Cluster](./1-route-to-the-internet-is-blocked.drawio.svg "No Pulling Down In Public")
 
-The Cluster can't pull from the public internet.
+The *private* kubernetes cluster can't pull from the *public* internet.
 
-The Private registry can. 
+But the private registry can. It operates as a pull-through cache for public images.
 
-The cluster must pull from the private registry.
+![Architecture Diagram Showing Kubernetes Cluster Pull From Private OCI Registry Proxy](./2-private-cluster-private-registry-public-deployer-cover.drawio.svg "Push And Pull: Like Docking a boat")
 
-The Push-based deployer has access to the public internet (for now).
+The cluster must pull images from the private registry.
 
-![alt](./2-private-cluster-private-registry-public-deployer-cover.drawio.svg)
+The push-based Deployer machine has access to the public internet (for now).
 
 ## Better Update All The Image Refs To Pull From The Private Registry...
 
@@ -210,13 +211,13 @@ version: v3.26.1
 
 Nope. No subcharts defined here.
 
-## Oh Wait, There Are Still Some Images As Part Of Crd, Update Them Too
+## Oh Wait, There Are Still Some Images As Part Of CRD, Update Them Too
 
-### Override the registry in the Installation CRD
+### Override The Registry In The Installation CRD
 
 Turns out the answer is in the [Installation CRD Specification](https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.InstallationSpec) as hinted in the comment of the default values.
 
-![alt](./installation-crd-spec.png)
+![Screenshot Showing Calico Installation CRD Specification](./4-installation-crd-spec.drawio.svg "Specify the installation spec at install-time :face_with_raised_eyebrow:")
 
 Let's override the `registry` value for the default Installation and try it
 
@@ -260,7 +261,7 @@ Some options here:
 1. We can use a mutating webhook to re-write the registry. For example, this [Kyverno Replace Image Registry ClusterPolicy](https://kyverno.io/policies/other/rec-req/replace-image-registry/replace-image-registry/).
 1. We can configure our private registry as a **Registry Mirror** in the container runtime.
 
-![alt](./3-solution-layers.drawio.svg)
+![Layer Diagram Showing OCI, Kubernetes and Helm Layers](./3-solution-layers.drawio.svg "Bake first layers first like a Kueh Lapis")
 
 This can be solved at the OCI Registry and Runtime layer.
 
@@ -268,9 +269,11 @@ We're learning about OCI registries, so let's try that option...
 
 ## Configure The Container Runtime To Use A Registry Mirror
 
-1. If you're using EKS, both Bottlerocket and AL2 use Conateinrd 1.6.19 https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-1.26. You can configure registry mirror like https://github.com/containerd/containerd/blob/v1.6.6/docs/hosts.md.
 1. In Containerd, we can [Configure An OCI-Compliant Registry Mirror](https://github.com/containerd/containerd/blob/9b4ed8acc2a04a3f8df140e79052d18b750d757e/docs/hosts.md#setup-a-local-mirror-for-docker) in `/etc/containerd/certs.d/docker.io/hosts.toml`.
-1. In k3d, we can use it in the clusters by configuring `registries.yaml` in the cluster spec:
+
+  > If you're using [EKS 1.27](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html#kubernetes-1.27), you're using Containerd. There's no alternative CRI.
+
+1. In k3d, we can configure Containerd to use a Resgitry Mirror by configuring `registries.yaml` in the cluster spec:
 
 `k3d-dev-private-use-registry-mirror.yaml`
 ```yaml
@@ -338,7 +341,7 @@ Describe the pod:
 kubectl describe pod nginx
 ```
 
-```sh
+```yaml
 Containers:
   nginx:
     Container ID:   containerd://a6f171d5af552b144cec25504f4fb661015509185d0c064568b23ee55a04cfaf
@@ -353,7 +356,7 @@ We can see the `Image ID` normalises the given image ref. In particular, it pref
 Analyse the Containerd logs to find the request:
 
 ```sh
-➜ docker cp k3d-dev-private-server-0:/var/lib/rancher/k3s/agent/containerd/containerd.log - | less
+docker cp k3d-dev-private-server-0:/var/lib/rancher/k3s/agent/containerd/containerd.log - | less
 ```
 
 Use `/` to search for the pattern `nginx`:
@@ -460,7 +463,10 @@ No need custom values files.
 A moment later, its up and running!
 
 ```sh
-➜ kubectl get po
+kubectl get po
+```
+
+```sh
 NAME                                       READY   STATUS    RESTARTS   AGE
 cert-manager-cainjector-69b9bf685d-z8czg   1/1     Running   0          50s
 cert-manager-697954868b-2p8bz              1/1     Running   0          50s
@@ -554,3 +560,7 @@ Options:
 This time its a k8s-layer failure mode.
 
 We wanna learn OCI, so let's choose the OCI Registry solution.
+
+---
+
+{{< cc-by >}}
