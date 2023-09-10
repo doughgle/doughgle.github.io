@@ -267,7 +267,7 @@ Some options here:
 
 ![Layer Diagram Showing OCI, Kubernetes and Helm Layers](./3-solution-layers.drawio.svg "Bake first layers first like a Kueh Lapis")
 
-This can be solved at the OCI Registry and Runtime layer.
+We can solve this at the OCI Registry and Runtime layer.
 
 We're learning about OCI registries, so let's try that option...
 
@@ -480,7 +480,7 @@ cert-manager-startupapicheck-nvcgz         1/1     Running   0          49s
 cert-manager-webhook-59f46cd9c6-l585n      1/1     Running   0          50s
 ```
 
-The images were mirrored.
+Containerd pulled the images from the mirror.
 
 Let's inspect all image refs in the chart's default values:
 
