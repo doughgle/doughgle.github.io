@@ -75,7 +75,7 @@ The push-based Deployer machine has access to the public internet (for now).
 
 ## Better Update All The Image Refs To Pull From The Private Registry
 
-The default values file reveals images are coming from 2 different public registries: `quay.io` and `docker.io`.
+The default values file reveals images from 2 different public registries: `quay.io` and `docker.io`.
 
 Looks like `registry` can be overridden for the operator.
 
@@ -94,7 +94,9 @@ calicoctl:
   tag: v3.26.1
 ```
 
-Let us update both to pull from our private registry proxies: `k3d-quay-io-mirror:5000` and `k3d-docker-io-mirror:5000` respectively.
+Let's update the `registry` for `tigera/operator` so that it pulls from our private registry proxy: `k3d-quay-io-mirror:5000`.
+
+Likewise, let's update the registry for `calicoctl` to pull from our other registry proxy, `k3d-docker-io-mirror:5000`.
 
 ```yaml
 tigeraOperator:
@@ -151,7 +153,7 @@ There's at least 5* containers here that weren't visible in the default values f
 
 > \* (`calico-node-9g7mg` is a Init Container, stuck at pull. Once it completes, there may be more.)
 
-Examining the events, we see a common problem preventing pull of all the container images - `dial tcp: lookup registry-1.docker.io`.
+Examining the events, we can see DNS lookup fails, preventing pull of all container images.
 
 ```sh
 kubectl get events -n calico-system
@@ -185,7 +187,9 @@ LAST SEEN   TYPE      REASON              OBJECT                                
 
 No need to analyse further. We know there's no route to the public internet from the cluster.
 
-Tigera Operator creates pods that pull images from DockerHub. Dockerhub is blocked. We wanna pull images from our private registry. How can we do that? :thinking:
+Tigera Operator creates pods that pull images from DockerHub. Dockerhub is blocked.
+
+We wanna pull images from our private registry. How can we do that? :thinking:
 
 ### Update All Images Used By Subcharts
 
@@ -352,7 +356,7 @@ Containers:
 
 We can see the `Image ID` normalises the given image ref. In particular, it prefixes with the default registry `docker.io` and default repository `library`.
 
-### It Appears To Be Pulled From Dockerhub, But What Happened At The Container Runtime Layer?
+### Kubernetes Logs The Image Source As Dockerhub, But What Happened At The Container Runtime Layer?
 
 Analyse the Containerd logs to find the request:
 
@@ -509,15 +513,13 @@ We didn't change anything. Helm just installed the Chart and pods started runnin
 
 Charts often have more than one container image. They may have one or more subcharts. They may package CRDs, which themselves reference container images.
 
-By configuring Registry Mirrors in Containerd, when we wanna experiment with a public helm chart on our cluster, Containerd automatically pulls public images from our private registry.
+If we configure our private OCI registry as a Registry Mirror, Containerd resolves public images to our private registry. Next time we wanna experiment with a public helm chart on our cluster, devs don't need to change any image refs!
 
 That's useful! An improvement in Usability.
 
 Less friction for Aisha and platform engineers.
 
-For Development and Test workflows, we wanna be open for quick and easy experimentation so that we can get fast feedback on our ideas.
-
-We wanna be **open for experimentation**.
+For Development and Test workflows, we wanna be **open for experimentation** so that we can get fast feedback on our ideas.
 
 We can enable that, while still complying with standard registry policy, by configuring Registry Mirrors in the CRI.
 
