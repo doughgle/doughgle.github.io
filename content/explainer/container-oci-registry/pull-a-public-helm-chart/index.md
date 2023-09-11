@@ -260,16 +260,17 @@ It can take a tedious number tries to deploy and update image refs until a publi
 
 What alternatives do we have? Is there a better way?
 
-Some options here:
+## Some Possible Solutions
 
-1. We can use a mutating webhook to re-write the registry. For example, this [Kyverno Replace Image Registry ClusterPolicy](https://kyverno.io/policies/other/rec-req/replace-image-registry/replace-image-registry/).
-1. We can configure our private registry as a **Registry Mirror** in the container runtime.
+1. Override the registry in the chart values.
+1. Use a [Mutating Admission Webhook](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) to re-write the registry. For example, this [Kyverno Replace Image Registry ClusterPolicy](https://kyverno.io/policies/other/rec-req/replace-image-registry/replace-image-registry/).
+1. Configure the private registry as a **Registry Mirror** in the container runtime.
 
 ![Layer Diagram Showing OCI, Kubernetes and Helm Layers](./3-solution-layers.drawio.svg "Bake first layers first like a Kueh Lapis")
 
-We can solve this at the OCI Registry and Runtime layer.
+When building a platform, we should ask ourselves "Can we solve this at a layer below?"
 
-We're learning about OCI registries, so let's try that option...
+We're learning about OCI registries, so let's explore the OCI Registry and Runtime layer...
 
 ## Configure The Container Runtime To Use A Registry Mirror
 
