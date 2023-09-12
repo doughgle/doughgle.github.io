@@ -7,23 +7,6 @@ comments: true
 draft: false
 ---
 
-Aisha's a Platform Engineer.
-
-As a platform engineer, every day, Aisha upgrades and rolls back helm charts.
-
-That's an natural evolution from the time honoured IT tradition of turning it off and on again!
-
-Often, Platform Engineers just wanna experiment with a public Helm Chart.
-
-Today, Aisha's exploring a Kubernetes Network Plugin to enable teams to define network policies of their architecture within the kubernetes cluster. Each microservice should only access its own DB. It should stay on track, and not go "off the rails"!
-There's a need to constrain connectivity and enforce a layered architecture.
-
-Aisha likes to learn new tech by picking a use case and exploring things interactively.
-
-Aisha understands that "Interactive" is the fastest feedback!
-
----
-
 Let’s continue the journey into OCI registries with another common use case:
 
 ## Install A Public Helm Chart
