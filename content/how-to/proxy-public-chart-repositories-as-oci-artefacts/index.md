@@ -4,7 +4,7 @@ date: 2023-09-17T16:29:44+08:00
 publishdate: 2023-10-12T22:30:44+08:00
 tags: ['helm', 'chart', 'oci', 'proxy', 'verify', 'kubernetes', 'gpg', 'sigstore']
 comments: true
-draft: true
+draft: false
 ---
 
 **When you wanna pull a public helm chart from an OCI registry...**
