@@ -32,7 +32,7 @@ For example, the [Prometheus Community Helm Charts](https://github.com/orgs/prom
 
 ![Github Packages Showing Prometheus Chart Packaged As Oci Artifact](./github-packages-chart-as-oci-image.drawio.svg "OCI Registry as Storage")
 
-If the chart is available as an OCI artifact, you can pull the chart directly from the OCI registry with:
+If the chart is available as an OCI artifact, you can pull the chart directly from the OCI registry:
 
 ```sh
 helm pull \
@@ -60,7 +60,7 @@ If the chart isn't already published as an OCI artifact, read on...
 
 Example Chart: **tigera-operator**
 
-From [artifacthub.io -> Install page](https://artifacthub.io/packages/helm/projectcalico/tigera-operator?modal=install), copy **docs.projectcalico.org/charts/** (omit the **<https://>**)
+From [artifacthub.io -> Install page](https://artifacthub.io/packages/helm/projectcalico/tigera-operator?modal=install), copy **docs.projectcalico.org/charts/** (omit the **`https://`**)
 
 ![Install Dialog On artifacthub.io Showing Steps To Use Classic Helm Repo](./artifacthub-install-helm-chart-from-helm-repo.drawio.svg "OCI Chart Refs: two (steps) become one")
 
@@ -72,7 +72,7 @@ From [artifacthub.io -> Install page](https://artifacthub.io/packages/helm/proje
 
 `oci://chartproxy.container-registry.com/docs.projectcalico.org/charts/`**tigera-operator**
 
-Now you have an OCI chart ref that can be used with Helm v3.8 or greater.
+Now you can use the OCI chart ref Helm v3.8 or greater.
 
 ![Diagram Showing Anatomy Of An Oci Chart Reference](./1-public-chart-oci-image-reference-cover.drawio.svg "OCI Chart Ref: That's it!")
 
@@ -97,8 +97,6 @@ Digest: sha256:1e72052d066b8bcf3adbc5de201e05728b3be75c55b83506f78fc6691a2ce9c2
 
 Verify the chart comes from a **trusted publisher** and is **unmodified** *before* you install it!
 
-You can verify this in one step by verifying the chart is signed by a trusted publisher.
-
 Depending on the chart's signing method, verify using 1 of these 3 methods:
 
 1. Verify Using Cosign
@@ -109,7 +107,7 @@ Depending on the chart's signing method, verify using 1 of these 3 methods:
 
 Some charts may use the [Sigstore](https://www.sigstore.dev/) ecosystem to sign and verify.
 
-For example, the latest cloudbees-core chart can be verified with:
+For example, to verify the latest cloudbees-core chart:
 
 ```sh
 cosign verify --key https://cdn.cloudbees.com/keyring/cloudbees.pub helm.cloudbees.com/cloudbees-core:3.14250.0_ba76d23d3618
@@ -131,7 +129,7 @@ The [Cloudbees Docs](https://docs.cloudbees.com/docs/cloudbees-ci/latest/cloud-s
 
 ### 4.2. Verify The Provenance Layer In OCI Image
 
-The provenance file should be built in to the OCI Image as a Layer. For example the [Image Manifest for ArgoCD](https://github.com/argoproj/argo-helm/pkgs/container/argo-helm%2Fargo-cd/129237573?tag=5.46.6)
+If the chart use a provenance file, it can be built-in to the OCI Image as a Layer. For example the [Image Manifest for ArgoCD](https://github.com/argoproj/argo-helm/pkgs/container/argo-helm%2Fargo-cd/129237573?tag=5.46.6)
 
 ```sh
 helm pull --verify oci://ghcr.io/argoproj/argo-helm/argo-cd --version 5.46.6
@@ -162,7 +160,7 @@ Digest: sha256:c34662902fcd868e184849fdfc6d1fbc42bee770029d6a69520eb0671d5f74f1
 Error: failed to fetch provenance "oci://chartproxy.container-registry.com/argoproj.github.io/argo-helm/argo-cd:5.46.6.prov"
 ```
 
-We can see this explicitly by pulling with the `--prov` option:
+We can see this explicitly by pulling the `--prov` option:
 
 ```sh
 helm pull \
@@ -174,10 +172,10 @@ oci://chartproxy.container-registry.com/argoproj.github.io/argo-helm/argo-cd \
 ```sh
 Pulled: chartproxy.container-registry.com/argoproj.github.io/argo-helm/argo-cd:5.46.6
 Digest: sha256:d0139e91f899dd9502923ce0714b1a2eff2a07909fdf84e77aa78d6e733cb146
-WARNING: Verification not found for oci://chartproxy.container-registry.com/argoproj.github.io/argo-helm/argo-cd: manifest does not contain a layer with mediatype application/vnd.cncf.helm.chart.provenance.v1.prov
+WARNING: Verification not found for oci://chartproxy.container-registry.com/argoproj.github.io/argo-helm/argo-cd: manifest does not contain a layer mediatype application/vnd.cncf.helm.chart.provenance.v1.prov
 ```
 
-This time, Helm clarifies that the layer is missing: "manifest does not contain a layer with mediatype application/vnd.cncf.helm.chart.provenance.v1.prov"
+This time, Helm clarifies that the layer is missing: "manifest does not contain a layer mediatype application/vnd.cncf.helm.chart.provenance.v1.prov"
 
 > ### Side Quest: Query Public Chart Manifest
 >
@@ -277,7 +275,7 @@ Chart Hash Verified: sha256:4422d42afae57c4b7a4d006e132068fd2cf6debf008e48132df1
 
 If you're in an air-gapped environment, you can put a private oci registry proxy in front of the public chart proxy.
 
-That way, requests to the public chart proxy are de-duplicated and charts are cached logically closer to their point of use.
+That way, you can de-duplicate requests to the public chart proxy and cache charts logically closer to their point of use.
 
 Here's a example using [k3d](https://k3d.io/v5.6.0/usage/registries/#creating-a-registry-proxy-pull-through-registry) to prototype a pull-through registry.
 
