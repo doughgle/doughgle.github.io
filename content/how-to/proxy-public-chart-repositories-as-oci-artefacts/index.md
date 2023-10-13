@@ -60,7 +60,7 @@ If the chart isn't already published as an OCI artifact, read on...
 
 Example Chart: **tigera-operator**
 
-From [artifacthub.io -> Install page](https://artifacthub.io/packages/helm/projectcalico/tigera-operator?modal=install), copy **docs.projectcalico.org/charts/** (omit the **https://**) 
+From [artifacthub.io -> Install page](https://artifacthub.io/packages/helm/projectcalico/tigera-operator?modal=install), copy **docs.projectcalico.org/charts/** (omit the **<https://>**)
 
 ![Install Dialog On artifacthub.io Showing Steps To Use Classic Helm Repo](./artifacthub-install-helm-chart-from-helm-repo.drawio.svg "OCI Chart Refs: two (steps) become one")
 
@@ -115,7 +115,6 @@ For example, the latest cloudbees-core chart can be verified with:
 cosign verify --key https://cdn.cloudbees.com/keyring/cloudbees.pub helm.cloudbees.com/cloudbees-core:3.14250.0_ba76d23d3618
 ```
 
-
 ```sh
 [{"critical":{"identity":{"docker-reference":"helm-internal.artifacts.cloudbees.com/cloudbees-core"},"image":{"docker-manifest-digest":"sha256:b7aab6f5a3e87035eb5af8cfbe2280d4cd564d1f6c643d6f4007586348d4f435"},"type":"cosign container image signature"},"optional":{"Bundle":{"SignedEntryTimestamp":"MEUCIFW76mN5GK6PfIMzbqtYKKecCNtxUIXsq2EwQJPPmJIoAiEAvRpja9pFs0hmwpeFlCeEt5BMvrtQIfSEMJ09j8w9Il8=","Payload":{"body":"eyJhcGlWZXJzaW9uIjoiMC4wLjEiLCJraW5kIjoiaGFzaGVkcmVrb3JkIiwic3BlYyI6eyJkYXRhIjp7Imhhc2giOnsiYWxnb3JpdGhtIjoic2hhMjU2IiwidmFsdWUiOiJjNjI5YjVhZDAxNjQ4MWE4MDQzMWFhNzVjODFmMjk3OGJmZGM1YWQyMjQ2YTAwMmVhYzg1MWFkMGE3OWRmMDcyIn19LCJzaWduYXR1cmUiOnsiY29udGVudCI6Ik1FVUNJUUNmdEFuaFE1VUFRODdZNEtqOURVbHVjM05LcXR4RHJhM3pGYkxWbnROK2lRSWdiUlY5UloyZjNqeWcrYUNrZDNpRWZtT0lyUmtUdUNtMUhuMGNOOE5wd3Y4PSIsInB1YmxpY0tleSI6eyJjb250ZW50IjoiTFMwdExTMUNSVWRKVGlCUVZVSk1TVU1nUzBWWkxTMHRMUzBLVFVacmQwVjNXVWhMYjFwSmVtb3dRMEZSV1VsTGIxcEplbW93UkVGUlkwUlJaMEZGYVVsRU1UaE1OR2R1ZEhCbVJXUmFVekl3SzB0WVpUVTVOalZqYWdwSmVrRTFjalJZTWxST1VVcFFiVWx1VGpkbmJXTlJaMngxWWxKblprRXZkMDVNZEd4cEx6TjNVak5xWlhCbFNIVnNZak16VTJKWGIwNTNQVDBLTFMwdExTMUZUa1FnVUZWQ1RFbERJRXRGV1MwdExTMHRDZz09In19fX0=","integratedTime":1694639884,"logIndex":36228316,"logID":"c0d23d6ad406973f9559f3ba2d1ca01f84147d8ffc5b8445c224f98b9591801d"}}}}]
 
@@ -163,7 +162,7 @@ Digest: sha256:c34662902fcd868e184849fdfc6d1fbc42bee770029d6a69520eb0671d5f74f1
 Error: failed to fetch provenance "oci://chartproxy.container-registry.com/argoproj.github.io/argo-helm/argo-cd:5.46.6.prov"
 ```
 
-We can see this explicitly by pulling with the `--prov` option: 
+We can see this explicitly by pulling with the `--prov` option:
 
 ```sh
 helm pull \
@@ -181,16 +180,16 @@ WARNING: Verification not found for oci://chartproxy.container-registry.com/argo
 This time, Helm clarifies that the layer is missing: "manifest does not contain a layer with mediatype application/vnd.cncf.helm.chart.provenance.v1.prov"
 
 > ### Side Quest: Query Public Chart Manifest
-> 
+>
 > You can query an OCI chart manifest from the public chart proxy like this:
-> 
+>
 > ```sh
 > curl https://chartproxy.container-registry.com/v2/argoproj.github.io/argo-helm/argo-cd/manifests/5.46.6 \
 >   --silent \
 >   --location \
 >   | jq
 > ```
-> 
+>
 > ```json
 > {
 >   "schemaVersion": 2,
