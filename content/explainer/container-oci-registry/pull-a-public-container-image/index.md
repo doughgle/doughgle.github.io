@@ -363,7 +363,7 @@ We're gonna choose option #2, but we wont use a vendor product because we wanna 
 The simplest OCI Registry is a container running the `registry:2` image from [distribution/distribution](https://github.com/distribution/distribution/releases) :
 
 ```sh
-➜ k3d registry create docker-io-mirror \
+k3d registry create docker-io-mirror \
 --image docker.io/library/registry:2 \
 --port 0.0.0.0:5005 \
 --proxy-remote-url https://registry-1.docker.io \
