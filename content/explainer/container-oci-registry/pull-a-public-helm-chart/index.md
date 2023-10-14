@@ -1,11 +1,15 @@
 ---
-title: "Exploring OCI Registries: Chapter 2: Pull a Public Helm Chart"
+title: "Exploring OCI Registries: Chapter 2: Install a Public Helm Chart on a Private Kubernetes Cluster"
 date: 2023-07-22T22:22:49+08:00
 publishdate: 2023-09-10T14:30:49+08:00
 tags: ['kubernetes', 'oci', 'registry', 'runtime', container', 'cri', 'distribution', 'CRD']
 comments: true
 draft: false
 ---
+
+**When you wanna install a *public* helm chart on a *private* kubernetes cluster…**
+
+> See also [How To Pull And Verify Any Public Helm Chart From An OCI Registry](../../../how-to/proxy-public-chart-repositories-as-oci-artefacts/)
 
 Let’s continue the journey into OCI registries with another common use case:
 
