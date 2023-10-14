@@ -497,6 +497,8 @@ We didn't change anything. Helm just installed the Chart and pods started runnin
 
 Charts often have more than one container image. They may have one or more subcharts. They may package CRDs, which themselves reference container images.
 
+The problem of discovering images required by a chart is acknowledged in the [Helm Improvement Proposal 0015](https://github.com/helm/community/blob/main/hips/hip-0015.md).
+
 If we configure our private OCI registry as a Registry Mirror, Containerd resolves public images to our private registry. Next time we wanna experiment with a public helm chart on our cluster, devs don't need to change any image refs!
 
 That's useful! An improvement in Usability.
