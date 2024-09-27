@@ -248,7 +248,7 @@ To summarise:
 |authenticated users| 200 pulls per 6 hour period.|
 |Users with a paid Docker subscription| 5000 pulls per day.|
 
-We can visualise the remaining requests with the handy [Docker Hub Rate Limit Exporter for Prometheus](https://gitlab.com/gitlab-de/unmaintained/docker-hub-limit-exporter/?_gl=1%2ay0hdof%2a_ga%2aMTY2MTE5MTAxOC4xNjcxMzQ4ODM1%2a_ga_ENFH3X7M5Y%2aMTY4ODgyNTU4NS42LjAuMTY4ODgyNTYwNC4wLjAuMA..).
+We can visualise the remaining requests with the handy [Docker Hub Rate Limit Exporter for Prometheus](https://gitlab.com/gitlab-da/unmaintained/docker-hub-limit-exporter).
 
 ![Grafana Dashboard Showing we hit the Dockerhub Pull Limit!](./hit-the-limit.png "Blow a ton: 100 image pull requests gone in 2 mins!")
 

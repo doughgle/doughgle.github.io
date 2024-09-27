@@ -250,7 +250,7 @@ What alternatives do we have? Is there a better way?
 ## Some Possible Solutions
 
 1. Override the registry in the chart values.
-1. Use a [Mutating Admission Webhook](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) to re-write the registry. For example, this [Kyverno Replace Image Registry ClusterPolicy](https://kyverno.io/policies/other/rec-req/replace-image-registry/replace-image-registry/).
+1. Use a [Mutating Admission Webhook](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) to re-write the registry. For example, this [Kyverno Replace Image Registry ClusterPolicy](https://release-1-9-0.kyverno.io/policies/other/replace_image_registry/replace_image_registry/).
 1. Configure the private registry as a **Registry Mirror** in the container runtime.
 
 ![Layer Diagram Showing OCI, Kubernetes and Helm Layers](./3-solution-layers.drawio.svg "Bake first layers first like a Kueh Lapis")
