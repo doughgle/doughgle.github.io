@@ -5,10 +5,6 @@ publishdate: 2024-09-27T04:55:35+08:00
 tags: ['github', 'copilot', 'pair-programming', 'ctf', 'cybersecurity', 'security', 'overthewire', 'problem-solving']
 comments: true
 draft: false
-description: 
- Who is my reader? Amin.
- What do I want them to do? Play overthewire CTF challenges with Copilot. 
- Why should they do it? learn, have confidence in your strengths, apply AI, smile!
 ---
 
 ## Introduction
