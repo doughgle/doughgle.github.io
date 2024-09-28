@@ -251,7 +251,7 @@ I also noticed copilot hinted (quite subtly) at a glaring vulnerability in the c
 
 ![alt text](image-9.png)
 
-> Feedback to [Github](github.com): The vulnerability hint is too subtle! What if Copilot enables people to configure the visibility and assertiveness of such hints?
+> Feedback to [Github](https://github.com): The vulnerability hint is too subtle! What if Copilot enables people to configure the visibility and assertiveness of such hints?
 
 Let's look at the script and, once again, apply the context of our target env. this time we'll request a few changes incrementally:
 
