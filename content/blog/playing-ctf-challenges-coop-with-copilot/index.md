@@ -7,9 +7,7 @@ comments: true
 draft: false
 ---
 
-Github Copilot is at the "Peak of Inflated Expectations" for many, including me.
-
-With all the Copilot hype, it's easy to imagine unicorns assisting programmers in their world of joy!
+Github Copilot is at the "Peak of Inflated Expectations" for many, including me. With all the Copilot hype, it's easy to imagine unicorns assisting programmers in their world of joy!
 
 Over the last few weekends, I sat down to deliberately pair with and learn about GitHub's AI pair programmer.
 
@@ -19,7 +17,9 @@ In this blog, I played the krypton wargame - a series of cryptography challenges
 
 After a few false starts, we managed to reveal the encryption key, decrypt all the ciphertexts, and find the password to the next level!
 
-I found, if you engage Copilot Chat from the beginning with the problem statement, it helps get a result with less waste. Reference the files explicitly, ask it to propose the solution. Ask it to share the steps. If you're open to the solution it suggests, even if its not what you had in mind, you can steer it. Request changes on the generated code. You can't ignore the need to understand the problem and solution domain. You need to apply the context you know to the responses.
+I found, if you engage Copilot Chat from the beginning with the problem statement, it helps get a result with less waste. Reference the files explicitly. Ask it to propose the solution. Ask it to share the steps. If you're open to the solution it suggests, even if its not what you had in mind, you can steer it.
+
+I also found, you can't ignore the need to understand the problem and solution domain. You need to apply the context you know to the responses.
 
 You can apply learnings from this article to:
 
