@@ -154,7 +154,7 @@ In step 3 of its plan, Copilot asked me to calculate the shift for each column. 
 
 ![alt text](image-5.png)
 
-So I asked again: 
+So let's ask again: 
 
 > please show the steps to calculate the shift for each column
 
@@ -162,8 +162,8 @@ I remembered bash doesn't handle numbers well. And the generated code was hard f
 
 This time it came back with a script long enough that it belonged in a file.
 
-Save the script to a file in the krypton server. I used a heredoc to get it into the terminal.
-    
+Save the script to a file in the krypton server.
+
 But on execution, it failed:
 
 ```sh
@@ -178,15 +178,15 @@ with open(f'freq_analysis_{i}.txt', 'r') as file:
 FileNotFoundError: [Errno 2] No such file or directory: 'freq_analysis_1.txt'
 ```
 
-Again, I had to adjust the file paths to the context of the krypton target environment.
+Again, we have to adjust the file paths to the context of the krypton target environment.
 
 ## Apply The Context You Know To The Responses Again
 
-So we need to adjust the filepaths again. This time, I asked copilot inline in the editor to set the temp directory to find input files. 
+So we need to adjust the filepaths again. Let's ask copilot inline in the editor to set the temp directory to find input files. 
 
 > set to same as script dir by default.
 
-Now need to replace the script in the target env again.
+Now we need to replace the script in the target env again.
 
 
 ```sh
@@ -204,9 +204,9 @@ Determined key shifts: [5, 17, 19, 10, 4, 24]
 ```
 
 It runs!
-But the output is unintuitive to me. I wanna see the key letter, not so much the shifts.
+But the output is unintuitive. You wanna see the key letter, not so much the shifts.
 
-I asked in chat
+We can ask in chat
 
 ![alt text](image-6.png)
 
@@ -237,13 +237,13 @@ For step 4 of the plan, copilot chat had a bug in it's formatting:
 
 ![alt text](image-4.png)
 
-I politely asked to repeat and fix the formatting:
+Let's politely ask to repeat and fix the formatting:
 
 ![alt text](image-8.png)
 
 This time we got a python script to decrypt a Vigenère cipher.
 
-I also noticed copilot hinted (quite subtly) at a glaring vulnerability in the code - the key is hardcoded right next to the decrypt function!
+You may also notice copilot hinted (quite subtly) at a glaring vulnerability in the code - the key is hardcoded right next to the decrypt function!
 
 ![alt text](image-9.png)
 
@@ -271,7 +271,7 @@ cat found1 | python3 decrypt-viginere-ciphertext.py AAAAAA
 THPSOLDIPRWITHEHEGREPNWHISVERSLEOTHEMTSROUGHEHESTRPETSOFEHEEMECALDCIEYUNTIWTHEYRPACHEDEHEROOXWHEREEHEGUACDIANOQTHEGAEESLIVPDTHISZFFICECUNLOCVEDTHETRSPECEACLESEOPUTTSEMBACVINHISRREATBZXANDTSENHEPZLITELJOPENEOTHEGAEEFOROFRFRIEYDSWHINHROADWEADSTZTHEWINKEDWIECHOFTSEWESTLSKEDDZROTHYEHEREIDNOROAOANSWECEDTHERUARDILNOFTHPGATESYOONEEGERWISSESTOGZTHATWLYHOWTSENAREHETOFIYDHERIYQUIREOTHEGICLTHATHILLBEPASYREALIEDTSEMANFZRWHENDHEKNOHSYOUACEINTHPCOUNTCYOFTHPWINKIPSSHEWTLLFINOYOUANOMAKEYZUALLHPRSLAVPSPERHLPSNOTDAIDTHPSCARENROWFOCWEMEAYTODESEROYHECOHTHAEISDIFQERENTDAIDTHPGUARDTANOFTSEGATEDNOONESASEVECDESTRZYEDHECBEFORPSOINAEURALLJTHOUGSTSHEWZULDMAVESLAVPSOFYOFASSHESASOFTSERESTMUTTAKPCAREFZRSHEIDWICKEOANDFIPRCEANOMAYNOEALLOWJOUTODPSTROYSERKEEATOTHEHESTWHPRETHEDUNSETDANDYOFCANNOEFAILTZFINDHPRTHEYEHANKEOHIMANOBADEHTMGOODMYEANDEURNEDEOWARDEHEWESEWALKIYGOVERQIELDSZFSOFTRRASSDZTTEDHPREANDEHEREWTTHDAIDIESANOBUTTECCUPSDZROTHYDTILLWZRETHEARETTYDILKDRPSSSHESADPUTZNINTHPPALACPBUTNOHTOHERDURPRIDESHEFZUNDITHASNOLZNGERGCEENBUEPUREWSITETHPRIBBOYAROUNOTOTOSYECKHAOALSOLZSTITSRREENCZLORANOWASASHHITEADDOROTSYSDREDSTHEEXERALDNITYWADSOONLPFTFARMEHINDLSTHEYLDVANCPDTHEGCOUNDBPCAMERZUGHERLNDHILWIERFOCTHEREHERENOQARMSNZRHOUSPSINTHTSCOUNERYOFTSEWESTLNDTHERROUNDHASUNTTLLEDIYTHEAFEERNOOYTHESUYSHONESOTINTSEIRFANESFOREHEREWPRENOTCEESTOZFFERTSEMSHAOESOTHLTBEFOCENIGHEDOROTSYANDTZTOANDEHELIOYWERETTREDANOLAYDOHNUPONEHEGRADSANDFPLLASLPEPWITSTHEWOZDMANAYDTHESNARECRZWKEEPTNGWATNH
 ```
 
-Hmmm this doesn't make sense. But I can see snippets of english in there. Actually its hard to read in all caps without punctuation.
+Hmmm this doesn't make sense. But you can see snippets of english in there. Actually its hard to read in all caps without punctuation.
 
 One technique we can apply is to make the plaintext lowercase for the part of the key we're confident about. That way its easier to see the english words.
 
@@ -285,7 +285,7 @@ cat found1 | python3 decrypt-viginere-ciphertext.py AAAaaa
 THPsolDIPrwiTHEhegREPnwhISVersLEOtheMTSrouGHEhesTRPetsOFEheeMECaldCIEyunTIWtheYRPachEDEherOOXwheREEhegUACdiaNOQtheGAEeslIVPdthISZffiCECunlOCVedtHETrspECEaclESEopuTTSembACVinhISRreaTBZxanDTSenhEPZlitELJopeNEOtheGAEefoROFrfrIEYdswHINhroADWeadSTZtheWINkedWIEchoFTSeweSTLskeDDZrotHYEherEIDnorOAOansWECedtHERuarDILnofTHPgatESYoonEEGerwISSestOGZthaTWLyhoWTSenaREHetoFIYdheRIYquiREOtheGIClthATHillBEPasyREAlieDTSemaNFZrwhENDhekNOHsyoUACeinTHPcouNTCyofTHPwinKIPsshEWTllfINOyouANOmakEYZualLHPrslAVPspeRHLpsnOTDaidTHPscaRENrowFOCwemEAYtodESEroyHECohtHAEisdIFQereNTDaidTHPguaRDTanoFTSegaTEDnooNESaseVECdesTRZyedHECbefORPsoiNAEuraLLJthoUGStshEWZuldMAVeslAVPsofYOFassHESasoFTSereSTMuttAKPcarEFZrshEIDwicKEOandFIPrceANOmayNOEallOWJoutODPstrOYSerkEEAtotHEHestWHPretHEDunsETDandYOFcanNOEfaiLTZfinDHPrthEYEhanKEOhimANObadEHTmgoODMyeaNDEurnEDEowaRDEhewESEwalKIYgovERQielDSZfsoFTRrasSDZtteDHPreaNDEherEWTthdAIDiesANObutTECcupSDZrotHYDtilLWZretHEAretTYDilkDRPsssHESadpUTZninTHPpalACPbutNOHtohERDurpRIDeshEFZundITHasnOLZngeRGCeenBUEpurEWSiteTHPribBOYaroUNOtotOSYeckHAOalsOLZstiTSRreeNCZlorANOwasASHhitEADdorOTSysdREDsthEEXeraLDNityWADsooNLPftfARMehiNDLsthEYLdvaNCPdthEGCounDBPcamERZughERLndhILWierFOCtheREHereNOQarmSNZrhoUSPsinTHTscoUNEryoFTSeweSTLndtHERrouNDHasuNTTlleDIYtheAFEernOOYtheSUYshoNESotiNTSeirFANesfOREherEWPrenOTCeesTOZffeRTSemsHAOesoTHLtbeFOCeniGHEdorOTSyanDTZtoaNDEhelIOYwerETTredANOlayDOHnupONEhegRADsanDFPllaSLPepwITStheWOZdmaNAYdthESNareCRZwkeEPTngwATNh
 ```
 
-I can see a few 'the's in lowercase. That's the most common [trigram](https://en.wikipedia.org/wiki/Trigram) in english. But the rest is still hard to determine.
+You can see a few 'the's in lowercase. That's the most common [trigram](https://en.wikipedia.org/wiki/Trigram) in english. But the rest is still hard to determine.
 
 Let's try on the other found file
 
