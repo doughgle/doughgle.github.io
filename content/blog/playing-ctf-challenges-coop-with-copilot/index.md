@@ -13,7 +13,7 @@ With all the Copilot hype, it's easy to imagine unicorns assisting programmers i
 
 Over the last few weekends, I sat down to deliberately pair with and learn about GitHub's AI pair programmer.
 
-The exercise I had in mind was to play OverTheWire.org - one player capture the flag (CTF) challenges you can play from the comfort of your own terminal. The challenges help you learn and practice security concepts. If you like escape rooms, you'll probably like these!
+The exercise I had in mind was to play [OverTheWire.org](https://overthewire.org/wargames/) - one player capture the flag (CTF) challenges you can play from the comfort of your own terminal. The challenges help you learn and practice security concepts. If you like escape rooms, you'll probably like these!
 
 In this blog, I played the krypton wargame - a series of cryptography challenges. I wanted to see how Copilot could help solve the challenges.
 
