@@ -9,15 +9,17 @@ draft: false
 
 Github Copilot is at the "Peak of Inflated Expectations" for many, including me.
 
-With all the Copilot hype, it's easy to imagine the people using it are assisted by unicorns!
+With all the Copilot hype, it's easy to imagine unicorns assisting programmers in their world of joy!
 
 Over the last few weekends, I sat down to deliberately pair with and learn about GitHub's AI pair programmer.
 
-The exercise I had in mind was to play [OverTheWire.org](https://overthewire.org) - one player capture the flag (CTF) challenges you can play from the comfort of your own terminal. The challenges are designed to help you learn and practice security concepts. If you like escape rooms, you'll probably like these!
+The exercise I had in mind was to play OverTheWire.org - one player capture the flag (CTF) challenges you can play from the comfort of your own terminal. The challenges help you learn and practice security concepts. If you like escape rooms, you'll probably like these!
 
 In this blog, I played the krypton wargame - a series of cryptography challenges. I wanted to see how Copilot could help solve the challenges.
 
-I gave Copilot the problem statement, the given files, and asked it to propose the solution. Next, I asked it to share the steps. I requested a few changes on its generated code. Finally, we managed to reveal the encryption key, decrypt all the ciphertexts, and find the password to the next level!
+After a few false starts, we managed to reveal the encryption key, decrypt all the ciphertexts, and find the password to the next level!
+
+I found, if you engage Copilot Chat from the beginning with the problem statement, it helps get a result with less waste. Reference the files explicitly, ask it to propose the solution. Ask it to share the steps. If you're open to the solution it suggests, even if its not what you had in mind, you can steer it. Request changes on the generated code. You can't ignore the need to understand the problem and solution domain. You need to apply the context you know to the responses.
 
 You can apply learnings from this article to:
 
@@ -55,7 +57,7 @@ ssh -p 2231 krypton1@krypton.labs.overthewire.org
 krypton1@krypton.labs.overthewire.org's password: 
 ```
 
-We're greeted by krypton ASCII art and asked for the password. If we decode (not to be confused with decrypt) the base64-encoded string, we get the password.
+We're greeted by krypton ASCII art and asked for the password. If we decode (not decrypt) the base64-encoded string, we get the password.
 
 The aim of the game is to find the password for the next level.
 
@@ -63,7 +65,7 @@ The aim of the game is to find the password for the next level.
 
 Let's skip a few levels and jump to krypton4. This level has enough complexity to show the value of Copilot.
 
-> Note: The true key is masked throughout this article in accordance with [OverTheWire's rules](https://overthewire.org/rules).
+> Note: This article masks the true key under [OverTheWire's rules](https://overthewire.org/rules).
 
 After logging in, we see the following files:
 
@@ -148,7 +150,7 @@ Besides those differences, step 1 and 2 went well.
 
 ## Ask Again If It Missed Something
 
-In step 3 of its plan, Copilot asked me to calculate the shift for each column. However, it didn't show the terminal steps.
+In step 3 of its plan, Copilot asked me to calculate the shift for each column. But, it didn't show the terminal steps.
 
 ![alt text](image-5.png)
 
