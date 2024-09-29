@@ -7,25 +7,21 @@ comments: true
 draft: false
 ---
 
-## Introduction
+Github Copilot is at the "Peak of Inflated Expectations" for many, including me.
 
-Github Copilot is at the peak of inflated expectations for many, including me.
+With all the Copilot hype, it's easy to imagine the people using it are assisted by unicorns!
 
-Is it really so magical that a stream of glitter follows the code and it turns a software engineer's hair rainbow coloured?!
+Over the last few weekends, I sat down to deliberately pair with and learn about GitHub's AI pair programmer.
 
-I'm skeptical. Especially about the hair part!
-
-Over the last few weekends, I sat down to deliberately pair with and learn with GitHub's AI pair programmer.
-
-The exercise I had in mind was to play [OverTheWire.org](https://overthewire.org) - one player capture the flag (CTF) challenges you can play from the comfort of your own terminal. The challenges are designed to help you learn and practice security concepts.
+The exercise I had in mind was to play [OverTheWire.org](https://overthewire.org) - one player capture the flag (CTF) challenges you can play from the comfort of your own terminal. The challenges are designed to help you learn and practice security concepts. If you like escape rooms, you'll probably like these!
 
 In this blog, I played the krypton wargame - a series of cryptography challenges. I wanted to see how Copilot could help solve the challenges.
 
 I gave Copilot the problem statement, the given files, and asked it to propose the solution. Next, I asked it to share the steps. I requested a few changes on its generated code. Finally, we managed to reveal the encryption key, decrypt all the ciphertexts, and find the password to the next level!
 
-You can apply the learnings to:
+You can apply learnings from this article to:
 
-+ Work with Github Copilot in Chat, Editor and Terminal contexts. 
++ Work with Github Copilot in the Chat, Editor and Terminal. 
 + Have fun learning Linux and security concepts with OverTheWire!
 + Crack a Vigenère cipher knowing only the key length.
 
@@ -33,11 +29,7 @@ You can apply the learnings to:
 
 ## Quick Orientation To OverTheWire
 
-You connect to the game server over SSH by hostname and port. For a chosen game, that's provided in the top left corner of the page.
-
-Username identifies the level and each needs an ssh password to login.
-
-To show by example, let's play [Krypton Level 0](https://overthewire.org/wargames/krypton/krypton0.html):
+To show by example, let's play [Krypton Level 0](https://overthewire.org/wargames/krypton/krypton0.html). From the web page:
 
 > Welcome to Krypton! The first level is easy. The following string encodes the password using Base64:
 >
@@ -63,13 +55,15 @@ ssh -p 2231 krypton1@krypton.labs.overthewire.org
 krypton1@krypton.labs.overthewire.org's password: 
 ```
 
-We're greeted by krypton ASCII art and asked for the password. If we decode (distinct from decrypt) the base64-encoded string, we get the password.
+We're greeted by krypton ASCII art and asked for the password. If we decode (not to be confused with decrypt) the base64-encoded string, we get the password.
 
 The aim of the game is to find the password for the next level.
 
 ## Krypton4: Crack The Vigenère Cipher Given Only The Key Length
 
 Let's skip a few levels and jump to krypton4. This level has enough complexity to show the value of Copilot.
+
+> Note: The true key is masked throughout this article in accordance with [OverTheWire's rules](https://overthewire.org/rules).
 
 After logging in, we see the following files:
 
@@ -94,7 +88,7 @@ place, encrypted with the 6 letter key.
 Have fun!
 ```
 
-(\* the usual place is the file 'krypton5').
+\* the "usual place" is the file `krypton5`.
 
 ## Share The Problem Statement With Copilot
 
@@ -154,15 +148,15 @@ Besides those differences, step 1 and 2 went well.
 
 ## Ask Again If It Missed Something
 
-In step 3 of its plan, Copilot asked me to calculate the shift for each column without showing the terminal steps.
+In step 3 of its plan, Copilot asked me to calculate the shift for each column. However, it didn't show the terminal steps.
 
 ![alt text](image-5.png)
 
 So I asked again: 
 
-> please show the steps for calculate the shift for each column
+> please show the steps to calculate the shift for each column
 
-I remembered bash doesn't handle numbers well. And the generated code was hard for me to understand. I asked for a solution in python.
+I remembered bash doesn't handle numbers well. And the generated code was hard for me to understand. I asked for an alternative solution in python.
 
 This time it came back with a script long enough that it belonged in a file.
 
@@ -186,13 +180,12 @@ Again, I had to adjust the file paths to the context of the krypton target envir
 
 ## Apply The Context You Know To The Responses Again
 
-So we need to adjust the filepaths again. This time, I asked copilot inline in the script editor to set the temp directory to find input files. 
+So we need to adjust the filepaths again. This time, I asked copilot inline in the editor to set the temp directory to find input files. 
 
 > set to same as script dir by default.
 
 Now need to replace the script in the target env again.
 
-It runs!
 
 ```sh
 krypton4@bandit:/krypton/krypton4$ python3 /tmp/tmp.qMFHnR41zp/calculate-shifts.py
@@ -208,6 +201,7 @@ Column 6: Shift = 24
 Determined key shifts: [5, 17, 19, 10, 4, 24]
 ```
 
+It runs!
 But the output is unintuitive to me. I wanna see the key letter, not so much the shifts.
 
 I asked in chat
@@ -218,13 +212,13 @@ Now we got a script mod that ignored the path mods we just made - even though th
 
 ## Iterate On The Script In The Editor, Not In The Chat
 
-Let's ask the same inline on the script...
+Let's ask the same change, but inline on the editor...
 
 ![alt text](image-7.png)
 
 Ah, this time it got it. The result has better separation of concerns too. The code that formats the output is independent of the code that opens files and calculates shifts!
 
-Since there's a disconnect between the code in our IDE and the target env, need to go back to edit in the term.
+Since there's a disconnect between the code in our IDE and the target env, we need to go back to edit in the terminal.
 
 Great! Now we have the key letters!
 
@@ -233,7 +227,7 @@ Corresponding letters: ['A', 'A', 'A', 'A', 'A', 'A']
 ```
 > Note: Key redacted to play by https://overthewire.org/rules. It's not 'AAAAAA'!
 
-That's the key according to frequency analysis. Let try using the key to decrypt the ciphertext... step 4 of Copilot's master plan..!
+That's the key according to frequency analysis. Let try using the key to decrypt the ciphertext... i.e. Step 4 of Copilot's master plan..!
 
 ## Iterate On The Plan In The Chat, Not The Editor
 
@@ -247,13 +241,13 @@ I politely asked to repeat and fix the formatting:
 
 This time we got a python script to decrypt a Vigenère cipher.
 
-I also noticed copilot hinted (quite subtly) at a glaring vulnerability in the code - the key is right next to the decrypt function!
+I also noticed copilot hinted (quite subtly) at a glaring vulnerability in the code - the key is hardcoded right next to the decrypt function!
 
 ![alt text](image-9.png)
 
 > Feedback to [Github](https://github.com): The vulnerability hint is too subtle! What if Copilot enables people to configure the visibility and assertiveness of such hints?
 
-Let's look at the script and, once again, apply the context of our target env. this time we'll request a few changes incrementally:
+Let's look at the script and, once again, apply the context of our target env. This time we'll request a few changes incrementally in the editor:
 
 > read ciphertext from stdin
 
@@ -263,12 +257,12 @@ Let's look at the script and, once again, apply the context of our target env. t
 
 ![alt text](image-11.png)
 
-In fact, we actually don't need to copy to the target env. I already copied the ciphertexts locally to give Copilot the context! Why don't we just apply that and skip the disconnect?!
+Now I realise, we don't need to copy to the target env! We already copied the ciphertexts locally to give Copilot the context. Why don't we just apply that and skip the env disconnect?!
 
 Here's the result of decrypting `found1` with the key 'AAAAAA'
 
 ```sh
-❯ cat found1 | python3 decrypt-viginere-ciphertext.py AAAAAA
+cat found1 | python3 decrypt-viginere-ciphertext.py AAAAAA
 ```
 
 ```sh
@@ -277,12 +271,12 @@ THPSOLDIPRWITHEHEGREPNWHISVERSLEOTHEMTSROUGHEHESTRPETSOFEHEEMECALDCIEYUNTIWTHEYR
 
 Hmmm this doesn't make sense. But I can see snippets of english in there. Actually its hard to read in all caps without punctuation.
 
-One technique we can apply is to make the plaintext lowercase for the part of the key we're confident about. that way its easier to see the english words.
+One technique we can apply is to make the plaintext lowercase for the part of the key we're confident about. That way its easier to see the english words.
 
-Copilot helped mod the script inline. here's the result:
+Copilot helped mod the script inline. Here's the result:
 
 ```sh
-➜ cat found1 | python3 decrypt-viginere-ciphertext.py AAAaaa
+cat found1 | python3 decrypt-viginere-ciphertext.py AAAaaa
 ```
 
 ```sh
@@ -294,14 +288,14 @@ I can see a few 'the's in lowercase. That's the most common [trigram](https://en
 Let's try on the other found file
 
 ```sh
-➜ cat found2 | python3 decrypt-viginere-ciphertext.py AAAaaa
+cat found2 | python3 decrypt-viginere-ciphertext.py AAAaaa
 ```
 
 ```sh
 THPyweREZbliGEOtocAMAoutTHLtniGHEundERLlarGEEreeINEhefORPstfOREherEWPrenOHZuseSNPartHEEreeMAOeagOOOthiCKNoveRIYgtoPRZt
 ```
 
-The first part looks like "they were".
+The beginning looks like "they were".
 
 Wait, I just had an idea!
 
@@ -320,7 +314,7 @@ Insightful! Let's figure out the 3rd character of the key.
 For that we need a reminder of the ciphertext character in column 3 of `found2`.
 
 ```sh
-➜ cat found2 | tr -d ' ' | fold -w 6 | head -1
+cat found2 | tr -d ' ' | fold -w 6 | head -1
 ```
 
 ```sh
@@ -330,7 +324,7 @@ YYIIAC
 Column 3 is 'I'. Now we can apply the `calculate_shift` function in an interactive python interpreter on ciphertext 'I'. We'll assume its plaintext 'E' in plaintext "thEyweRE".
 
 ```sh
-➜ python3
+python3
 ```
     
 ```python
@@ -362,7 +356,7 @@ So the shift for column 3 is 4. Starting from 'A' and counting 4, brings us to '
 Let's apply that to key with the confidence boosting technique of lowercase letters!
 
 ```sh
-➜ cat found2 | python3 decrypt-viginere-ciphertext.py aaeaaa
+cat found2 | python3 decrypt-viginere-ciphertext.py aaeaaa
 ```
 
 ```sh
@@ -374,7 +368,7 @@ Yes! that makes sense - and Copilot was not far off in guessing the sentence - w
 We'll decrypt `found1`
 
 ```sh
-❯ cat found1 | python3 decrypt-viginere-ciphertext.py aaeaaa
+cat found1 | python3 decrypt-viginere-ciphertext.py aaeaaa
 ```
 
 ```sh
@@ -384,7 +378,7 @@ thesoldierwiththegreenwhiskersledthemthroughthestreetsoftheemeraldcityuntiltheyr
 Finally, let's decrypt the password for the next level
 
 ```sh
-➜ cat krypton5 | python3 decrypt-viginere-ciphertext.py aaeaaa
+cat krypton5 | python3 decrypt-viginere-ciphertext.py aaeaaa
 ```
 
 ```sh
@@ -395,9 +389,9 @@ Wowzas! That was fun! Thanks Copilot!
 
 ## Takeaways For Next Time...
 
-1. If not already there, copy context to the IDE and open the files.
+1. If not already there, copy context into the IDE and open the files.
 1. Reference the problem statement/question explicitly and chat with Copilot at a high level to get a plan.
-1. Trade off between feeding it all the context and applying the context you know to the responses.
+1. Trade off feeding it all the context vs applying the context you know to the responses.
 1. Iterate on the solution. Ask for small changes incrementally.
 1. Ask for help with the parts you're stuck on. Copilot is a great Cryptanalyst - good at guessing the next word in a sentence.
 1. Have fun!
