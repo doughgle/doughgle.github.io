@@ -397,3 +397,9 @@ Wowzas! That was fun! Thanks Copilot!
 1. Iterate on the solution. Ask for small changes incrementally.
 1. Ask for help with the parts you're stuck on. Copilot is a great Cryptanalyst - good at guessing the next word in a sentence.
 1. Have fun!
+
+---
+
+Thank you for reading this article right to the end.
+If you enjoyed it and if you think others can benefit, please like and share.
+Or if you foresee a problem, have an alternative solution, or you just wanna share some comments to improve the usefulness of this article, I'd appreciate your feedback. Reach me on [LinkedIn](https://www.linkedin.com/in/doughellinger/), or [Medium](https://medium.com/@doug.hellinger).
