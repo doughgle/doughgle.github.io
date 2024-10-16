@@ -40,6 +40,10 @@ menu:
       weight: 100
       identifier: explainer
       url: /explainer
+    - name: Recipes
+      weight: 100
+      identifier: recipe
+      url: /recipe
     - name: About
       identifier: about
       weight: 200
