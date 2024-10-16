@@ -3,7 +3,7 @@ languageCode: en-us
 title: Douglas Hellinger
 theme: mediumish-gohugo-theme
 summaryLength: 25
-copyright: Douglas Hellinger 2022 - 2023
+copyright: Douglas Hellinger 2022 - Present
 enableEmoji: true
 googleAnalytics: "G-TEH3VGXMRY"
 params:
@@ -40,6 +40,10 @@ menu:
       weight: 100
       identifier: explainer
       url: /explainer
+    - name: Recipes
+      weight: 100
+      identifier: recipe
+      url: /recipe
     - name: About
       identifier: about
       weight: 200
