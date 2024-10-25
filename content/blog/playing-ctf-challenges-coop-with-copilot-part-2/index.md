@@ -89,7 +89,7 @@ Since we don't know the key length, we cant do that.
 Let's feed back to Copilot:
 
 > we can only concatenate the ciphertexts if we pad the plaintext to exact multiple of the key length.
-since we dont know the key length, we cant do that.
+since we don't know the key length, we cant do that.
 >
 > the ciphertexts were encrypted separately and both start with the same key. If we concatenate them, the key will be skewed, and the frequency analysis will be skewed.
 
@@ -186,7 +186,7 @@ Ha! Responsible AI filter!
 
 ## Play To Copilot's Weaknesses
 
-So we can't blantantly ask for the key. Instead, we can ask for the difference between the partially decrypted plaintext and the target plaintext.
+So we can't blatantly ask for the key. Instead, we can ask for the difference between the partially decrypted plaintext and the target plaintext.
 
 ![alt text](image-10.png)
 
@@ -198,7 +198,7 @@ It compared the two plaintexts and stated the shifts between them, character by 
 
 ![alt text](image-13.png)
 
-This enables us to see how many shift places the key is off by and adjust the key accordingly. It decided to compare the first 100 characters, which I felt was a bit noisy. I followed up with this prompt:
+This enables us to see how many shift places the key is off by and adjust the key accordingly. It decided to compare the first 100 characters, which you may feel a bit noisy. Let's followed up with this prompt:
 
 > state the first 20 differences again. quantify the shift, modulo 26.
 
