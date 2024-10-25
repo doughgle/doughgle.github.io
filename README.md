@@ -45,3 +45,13 @@ Running in Fast Render Mode. For full rebuilds on change: hugo server --disableF
 Web Server is available at http://localhost:1313/ (bind address 0.0.0.0)
 Press Ctrl+C to stop
 ```
+
+## Test It
+
+```sh
+docker run -it --rm \
+  --name test \
+  -v $(pwd):/src \
+  ghcr.io/doughgle/docs-as-code:main \
+  bash
+```
