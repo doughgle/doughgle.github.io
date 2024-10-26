@@ -4,7 +4,7 @@ date: 2024-10-12T08:45:47+08:00
 publishdate: 2024-10-12T08:45:47+08:00
 tags: ['github', 'copilot', 'ctf', 'stream-cipher', 'cybersecurity', 'security', 'overthewire', 'problem-solving', 'pair-programming']
 comments: true
-draft: true
+draft: false
 ---
 
 Let's see if we can apply what we learned in [Part 1](../playing-ctf-challenges-coop-with-copilot/) and [Part 2](../playing-ctf-challenges-coop-with-copilot-part-2/) to the next level...
@@ -68,6 +68,7 @@ Here, we observe another problem. The `keyfile.dat` is owned by krypton7. We can
 > 🤔 Q: What are some ways to bring the context of a remote environment to Copilot so that you don't need to apply a translation yourself?
 
 ## Attach The README To The Prompt And Ask Copilot To Solve The Challenge
+
 The README for this challenge is quite long. For the krypton6 challenge part, it says:
 
 ```text
@@ -124,12 +125,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Encrypt the plaintext:
 
 ```sh
-$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt 
+./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt 
 ```
 
 Inspect it as hex:
+
 ```sh
-$ xxd /tmp/a.a/ciphertext.txt 
+xxd /tmp/a.a/ciphertext.txt 
 ```
 
 ```sh
@@ -144,7 +146,7 @@ hmmm looks like a repeating pattern.
 If we align on 30 bytes, we can see more clearly:
 
 ```sh
-$ xxd -c 30 /tmp/a.a/ciphertext.txt
+xxd -c 30 /tmp/a.a/ciphertext.txt
 ```
 
 ```sh
@@ -159,8 +161,8 @@ The ciphertext repeats after 30 bytes. Since the plaintext is 50 A's, we can inf
 What if we repeat the encryption of the same plaintext?
 
 ```sh
-$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext2.txt
-$ diff /tmp/a.a/ciphertext.txt /tmp/a.a/ciphertext2.txt --report-identical-files
+./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext2.txt
+diff /tmp/a.a/ciphertext.txt /tmp/a.a/ciphertext2.txt --report-identical-files
 ```
 
 ```sh
@@ -180,7 +182,7 @@ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 ```
 
 ```sh
-$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt
+./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt
 ```
 
 ```sh
@@ -198,12 +200,13 @@ Let's validate this hypothesis:
 > given a chosen plaintext, how can we validate this hypothesis:
 >
 > The Cipher Encrypts Byte-By-Byte
-> 
+>
 > ?
 
 ![alt text](image-5.png)
 
 Encrypt a chosen plaintext
+
 ```sh
 krypton6@bandit:~$ cd /krypton/krypton6
 $ echo "ABCDEFGHIJKLMNOPQRSTUVWXYZ" > /tmp/a.a/plaintext.txt
@@ -211,8 +214,9 @@ $ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt
 ```
 
 Display the ciphertext
+
 ```sh
-$ xxd -c 30 /tmp/a.a/ciphertext.txt
+xxd -c 30 /tmp/a.a/ciphertext.txt
 ```
 
 ```sh
@@ -220,14 +224,16 @@ $ xxd -c 30 /tmp/a.a/ciphertext.txt
 ```
 
 Modify a single byte in the plaintext and encrypt it
+
 ```sh
-$ echo "AACDEFGHIJKLMNOPQRSTUVWXYZ" > /tmp/a.a/modified_plaintext.txt
-$ ./encrypt6 /tmp/a.a/modified_plaintext.txt /tmp/a.a/modified_ciphertext.txt
+echo "AACDEFGHIJKLMNOPQRSTUVWXYZ" > /tmp/a.a/modified_plaintext.txt
+./encrypt6 /tmp/a.a/modified_plaintext.txt /tmp/a.a/modified_ciphertext.txt
 ```
 
 Display the modified ciphertext
+
 ```sh
-$ xxd -c 30 /tmp/a.a/modified_ciphertext.txt
+xxd -c 30 /tmp/a.a/modified_ciphertext.txt
 ```
 
 ```sh
@@ -235,8 +241,9 @@ $ xxd -c 30 /tmp/a.a/modified_ciphertext.txt
 ```
 
 Compare the original and modified ciphertexts
+
 ```sh
-$ cmp -b /tmp/a.a/ciphertext.txt /tmp/a.a/modified_ciphertext.txt
+cmp -b /tmp/a.a/ciphertext.txt /tmp/a.a/modified_ciphertext.txt
 ```
 
 ```sh
@@ -269,6 +276,7 @@ print("Key Stream Length:", len(key_stream))
 ```
 
 Output
+
 ```sh
 Key Stream: ['0x4', '0x8', '0x2', '0x15', '0x5', '0x6', '0x18', '0x8', '0x18', '0x1b', '0xa', '0x15', '0x9', '0xf', '0x12', '0x8', '0x13', '0x7', '0x19', '0x18', '0x2', '0x11', '0x7', '0x14', '0x4', '0xe', '0x2', '0xa', '0x13', '0xf']
 Key Stream Length: 30
@@ -347,8 +355,8 @@ Shifts for plaintextB and ciphertextB: [4, 8, 2, 19, 3, 6, 24, 8, 24, 25, 10, 19
 
 The shifts are the same for both plaintexts!
 
-This is a key insight to solving the challenge. 
-Regardless of any bitwise shifts and XORs in the cipher, the resulting shifts between the plaintext and ciphertext are the same. 
+This is a key insight to solving the challenge.
+Regardless of any bitwise shifts and XORs in the cipher, the resulting shifts between the plaintext and ciphertext are the same.
 We don't need to try to reverse engineer the algorithm.
 
 ## Reverse The Shifts
