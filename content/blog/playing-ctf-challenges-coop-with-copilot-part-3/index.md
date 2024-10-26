@@ -31,7 +31,7 @@ This time I had to level up. There's an executable `encrypt6` that's 17KB. Its t
 Instead I decided to use `sftp` to download the files to my local machine.
 
 ```sh
-sftp -o PubkeyAuthentication=no -P 2231 krypton6@krypton.labs.overthewire.org
+➜ sftp -o PubkeyAuthentication=no -P 2231 krypton6@krypton.labs.overthewire.org
 ```
 
 ```sh
@@ -114,6 +114,11 @@ In particular, we need to make a temp directory and put our chosen plaintext the
 ```sh
 $ mkdir /tmp/a.a
 python3 -c 'print("A"*50)' > /tmp/a.a/plaintext.txt
+$ cat /tmp/a.a/plaintext.txt
+```
+
+```sh
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 ```
 
 Encrypt the plaintext:
@@ -122,6 +127,7 @@ Encrypt the plaintext:
 $ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt 
 ```
 
+Inspect it as hex:
 ```sh
 $ xxd /tmp/a.a/ciphertext.txt 
 ```
@@ -153,8 +159,8 @@ The ciphertext repeats after 30 bytes. Since the plaintext is 50 A's, we can inf
 What if we repeat the encryption of the same plaintext?
 
 ```sh
-krypton6@bandit:/krypton/krypton6$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext2.txt
-krypton6@bandit:/krypton/krypton6$ diff /tmp/a.a/ciphertext.txt /tmp/a.a/ciphertext2.txt --report-identical-files
+$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext2.txt
+$ diff /tmp/a.a/ciphertext.txt /tmp/a.a/ciphertext2.txt --report-identical-files
 ```
 
 ```sh
@@ -168,17 +174,17 @@ The seed or initialisation vector (IV) must be pre-shared so that sender and rec
 What if we encrypt a different plaintext?
 
 ```sh
-krypton6@bandit:/krypton/krypton6$ python3 -c 'print("B"*50)' > /tmp/a.a/plaintext.txt
-krypton6@bandit:~$ cat /tmp/a.a/plaintext.txt
+$ python3 -c 'print("B"*50)' > /tmp/a.a/plaintext.txt
+$ cat /tmp/a.a/plaintext.txt
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 ```
 
 ```sh
-krypton6@bandit:/krypton/krypton6$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt
+$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt
 ```
 
 ```sh
-krypton6@bandit:~$ xxd -c 30 /tmp/a.a/ciphertext.txt
+$ xxd -c 30 /tmp/a.a/ciphertext.txt
 00000000: 464a 4455 4548 5a4a 5a41 4c55 494f 544a 5347 595a 4451 4756 4650 444c 534f  FJDUEHZJZALUIOTJSGYZDQGVFPDLSO
 0000001e: 464a 4455 4548 5a4a 5a41 4c55 494f 544a 5347 595a                           FJDUEHZJZALUIOTJSGYZ
 ```
@@ -199,14 +205,14 @@ Let's validate this hypothesis:
 
 Encrypt a chosen plaintext
 ```sh
-krypton6@bandit:~$ echo "ABCDEFGHIJKLMNOPQRSTUVWXYZ" > /tmp/a.a/plaintext.txt
 krypton6@bandit:~$ cd /krypton/krypton6
-krypton6@bandit:/krypton/krypton6$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt
+$ echo "ABCDEFGHIJKLMNOPQRSTUVWXYZ" > /tmp/a.a/plaintext.txt
+$ ./encrypt6 /tmp/a.a/plaintext.txt /tmp/a.a/ciphertext.txt
 ```
 
 Display the ciphertext
 ```sh
-krypton6@bandit:/krypton/krypton6$ xxd -c 30 /tmp/a.a/ciphertext.txt
+$ xxd -c 30 /tmp/a.a/ciphertext.txt
 ```
 
 ```sh
@@ -215,13 +221,13 @@ krypton6@bandit:/krypton/krypton6$ xxd -c 30 /tmp/a.a/ciphertext.txt
 
 Modify a single byte in the plaintext and encrypt it
 ```sh
-krypton6@bandit:/krypton/krypton6$ echo "AACDEFGHIJKLMNOPQRSTUVWXYZ" > /tmp/a.a/modified_plaintext.txt
-krypton6@bandit:/krypton/krypton6$ ./encrypt6 /tmp/a.a/modified_plaintext.txt /tmp/a.a/modified_ciphertext.txt
+$ echo "AACDEFGHIJKLMNOPQRSTUVWXYZ" > /tmp/a.a/modified_plaintext.txt
+$ ./encrypt6 /tmp/a.a/modified_plaintext.txt /tmp/a.a/modified_ciphertext.txt
 ```
 
 Display the modified ciphertext
 ```sh
-krypton6@bandit:/krypton/krypton6$ xxd -c 30 /tmp/a.a/modified_ciphertext.txt
+$ xxd -c 30 /tmp/a.a/modified_ciphertext.txt
 ```
 
 ```sh
@@ -230,7 +236,7 @@ krypton6@bandit:/krypton/krypton6$ xxd -c 30 /tmp/a.a/modified_ciphertext.txt
 
 Compare the original and modified ciphertexts
 ```sh
-krypton6@bandit:/krypton/krypton6$ cmp -b /tmp/a.a/ciphertext.txt /tmp/a.a/modified_ciphertext.txt
+$ cmp -b /tmp/a.a/ciphertext.txt /tmp/a.a/modified_ciphertext.txt
 ```
 
 ```sh
@@ -245,7 +251,7 @@ Each byte is independent of the others.
 
 We know (from the README) the cipher produces ciphertext by XORing the plaintext with the keystream. Since XOR is commutative, we can get the keystream by XORing the plaintext with the ciphertext.
 
-```python3
+```python
 plaintextA = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 ciphertextA = "EICTDGYIYZKTHNSIRFXYCPFUEOCKRN"
 plaintextB  = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
@@ -290,7 +296,7 @@ I like that Copilot used the written observations as context in this response!
 
 ## Ask Copilot To Compare The Differences
 
-Besides the difference in the keystreams, we can also compare the differences between the plaintext and ciphertext.
+We can also compare the differences between the plaintext and ciphertext.
 
 The ciphertexts of A's and B's are offset by one. That's the same offset as the plaintext input!
 
@@ -341,7 +347,9 @@ Shifts for plaintextB and ciphertextB: [4, 8, 2, 19, 3, 6, 24, 8, 24, 25, 10, 19
 
 The shifts are the same for both plaintexts!
 
-This is a key insight to solving the challenge. Regardless of the bytewise XOR and bitwise shifts in the LFSR algorithm, the relationship between the plaintext and ciphertext is the same. We don't need to try to reverse engineer the algorithm.
+This is a key insight to solving the challenge. 
+Regardless of any bitwise shifts and XORs in the cipher, the resulting shifts between the plaintext and ciphertext are the same. 
+We don't need to try to reverse engineer the algorithm.
 
 ## Reverse The Shifts
 
@@ -374,13 +382,13 @@ This time I struggled back and forth with Copilot over an extended period.
 
 I decided to depend on copilot from the beginning. Intentionally go in without a deep understanding on the problem or solution.
 
+Early on, I ran into a digression where `encrypt6` "failed to open plaintext" in the generated tmp directory. Asking Copilot for help had me trying to reverse the binary. Later, I Googled and realised the issue was with the tmp directory name!
+
 Providing both HINTs up front turned out to be misleading. Copilot provided a plan and code for an LFSR algorithm and suggested reversing it.
 
-There's no need to apply the LFSR algorithm or any xor operations. there's no need to reverse the binary.
+Turns out, there's no need to apply the LFSR algorithm or any xor operations. There's no need to reverse the binary.
 
-In fact, the solution was much simpler. We need to notice observe the repeating pattern in the ciphertext and plaintext and calculate the shifts.
+The solution was much simpler.
+The relationship between the plaintext and ciphertext is the key to solving the challenge. Not the relationship between the keystream and the plaintext. Or the keystream and the ciphertext.
 
-The relationship between the plaintext and ciphertext is the key to solving the challenge. Not the relationship between the keystream and the plaintext. Or the keystream and the ciphertext. Or two ciphertexts.
-
-Some techniques copilot suggested can apply to other challenges. 
-For example, the round trip property of correctness. or the shift calculation. the IV.
+I also spend some time to test correctness of encrypt-decrypt round trip on the shift script.
