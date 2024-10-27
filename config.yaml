@@ -26,6 +26,7 @@ params:
   social:
     linkedin: doughellinger
     github: doughgle
+    medium: doug.hellinger
 menu:
   main:
     - name: Blog
