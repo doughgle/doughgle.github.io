@@ -29,8 +29,8 @@ jobs:
         uses: errata-ai/vale-action@v2.1.1
         with:
           vale_flags: "--output line"        
+          files: content
         continue-on-error: true
-        working-directory: content
 
       - name: Lint Markdown
         run: markdownlint-cli2 '**/*.md'
