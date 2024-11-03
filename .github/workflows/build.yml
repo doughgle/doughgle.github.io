@@ -28,7 +28,6 @@ jobs:
       - name: Check prose
         uses: errata-ai/vale-action@v2.1.1
         with:
-          vale_flags: "--output line"        
           files: content
         continue-on-error: true
 
