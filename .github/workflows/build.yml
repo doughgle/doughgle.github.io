@@ -20,16 +20,15 @@ jobs:
 
       - name: Show tool versions
         run: |
-          echo -n "write-good " && write-good --version
+          vale --version
           markdownlint-cli2 | head -1
           htmltest --version
           hugo version
 
       - name: Check prose
-        shell: bash
-        run: |
-          shopt -s globstar
-          write-good --parse **/*.md
+        uses: errata-ai/vale-action@v2.1.1
+        with:
+          vale_flags: "--output line"        
         continue-on-error: true
         working-directory: content
 
