@@ -9,3 +9,6 @@ hugo_stats.json
 
 # htmltest
 tmp/
+
+# vale styles
+.vale/styles/.vale-config/1-Hugo.ini
