@@ -2,7 +2,7 @@
 title: "Playing CTF Challenges Coop With Copilot (Part 3)"
 date: 2024-10-12T08:45:47+08:00
 publishdate: 2024-10-12T08:45:47+08:00
-tags: ['github', 'copilot', 'ctf', 'stream-cipher', 'cybersecurity', 'security', 'overthewire', 'problem-solving', 'pair-programming']
+tags: ['github', 'AI', 'programming', 'ctf', 'cybersecurity', 'stream-cipher', 'security', 'overthewire', 'problem-solving']
 comments: true
 draft: false
 ---
