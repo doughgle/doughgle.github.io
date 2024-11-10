@@ -17,6 +17,15 @@ jobs:
       - name: Check Out Source
         uses: actions/checkout@v3
 
+      - name: Replace Local Images With Public URLs
+        run: |
+          file="${{ inputs.file }}"
+          match='(.*!\[.*\]\()(.*)\).*'
+          sed --in-place --regexp-extended \
+              --expression="s|$match|\1$(dirname "$file")/\2)|;" \
+              --expression="s|content|https://www.douglashellinger.com|g" \
+              "$file"
+
       - name: Create Medium Post
         uses: philips-software/post-to-medium-action@v0.6.0
         with:
