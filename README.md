@@ -48,10 +48,20 @@ Press Ctrl+C to stop
 
 ## Test It
 
+Execute tools interactively:
+
 ```sh
 docker run -it --rm \
   --name test \
   -v $(pwd):/src \
   ghcr.io/doughgle/docs-as-code:main \
   bash
+```
+
+Run Github Workflow (depends on [act gh extension](https://github.com/nektos/act)):
+
+```sh
+gh act -W .github/workflows/medium.yml \
+  --input file="content/blog/hello-world/index.md" \
+  --secret MEDIUM_INTEGRATION_TOKEN
 ```
