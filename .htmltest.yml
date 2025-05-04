@@ -10,6 +10,8 @@ IgnoreURLs:
 - "https://www.udemy.com/course/writing-for-business/"
 - "https://www.netfilter.org/documentation/HOWTO/NAT-HOWTO-6.html"
 - "http://your.elastic.ip.address/admin"
+- "https://askubuntu.com/a/1245075/278849"
+- "https://github.com/projectatomic/containerd/blob/master/docs/cli.md"
 IgnoreHTTPS:
 - "http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod"
 IgnoreAltMissing: true
