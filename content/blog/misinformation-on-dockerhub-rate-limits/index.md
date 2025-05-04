@@ -15,7 +15,7 @@ So rate limits remain unchanged at:
 |---|--:|
 |anonymous users| 100 pulls per 6 hours per IP address|
 |authenticated users| 200 pulls per 6 hour period|
-|Users with a paid Docker subscription| 5000 pulls per day|
+|Users with a paid Docker subscription| Unlimited pulls (up from 5000 pulls per day)|
 
 But misinformation remains in AI responses, search results and registry vendor blogs.
 
