@@ -10,7 +10,8 @@ Pretty soon, we&rsquo;re seeing <code>ErrImagePulls</code>.</p><p>The SREs call 
 SecOps call it &ldquo;Denial of Service&rdquo;.
 The Users simply call it &ldquo;Down&rdquo;!</p><p>On a fresh Worker, the image doesn&rsquo;t exist.
 Workers don&rsquo;t share images with each other by default.</p><p>Because of that, the Container Runtime on the Worker must pull the Image from a Registry.</p><p>Because of that, we got a 429 Too Many Requests response from DockerHub!</p><p>Its a contrived example using a Kubernetes Job to create many pods in parallel.</p><p>Yet, if you&rsquo;re using GitOps at scale, that can happen - apparently even if you&rsquo;re using a private registry cache (more on this in a future chapter)!</p><p>More importantly, the story challenges us to dig deeper into the most common use case of an OCI Registry - <a href=../../explainer/container-oci-registry/pull-a-public-container-image/>Pull a Public Image</a> - and learn how an Image gets from Registry to Runtime.</p><p>You can apply the learnings to:</p><ul><li>⏳ reduce container startup time, and in turn, pod readiness</li><li>🛑 reduce the risk of Denial of Service due to rate limits</li><li>💰 reduce egress and storage costs</li></ul></div><div class=after-post-tags><ul class=tags><li><a href=/tags/kubernetes>kubernetes</a></li><li><a href=/tags/oci>oci</a></li><li><a href=/tags/container>container</a></li><li><a href=/tags/runtime>runtime</a></li><li><a href=/tags/registry>registry</a></li><li><a href=/tags/cri>cri</a></li><li><a href=/tags/distribution>distribution</a></li></ul></div><div class="row PageNavigation d-flex justify-content-between font-weight-bold"><a class="d-block col-md-6" href=https://www.douglashellinger.com/blog/standardising-private-registry-configuration/>&#171; Standardising Private Registry Configuration</a>
-<a class="d-block col-md-6 text-lg-right" href=https://www.douglashellinger.com/blog/publishing-docs-as-code/>Publishing Docs as Code &#187;</a><div class=clearfix></div></div></div></div></div><div class=container><div id=comments class="row justify-content-center mb-5"><div class=col-md-8></div></div></div></div></div><div class="jumbotron fortags"><div class="d-md-flex h-100"><div class="col-md-4 transpdark align-self-center text-center h-100"><div class="d-md-flex align-items-center justify-content-center h-100"><h2 class="d-md-block d-none align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2></div></div><div class="col-md-8 p-5 align-self-center text-center"><a class="mt-1 mb-1" href=/tags/ai>ai</a>
+<a class="d-block col-md-6 text-lg-right" href=https://www.douglashellinger.com/blog/publishing-docs-as-code/>Publishing Docs as Code &#187;</a><div class=clearfix></div></div></div></div></div><div class=container><div id=comments class="row justify-content-center mb-5"><div class=col-md-8></div></div></div></div></div><div class="jumbotron fortags"><div class="d-md-flex h-100"><div class="col-md-4 transpdark align-self-center text-center h-100"><div class="d-md-flex align-items-center justify-content-center h-100"><h2 class="d-md-block d-none align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2></div></div><div class="col-md-8 p-5 align-self-center text-center"><a class="mt-1 mb-1" href=/tags/429>429</a>
+<a class="mt-1 mb-1" href=/tags/ai>ai</a>
 <a class="mt-1 mb-1" href=/tags/build-pipeline>build-pipeline</a>
 <a class="mt-1 mb-1" href=/tags/builder-image>builder-image</a>
 <a class="mt-1 mb-1" href=/tags/chart>chart</a>
@@ -24,6 +25,7 @@ Workers don&rsquo;t share images with each other by default.</p><p>Because of th
 <a class="mt-1 mb-1" href=/tags/cybersecurity>cybersecurity</a>
 <a class="mt-1 mb-1" href=/tags/deployment>deployment</a>
 <a class="mt-1 mb-1" href=/tags/distribution>distribution</a>
+<a class="mt-1 mb-1" href=/tags/dockerhub>dockerhub</a>
 <a class="mt-1 mb-1" href=/tags/docs-as-code>docs-as-code</a>
 <a class="mt-1 mb-1" href=/tags/driver>driver</a>
 <a class="mt-1 mb-1" href=/tags/encryption>encryption</a>
@@ -32,6 +34,7 @@ Workers don&rsquo;t share images with each other by default.</p><p>Because of th
 <a class="mt-1 mb-1" href=/tags/gpg>gpg</a>
 <a class="mt-1 mb-1" href=/tags/helm>helm</a>
 <a class="mt-1 mb-1" href=/tags/kubernetes>kubernetes</a>
+<a class="mt-1 mb-1" href=/tags/limit>limit</a>
 <a class="mt-1 mb-1" href=/tags/medium>medium</a>
 <a class="mt-1 mb-1" href=/tags/oci>oci</a>
 <a class="mt-1 mb-1" href=/tags/overthewire>overthewire</a>
@@ -39,12 +42,14 @@ Workers don&rsquo;t share images with each other by default.</p><p>Because of th
 <a class="mt-1 mb-1" href=/tags/problem-solving>problem-solving</a>
 <a class="mt-1 mb-1" href=/tags/programming>programming</a>
 <a class="mt-1 mb-1" href=/tags/proxy>proxy</a>
+<a class="mt-1 mb-1" href=/tags/rate>rate</a>
 <a class="mt-1 mb-1" href=/tags/registry>registry</a>
 <a class="mt-1 mb-1" href=/tags/runtime>runtime</a>
 <a class="mt-1 mb-1" href=/tags/security>security</a>
 <a class="mt-1 mb-1" href=/tags/sigstore>sigstore</a>
 <a class="mt-1 mb-1" href=/tags/stream-cipher>stream-cipher</a>
 <a class="mt-1 mb-1" href=/tags/thinkpad>thinkpad</a>
+<a class="mt-1 mb-1" href=/tags/too-many-requests>too-many-requests</a>
 <a class="mt-1 mb-1" href=/tags/troubleshooting>troubleshooting</a>
 <a class="mt-1 mb-1" href=/tags/ubuntu>ubuntu</a>
 <a class="mt-1 mb-1" href=/tags/verify>verify</a>
