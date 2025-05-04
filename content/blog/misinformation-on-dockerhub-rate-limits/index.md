@@ -1,10 +1,10 @@
 ---
 title: "Misinformation on Dockerhub Rate Limits"
 date: 2025-05-04T15:52:13+08:00
-publishdate: 2025-05-04T15:52:13+08:00
+publishdate: 2025-05-04T22:52:13+08:00
 tags: ['dockerhub', 'kubernetes', 'rate', 'limit', '429', 'Too Many Requests', 'oci', 'container', 'runtime', 'registry', 'cri', 'distribution']
 comments: true
-draft: true
+draft: false
 ---
 
 In April 2025, Docker Inc withdrew plans to further constrain [Docker Hub Rate Limits](https://www.docker.com/blog/revisiting-docker-hub-policies-prioritizing-developer-experience/).
