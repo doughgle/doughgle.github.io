@@ -13,6 +13,7 @@ IgnoreURLs:
 - "https://askubuntu.com/a/1245075/278849"
 - "https://github.com/projectatomic/containerd/blob/master/docs/cli.md"
 - "https://www.wowthemes.net"
+- "https://marketplace.visualstudio.com/items"
 IgnoreHTTPS:
 - "http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod"
 IgnoreAltMissing: true
