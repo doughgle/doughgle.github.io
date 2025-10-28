@@ -2,20 +2,16 @@
 title: "Introducing Outline Eclipsed Vscode Extension"
 date: 2025-10-28T21:50:20+08:00
 publishdate: 2025-10-28T22:45:20+08:00
-tags: [drag-drop, markdown, navigation, outline, reorder, tree-view]
+tags: [vscode, extension,  reorder, drag-drop, markdown, navigation, reorder, tree-view]
 comments: true
 draft: false
 ---
 
-Do you write in markdown?
+Do you write in markdown? Do you use vscode? (but deep down you miss Eclipse)
 
-Do you use vscode? (but deep-down you miss Eclipse)
+What if you wanna re-order sections of your documents? Do you cut-paste sections? Or Alt + Up/Down? Or Something else?
 
-What if you wanna re-order sections of your documents?
-
-Do you copy-paste sections? Or Alt + Up/Down? Or Something else?
-
-Perhaps you get AI to do that? You just prompt AI with an ordered list describing how you want the sections, wait for AI to "think", burn some non-renewables, squander some tokens. For a *text manipulation operation*.
+Perhaps you get AI to do that? You just prompt AI with an ordered list describing how you want the sections, wait for AI to "think", burn some non-renewables, squander some tokens. If you just wanna move some text, you may also decide that's too much waste.
 
 If you remember Eclipse IDE, you probably remember the how it felt to reorganize code just by dragging and dropping elements in the Outline view. Kinda like the feeling when magnets snap an object into it's place.
 
@@ -68,3 +64,5 @@ That's it. No thinking. No energy. No AI tokens burned.
 
 It's my first vscode extension. I'd really appreciate your feedback.
 Does it help you re-org markdown? Do you need this for other languages? Found a bug? Share in the comments or on [GitHub Issues](https://github.com/doughgle/outline-eclipsed).
+
+#vscode #extension #productivity #reorder, #drag-drop, #markdown, #outline #navigation
