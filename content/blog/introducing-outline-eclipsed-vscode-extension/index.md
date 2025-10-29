@@ -2,7 +2,7 @@
 title: "Introducing Outline Eclipsed Vscode Extension"
 date: 2025-10-28T21:50:20+08:00
 publishdate: 2025-10-28T22:45:20+08:00
-tags: [vscode, extension,  reorder, drag-drop, markdown, navigation, reorder, tree-view]
+tags: [vscode, extension, productivity, reorder, drag-drop, markdown, navigation]
 comments: true
 draft: false
 ---
@@ -29,7 +29,7 @@ An outline view for VS Code that lets you drag and drop to reorganize your docum
 
 ### Demo
 
-![demo](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/afa8a690-2e99-4f3f-8091-0471213bb984.gif?ClientID=sulu&Date=1761467805&Signature=b3c03e96e6468db8e83b3227cc3748f051df2334)
+![Outline Eclipsed demo: dragging headings to reorder markdown sections](https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/afa8a690-2e99-4f3f-8091-0471213bb984.gif?ClientID=sulu&Date=1761467805&Signature=b3c03e96e6468db8e83b3227cc3748f051df2334 "Drag headings in the Outline Eclipsed tree to reorder sections; nested headings move with their parent, and the editor highlights and scrolls to show the moved content.")
 
 ### Features
 
@@ -39,16 +39,20 @@ An outline view for VS Code that lets you drag and drop to reorganize your docum
 - **Real-Time Updates**: The tree refreshes automatically as you edit the document.
 - **Hierarchical View**: See your document structure at a glance with expandable/collapsible nested headings.
 
-## Try It Out
+## Install And Try It Out
 
+#### Option 1: Extensions View
 Install "Outline Eclipsed" in the Extensions view (`Ctrl+Shift+X`).
+
+#### Option 2: Install Command
 
 ```bash
 ext install douglashellinger.outline-eclipsed
 ```
 
-+ Marketplace: [douglashellinger.outline-eclipsed](https://marketplace.visualstudio.com/items?itemName=douglashellinger.outline-eclipsed)
-+ Github Repo: [github.com/doughgle/outline-eclipsed](https://github.com/doughgle/outline-eclipsed)
+#### Option 3: Marketplace Link
+- Marketplace: [douglashellinger.outline-eclipsed](https://marketplace.visualstudio.com/items?itemName=douglashellinger.outline-eclipsed)
+
 
 ### How to Use It
 
@@ -65,4 +69,4 @@ That's it. No thinking. No energy. No AI tokens burned.
 It's my first vscode extension. I'd really appreciate your feedback.
 Does it help you re-org markdown? Do you need this for other languages? Found a bug? Share in the comments or on [GitHub Issues](https://github.com/doughgle/outline-eclipsed).
 
-#vscode #extension #productivity #reorder, #drag-drop, #markdown, #outline #navigation
+- Github Repo: [github.com/doughgle/outline-eclipsed](https://github.com/doughgle/outline-eclipsed)
