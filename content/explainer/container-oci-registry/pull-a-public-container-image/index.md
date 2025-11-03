@@ -2,6 +2,7 @@
 title: "Exploring OCI Container Registries: Chapter 1: Pull a Public Image from Kubernetes"
 date: 2023-06-10T16:38:31+08:00
 publishdate: 2023-08-06T16:00:31+08:00
+lastmod: 2025-11-03T22:00:31+08:00
 tags: ['oci', 'container', 'runtime', 'registry', 'cri', 'distribution', 'kubernetes']
 comments: true
 draft: false
@@ -218,7 +219,7 @@ Monday, first thing, the teams deploy the jobs. What happens next?
 
 ---
 
-## Problem: `Errimagepull`, Hit The Limit
+## Problem: `Errimagepull`, Hit The Docker Hub Rate Limit
 
 Two minutes later, we're seeing ErrImagePull errors...
 
@@ -244,9 +245,9 @@ To summarise:
 
 |Account Type|Limit|
 |---|---|
-|anonymous users| 100 pulls per 6 hours per IP address.|
-|authenticated users| 200 pulls per 6 hour period.|
-|Users with a paid Docker subscription| 5000 pulls per day.|
+|anonymous users| 100 pulls per 6 hours per IP address|
+|authenticated users| 200 pulls per 6 hour period|
+|paid subscribers| Unlimited|
 
 We can visualise the remaining requests with the handy [Docker Hub Rate Limit Exporter for Prometheus](https://gitlab.com/gitlab-da/unmaintained/docker-hub-limit-exporter).
 

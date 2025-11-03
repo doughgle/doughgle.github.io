@@ -2,6 +2,7 @@
 title: "Misinformation on Dockerhub Rate Limits"
 date: 2025-05-04T15:52:13+08:00
 publishdate: 2025-05-04T22:52:13+08:00
+lastmod: 2025-11-03T22:18:00+08:00
 tags: ['dockerhub', 'kubernetes', 'rate', 'limit', '429', 'Too Many Requests', 'oci', 'container', 'runtime', 'registry', 'cri', 'distribution']
 comments: true
 draft: false
@@ -12,10 +13,10 @@ In April 2025, Docker Inc withdrew plans to further constrain [Docker Hub Rate L
 So rate limits remain unchanged at:
 
 |Account Type|Limit|
-|---|--:|
+|---|---:|
 |anonymous users| 100 pulls per 6 hours per IP address|
 |authenticated users| 200 pulls per 6 hour period|
-|Users with a paid Docker subscription| Unlimited pulls (up from 5000 pulls per day)|
+|paid subscribers| Unlimited pulls (up from 5000 pulls per day)|
 
 But misinformation remains in AI responses, search results and registry vendor blogs.
 
