@@ -123,9 +123,6 @@ Disallow: /
 User-agent: Webzio-Extended
 Disallow: /
 
-User-agent: YouBot
-Disallow: /
-
 User-agent: Kangaroo Bot
 Disallow: /
 
