@@ -143,4 +143,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://www.douglashellinger.com/sitemap.xml
+Sitemap: /sitemap.xml
