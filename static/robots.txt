@@ -138,12 +138,6 @@ Disallow: /
 User-agent: Scrapy
 Disallow: /
 
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
 # Default for unknown bots - conservative approach allowing traditional search
 User-agent: *
 Allow: /
