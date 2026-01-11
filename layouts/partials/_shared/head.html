@@ -1,0 +1,63 @@
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	{{ hugo.Generator }}
+	{{ with .Site.Params.logo }}
+	<link rel="icon" href="{{ . | urlize | relURL }}">
+	{{ end }}
+	<title>{{ .Page.Title }} | {{ .Site.Title }}</title>
+	{{ with .Site.Params.meta.description }}<meta name="description" content="{{ . }}">{{ end }}
+	{{ with .Site.Params.meta.keywords }}<meta name="keywords" content="{{ . }}">{{ end }}
+
+	<!-- Block AI LLM scrapers while allowing traditional search indexing -->
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+	<meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+	<meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+	
+	<!-- Block OpenAI GPT -->
+	<meta name="gptbot" content="noindex, nofollow">
+	<meta name="chatgpt-user" content="noindex, nofollow">
+	
+	<!-- Block Google AI -->
+	<meta name="google-extended" content="noindex, nofollow">
+	<meta name="googleother" content="noindex, nofollow">
+	
+	<!-- Block Anthropic Claude -->
+	<meta name="anthropic-ai" content="noindex, nofollow">
+	<meta name="claude-web" content="noindex, nofollow">
+	<meta name="claudebot" content="noindex, nofollow">
+	
+	<!-- Block Common Crawl and other AI scrapers -->
+	<meta name="ccbot" content="noindex, nofollow">
+	<meta name="perplexitybot" content="noindex, nofollow">
+	<meta name="amazonbot" content="noindex, nofollow">
+	<meta name="bytespider" content="noindex, nofollow">
+	<meta name="applebot-extended" content="noindex, nofollow">
+	<meta name="cohere-ai" content="noindex, nofollow">
+	<meta name="facebookbot" content="noindex, nofollow">
+	<meta name="meta-externalagent" content="noindex, nofollow">
+	<meta name="meta-externalfetcher" content="noindex, nofollow">
+	<meta name="omgili" content="noindex, nofollow">
+	<meta name="omgilibot" content="noindex, nofollow">
+	<meta name="diffbot" content="noindex, nofollow">
+	<meta name="petalbot" content="noindex, nofollow">
+
+	{{ template "_internal/twitter_cards.html" . }}
+	{{ template "_internal/opengraph.html" . }}
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+
+	{{ $medium := resources.Get "/css/medium.css" | resources.Fingerprint }}
+	<link rel="stylesheet" href="{{ $medium.RelPermalink | absURL }}" integrity="{{ $medium.Data.Integrity }}">
+
+	{{ $additional := resources.Get "/css/additional.css" | resources.Fingerprint }}
+	<link rel="stylesheet" href="{{ $additional.RelPermalink | absURL }}" integrity="{{ $additional.Data.Integrity }}">
+
+	<!-- Custom css -->
+	{{ range .Site.Params.customCSS -}}
+	{{ $style := resources.Get . }}
+	<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}" crossorigin="anonymous" media="screen">
+	{{- end }}
+</head>
