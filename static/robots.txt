@@ -96,9 +96,6 @@ User-agent: Applebot-Extended
 Disallow: /
 
 # Other AI/ML crawlers - BLOCK
-User-agent: ChatGPT
-Disallow: /
-
 User-agent: PetalBot
 Disallow: /
 
