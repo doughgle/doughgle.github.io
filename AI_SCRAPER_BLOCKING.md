@@ -7,20 +7,22 @@ This document outlines the implemented solutions and additional recommendations 
 ### 1. robots.txt Configuration
 **Location:** `static/robots.txt`
 
-A comprehensive robots.txt file has been created that:
+A comprehensive robots.txt file has been created based on official bot documentation that:
 - **Allows** traditional search engines (Google, Bing, DuckDuckGo, Yahoo, Baidu, Yandex, etc.)
 - **Blocks** known AI LLM scrapers including:
-  - OpenAI (GPTBot, ChatGPT-User)
-  - Google AI (Google-Extended, GoogleOther)
-  - Anthropic (ClaudeBot, anthropic-ai)
-  - Meta AI (FacebookBot, Meta-ExternalAgent)
-  - Common Crawl (CCBot)
-  - Perplexity (PerplexityBot)
+  - OpenAI (GPTBot, ChatGPT-User) - verified against official OpenAI documentation
+  - Google AI (Google-Extended, GoogleOther) - per Google's official crawler documentation
+  - Anthropic (ClaudeBot, anthropic-ai, Claude-Web) - per Anthropic's official bot documentation
+  - Meta AI (FacebookBot, Meta-ExternalAgent, Meta-ExternalFetcher)
+  - Common Crawl (CCBot, omgili, omgilibot)
+  - Perplexity AI (PerplexityBot)
   - Amazon (Amazonbot)
   - Bytedance/TikTok (Bytespider)
-  - Apple AI (Applebot-Extended)
+  - Apple AI (Applebot-Extended) - for AI training only, regular Applebot allowed
   - Cohere (cohere-ai)
   - And many other known AI/ML crawlers
+
+**Note:** Only official, documented user agents are included. Duplicate and unofficial variants have been removed.
 
 The file is placed in the `static/` directory, which Hugo automatically copies to the root of the published site.
 
@@ -30,8 +32,27 @@ The file is placed in the `static/` directory, which Hugo automatically copies t
 Meta tags have been added to all pages that:
 - **Allow** traditional search engines with full indexing permissions
 - **Block** the same AI scrapers listed in robots.txt using `noindex, nofollow` directives
+- Include `<link rel="license">` for machine-readable Creative Commons license information
 
 This provides a second layer of protection in case scrapers ignore robots.txt.
+
+### 3. Creative Commons License (CC-BY 4.0)
+**Locations:** 
+- `layouts/partials/_shared/head.html` - Machine-readable license link
+- `layouts/partials/_shared/footer.html` - Human-readable license notice
+- `layouts/shortcodes/cc-by.html` - Reusable shortcode for content
+
+Following Stack Overflow's approach, all original content on the site is licensed under Creative Commons Attribution 4.0 International License by default:
+- Visible license badge and text in the footer of every page
+- Machine-readable license link in HTML head section
+- Clear attribution requirements for content reuse
+- Shortcode available for inline use: `{{</* cc-by */>}}`
+
+This licensing approach:
+- Protects your intellectual property rights
+- Allows legitimate sharing with proper attribution
+- Complements the AI scraper blocking by establishing legal terms
+- Makes your licensing intent clear to both humans and machines
 
 ## Additional Recommendations
 
@@ -115,10 +136,13 @@ This configuration should be reviewed periodically:
 
 ## References
 
-- [OpenAI GPTBot documentation](https://platform.openai.com/docs/gptbot)
+- [OpenAI GPTBot documentation](https://platform.openai.com/docs/bots)
 - [Google Extended documentation](https://developers.google.com/search/docs/crawling-indexing/overview-google-crawlers)
+- [Anthropic Claude bots](https://support.anthropic.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler)
 - [Common Crawl robots.txt](https://commoncrawl.org/big-picture/frequently-asked-questions/)
-- [DarkVisitors.com](https://darkvisitors.com/) - Comprehensive list of AI bots
+- [Dark Visitors AI Bot Directory](https://darkvisitors.com/) - Comprehensive list of AI bots with official documentation
+- [Creative Commons CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) - License details and legal code
+- [Stack Overflow licensing approach](https://stackoverflow.com/help/licensing) - Inspiration for CC licensing implementation
 
 ## Testing
 
