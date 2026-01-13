@@ -1,6 +1,8 @@
 DirectoryPath: "public"
 EnforceHTTPS: true
 CheckInternalHash: false
+
+# Ignore specific URLs that are known to have issues or require authentication
 IgnoreURLs:
 - "douglashellinger.com"
 - "https://(www.)?linkedin.com/in/[a-z]+"
@@ -14,10 +16,30 @@ IgnoreURLs:
 - "https://github.com/projectatomic/containerd/blob/master/docs/cli.md"
 - "https://www.wowthemes.net"
 - "https://marketplace.visualstudio.com/items"
+# Add medium.com URLs that commonly return 403 due to WAF
+- "https://(www.)?medium.com/@.*"
+- "https://.*\\.medium\\.com/.*"
+
+# Ignore HTTPS enforcement for specific HTTP-only URLs
 IgnoreHTTPS:
 - "http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod"
+
+# Image alt attribute handling
 IgnoreAltMissing: true
+
+# Cache configuration
 CacheExpires: "6h"
+
+# Directory and link handling
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreCanonicalBrokenLinks: true
-ExternalTimeout: 6
+
+# External link timeout and retry configuration
+ExternalTimeout: 15
+RedirectLimit: 5
+
+# Custom HTTP headers to avoid bot detection
+HTTPHeaders:
+  User-Agent: "Mozilla/5.0 (compatible; Link-Checker/1.0; +https://douglashellinger.com)"
+  Accept: "*/*"
+  Range: "bytes=0-0"
