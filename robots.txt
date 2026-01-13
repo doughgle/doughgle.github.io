@@ -1,0 +1,143 @@
+# Block AI LLM scrapers and bots while allowing traditional search indexing
+
+# Traditional Search Engines - ALLOW
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Sogou
+Allow: /
+
+User-agent: Exabot
+Allow: /
+
+User-agent: ia_archiver
+Allow: /
+
+# OpenAI GPT - BLOCK
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+# Google AI - BLOCK
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: GoogleOther
+Disallow: /
+
+# Anthropic Claude - BLOCK
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+# Cohere - BLOCK
+User-agent: cohere-ai
+Disallow: /
+
+# Meta AI - BLOCK
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: Meta-ExternalFetcher
+Disallow: /
+
+# Common Crawl - BLOCK
+User-agent: CCBot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+User-agent: omgilibot
+Disallow: /
+
+# Perplexity AI - BLOCK
+User-agent: PerplexityBot
+Disallow: /
+
+# Amazon (Alexa) - BLOCK
+User-agent: Amazonbot
+Disallow: /
+
+# Bytedance (TikTok) - BLOCK
+User-agent: Bytespider
+Disallow: /
+
+# Apple - BLOCK (Applebot-Extended is for AI training)
+User-agent: Applebot-Extended
+Disallow: /
+
+# Other AI/ML crawlers - BLOCK
+User-agent: PetalBot
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: img2dataset
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: VelenPublicWebCrawler
+Disallow: /
+
+User-agent: Webzio-Extended
+Disallow: /
+
+User-agent: KangarooBot
+Disallow: /
+
+User-agent: ISSCyberRiskCrawler
+Disallow: /
+
+User-agent: FriendlyCrawler
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+# Default for unknown bots - conservative approach allowing traditional search
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: /sitemap.xml
