@@ -43,20 +43,24 @@ This provides a multi-layered protection approach in case scrapers ignore robots
 ### 3. Creative Commons License (CC-BY 4.0)
 **Locations:** 
 - `layouts/partials/_shared/head.html` - Machine-readable license link
-- `layouts/partials/_shared/footer.html` - Human-readable license notice
-- `layouts/shortcodes/cc-by.html` - Reusable shortcode for content
+- `layouts/partials/_shared/footer.html` - Uses cc-by partial for human-readable license notice
+- `layouts/partials/cc-by.html` - Reusable partial with RDFa metadata for semantic markup
+- `layouts/shortcodes/cc-by.html` - Shortcode wrapper for inline content use
 
 Following Stack Overflow's approach, all original content on the site is licensed under Creative Commons Attribution 4.0 International License by default:
-- Visible license badge and text in the footer of every page
+- Visible license badge and text in the footer of every page (via cc-by partial)
 - Machine-readable license link in HTML head section
+- RDFa metadata for proper semantic markup and machine readability
 - Clear attribution requirements for content reuse
 - Shortcode available for inline use: `{{</* cc-by */>}}`
+- Partial available for template use: `{{ partial "cc-by.html" . }}`
 
 This licensing approach:
 - Protects your intellectual property rights
 - Allows legitimate sharing with proper attribution
 - Complements the AI scraper blocking by establishing legal terms
 - Makes your licensing intent clear to both humans and machines
+- Provides semantic web metadata through RDFa attributes
 
 ## Additional Recommendations
 
