@@ -31,10 +31,14 @@ The file is placed in the `static/` directory, which Hugo automatically copies t
 
 Meta tags have been added to all pages that:
 - **Allow** traditional search engines with full indexing permissions
-- **Block** the same AI scrapers listed in robots.txt using `noindex, nofollow` directives
+- **Block** AI scrapers with multiple approaches:
+  - `noai, noimageai` directives in the main robots meta tag to prohibit AI training
+  - Specific bot blocking using `noindex, nofollow` for individual AI crawler user agents
 - Include `<link rel="license">` for machine-readable Creative Commons license information
 
-This provides a second layer of protection in case scrapers ignore robots.txt.
+The `noai` and `noimageai` directives are general-purpose signals that tell AI systems not to use the content for training purposes, providing broad protection beyond specific bot user agents.
+
+This provides a multi-layered protection approach in case scrapers ignore robots.txt.
 
 ### 3. Creative Commons License (CC-BY 4.0)
 **Locations:** 
