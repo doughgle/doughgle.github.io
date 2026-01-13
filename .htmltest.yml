@@ -16,9 +16,11 @@ IgnoreURLs:
 - "https://github.com/projectatomic/containerd/blob/master/docs/cli.md"
 - "https://www.wowthemes.net"
 - "https://marketplace.visualstudio.com/items"
-# Add medium.com URLs that commonly return 403 due to WAF
+# Medium.com URLs that commonly return 403 due to WAF or authentication requirements
 - "https://(www.)?medium.com/@.*"
 - "https://.*\\.medium\\.com/.*"
+- "https://medium.com/me/.*"
+- "https://medium.com/m/.*"
 
 # Ignore HTTPS enforcement for specific HTTP-only URLs
 IgnoreHTTPS:
