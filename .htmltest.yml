@@ -8,6 +8,7 @@ IgnoreURLs:
 - "https://(www.)?linkedin.com/in/[a-z]+"
 - "https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux"
 - "https://videoapi-muybridge.vimeocdn.com/animated-thumbnails/image/"
+- "https://player.vimeo.com/video/"
 - "^/misc/js/script.js$"
 - "https://www.udemy.com/course/writing-for-business/"
 - "https://www.netfilter.org/documentation/HOWTO/NAT-HOWTO-6.html"
