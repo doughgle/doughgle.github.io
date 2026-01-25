@@ -6,6 +6,10 @@ summaryLength: 25
 copyright: Douglas Hellinger 2022 - Present
 enableEmoji: true
 googleAnalytics: "G-TEH3VGXMRY"
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
 params:
   logo: /images/icon.jpg
   description: Helping you have fun and maximise impact by learning containers and kubernetes!

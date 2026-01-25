@@ -18,7 +18,7 @@ $ docker run -it --rm \
   -v $(pwd):/src \
   -p 1313:1313 \
   ghcr.io/doughgle/docs-as-code:main \
-  hugo server --buildDrafts --navigateToChanged
+  hugo server --buildDrafts --navigateToChanged --bind 0.0.0.0
 ```
 
 ```
@@ -48,7 +48,7 @@ Press Ctrl+C to stop
 
 ## Test It
 
-Execute tools interactively:
+### Execute tools interactively:
 
 ```sh
 docker run -it --rm \
@@ -58,7 +58,7 @@ docker run -it --rm \
   bash
 ```
 
-Run Github Workflow (depends on [act gh extension](https://github.com/nektos/act)):
+### Run Github Workflow (depends on [act gh extension](https://github.com/nektos/act)):
 
 ```sh
 gh act -W .github/workflows/medium.yml \
