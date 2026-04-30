@@ -12,3 +12,4 @@ tmp/
 
 # vale styles
 .vale/styles/.vale-config/1-Hugo.ini
+content/**/pre-publish-checklist.md
