@@ -18,10 +18,10 @@ IgnoreURLs:
 - "https://www.wowthemes.net"
 - "https://marketplace.visualstudio.com/items"
 # Medium.com URLs that commonly return 403 due to WAF or authentication requirements
-- "https://(www.)?medium.com/@.*"
+- "https://(www.)?medium.com/.*"
 - "https://.*\\.medium\\.com/.*"
-- "https://medium.com/me/.*"
-- "https://medium.com/m/.*"
+# Course platforms that require authentication or return 403
+- "https://learn\\.deeplearning\\.ai/.*"
 
 # Ignore HTTPS enforcement for specific HTTP-only URLs
 IgnoreHTTPS:
