@@ -5,7 +5,6 @@ theme: mediumish-gohugo-theme
 summaryLength: 25
 copyright: Douglas Hellinger 2022 - Present
 enableEmoji: true
-googleAnalytics: "G-TEH3VGXMRY"
 markup:
   goldmark:
     renderer:
