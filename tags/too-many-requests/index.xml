@@ -1,3 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Too Many Requests on Douglas Hellinger</title><link>https://www.douglashellinger.com/tags/too-many-requests/</link><description>Recent content in Too Many Requests on Douglas Hellinger</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Douglas Hellinger 2022 - Present</copyright><lastBuildDate>Sun, 04 May 2025 15:52:13 +0800</lastBuildDate><atom:link href="https://www.douglashellinger.com/tags/too-many-requests/index.xml" rel="self" type="application/rss+xml"/><item><title>Misinformation on Dockerhub Rate Limits</title><link>https://www.douglashellinger.com/blog/misinformation-on-dockerhub-rate-limits/</link><pubDate>Sun, 04 May 2025 15:52:13 +0800</pubDate><guid>https://www.douglashellinger.com/blog/misinformation-on-dockerhub-rate-limits/</guid><description>In April 2025, Docker Inc withdrew plans to further constrain Docker Hub Rate Limits.
-So rate limits remain unchanged at:
-Account Type Limit anonymous users 100 pulls per 6 hours per IP address authenticated users 200 pulls per 6 hour period paid subscribers Unlimited pulls (up from 5000 pulls per day) But misinformation remains in AI responses, search results and registry vendor blogs.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Too Many Requests on Douglas Hellinger</title><link>https://www.douglashellinger.com/tags/too-many-requests/</link><description>Recent content in Too Many Requests on Douglas Hellinger</description><generator>Hugo</generator><language>en-us</language><copyright>Douglas Hellinger 2022 - Present</copyright><lastBuildDate>Mon, 03 Nov 2025 22:18:00 +0800</lastBuildDate><atom:link href="https://www.douglashellinger.com/tags/too-many-requests/index.xml" rel="self" type="application/rss+xml"/><item><title>Misinformation on Dockerhub Rate Limits</title><link>https://www.douglashellinger.com/blog/misinformation-on-dockerhub-rate-limits/</link><pubDate>Sun, 04 May 2025 22:52:13 +0800</pubDate><guid>https://www.douglashellinger.com/blog/misinformation-on-dockerhub-rate-limits/</guid><description>&lt;p&gt;In April 2025, Docker Inc withdrew plans to further constrain &lt;a href="https://www.docker.com/blog/revisiting-docker-hub-policies-prioritizing-developer-experience/"&gt;Docker Hub Rate Limits&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So rate limits remain unchanged at:&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;Account Type&lt;/th&gt;
+ &lt;th style="text-align: right"&gt;Limit&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;anonymous users&lt;/td&gt;
+ &lt;td style="text-align: right"&gt;100 pulls per 6 hours per IP address&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;authenticated users&lt;/td&gt;
+ &lt;td style="text-align: right"&gt;200 pulls per 6 hour period&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;paid subscribers&lt;/td&gt;
+ &lt;td style="text-align: right"&gt;Unlimited pulls (up from 5000 pulls per day)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;But misinformation remains in AI responses, search results and registry vendor blogs.&lt;/p&gt;</description></item></channel></rss>
