@@ -48,7 +48,55 @@ Press Ctrl+C to stop
 
 ## Test It
 
-### Execute tools interactively:
+### Check prose (vale)
+
+Lint all markdown articles in `./content` against `.vale.ini`:
+
+```sh
+docker run -it --rm \
+  -v $(pwd):/src \
+  ghcr.io/doughgle/docs-as-code:main \
+  vale --config=.vale.ini content
+```
+
+### Lint Markdown (markdownlint-cli2)
+
+```sh
+docker run -it --rm \
+  -v $(pwd):/src \
+  -w /src/content \
+  ghcr.io/doughgle/docs-as-code:main \
+  markdownlint-cli2 '**/*.md'
+```
+
+### Test HTML links (htmltest)
+
+Requires a built site in `./public` (see [Build Site](#build-site) below). Configured in `.htmltest.yml`.
+
+```sh
+docker run -it --rm \
+  -v $(pwd):/src \
+  ghcr.io/doughgle/docs-as-code:main \
+  htmltest
+```
+
+### Build Site
+
+```sh
+# including drafts and future posts
+docker run -it --rm \
+  -v $(pwd):/src \
+  ghcr.io/doughgle/docs-as-code:main \
+  hugo --buildDrafts --buildFuture
+
+# production (excluding drafts and future posts)
+docker run -it --rm \
+  -v $(pwd):/src \
+  ghcr.io/doughgle/docs-as-code:main \
+  hugo --minify
+```
+
+### Interactive shell in docs-as-code container
 
 ```sh
 docker run -it --rm \
@@ -58,9 +106,14 @@ docker run -it --rm \
   bash
 ```
 
-### Run Github Workflow (depends on [act gh extension](https://github.com/nektos/act)):
+### Run GitHub Actions workflows locally (depends on [act gh extension](https://github.com/nektos/act))
 
 ```sh
+# Build and test workflow
+gh act --workflows ".github/workflows/build.yml" --job "build" \
+  --secret-file "" --var-file "" --input-file "" --eventpath ""
+
+# Publish to Medium
 gh act -W .github/workflows/medium.yml \
   --input file="content/blog/hello-world/index.md" \
   --secret MEDIUM_INTEGRATION_TOKEN
