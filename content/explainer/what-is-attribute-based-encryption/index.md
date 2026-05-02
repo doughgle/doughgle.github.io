@@ -98,4 +98,5 @@ True
 This interactive example is from the original [Ciphertext-Policy Attribute-Based Encryption](https://github.com/JHUISI/charm/blob/dev/charm/schemes/abenc/abenc_bsw07.py) scheme by John Bethencourt and Brent Waters, 2007.
 
 ---
-> <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" property="dct:title" rel="dct:type">Attribute Based Encrypted Photo</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://doughellinger.com/blog/what-is-attribute-based-encryption" property="cc:attributionName" rel="cc:attributionURL">Douglas Hellinger</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+{{< cc-by >}}
