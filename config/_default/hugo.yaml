@@ -52,3 +52,8 @@ menu:
       identifier: about
       weight: 200
       url: /
+module:
+  mounts:
+    - source: content
+      target: content
+      excludeFiles: "**/resources/*.md"
