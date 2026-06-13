@@ -1,0 +1,26 @@
+- The idea of making the kernel programmable with eBPF was seen as revolutionary and transformative for the industry.
+- Linux growth and ubiquity: Linux powered hyperscalers and devices from smartphones to the Mars helicopter, all from one code base.
+- Early focus area: many developers in eBPF came from networking and SDN efforts; SDN had hype but lacked deep programmability.
+- Limitation of the era: kernel tools at the time were suited for bridging/ethernet switching, not flexible programmability.
+- PLUMgrid’s path: concept of loading safe small programs into the kernel; led to the idea of a verifier to ensure kernel safety since compilers cannot be fully trusted.
+- Development of a BPF-like path: initial work evolved toward an extended BPF (eBPF) with a more flexible instruction set while keeping the BPF name.
+- Upstream dream: Awais Nemat and Pere Monclus emphasized open source and upstream contributions as essential for success.
+- Kernel integration challenge: merging eBPF required convincing key maintainers (e.g., David Miller) and reframing it to incremental enhancements (e.g., replacing the old tcpdump BPF interpreter first).
+- Brendan Gregg’s role: brought tracing focus to eBPF; Netflix offered opportunities to contribute tools and use cases; helped define a path for tracing in kernel space.
+- Two-person effort: Thomas and Alexei effectively drove initial upstreaming and built confidence by working together across networking and tracing angles.
+- Patch milestone: the first patch set, including an LLVM backend, faced skepticism; merging it became a monumental moment and a huge morale boost.
+- Celebration and realization: merging the initial patch was a watershed moment for PLUMgrid and the eBPF community.
+- Incremental unveiling: eBPF was built brick-by-brick rather than as a finished product; progress was incremental to gain acceptance.
+- From hyperscalers to broader adoption: eBPF started in hyperscalers and Netflix/Facebook, then expanded to general users and enterprises.
+- Cilium emerges: to bring eBPF power to end users with a secure, scalable networking layer for containers and Kubernetes.
+- Isovalent’s influence: Isovalent (Isovalent) became a major early proponent and customer, shaping eBPF feature development and upstream work.
+- Kernel-wide adoption era: by 2017–2019, kernel changes allowed BPF programs to run; DockerCon 2017 marked a turning point with multiple eBPF advocates on stage.
+- Industry impact: eBPF moved from a Linux curiosity to a standard technology across organizations and platforms.
+- Google Cloud, Anthos, and GKE adoption: major cloud providers started integrating eBPF-based networking and observability; Dataplane v2 stabilized.
+- Security with eBPF: eBPF enabled efficient security hardening (LSM hooks, BPF LSM) without performance penalties; security tooling could run in-kernel.
+- Windows and cross-platform vision: Microsoft explored eBPF for Windows; eBPF Foundation formed to unify cross-platform efforts (Windows, Linux, BSD, macOS future).
+- Foundation and neutral collaboration: the eBPF Foundation formed with Netflix, Google, Isovalent, and Microsoft to guide cross-company collaboration.
+- Industry-wide standardization: eBPF aiming to be available across operating systems and ecosystems, enabling unified instrumentation and observability.
+- Intel and performance impact: eBPF enables rapid performance measurement and instrumentation, shrinking time-to-insight from weeks to hours.
+- Current state: eBPF is ubiquitous in Android and security tooling; it’s embedded in many infrastructure projects—still early in its potential, described as a revolution rather than a mere evolution.
+- Quote themes: kernel programming is now accessible to many researchers and developers worldwide; BPF has enabled a vast increase in kernel-level programming capacity.
