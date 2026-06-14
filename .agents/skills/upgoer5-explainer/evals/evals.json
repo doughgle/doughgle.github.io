@@ -1,0 +1,41 @@
+{
+  "skill_name": "upgoer5-explainer",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "star-wars-create-cto",
+      "mode": "create",
+      "prompt": "Write an UpGoer5 explainer about the plot of the first Star Wars movie (the one from 1977). The audience is a CTO who's never seen it and needs a quick summary before a team conversation about epic storytelling in product vision. Target ~500 words.",
+      "expected_output": "A markdown explainer about the first Star Wars movie plot using only the 1000 most common English words that passes upgoer5 check",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "eval_name": "star-wars-evaluate",
+      "mode": "evaluate",
+      "prompt": "Run the UpGoer5 validator on starwars-jargon.md and tell me: does it pass or fail? How many words are permitted vs non-permitted? List each non-permitted word and where it appears.",
+      "expected_output": "Evaluation report showing FAIL, with non-permitted words like 'galactic', 'devastating', 'superweapon', 'courageous', 'insurgency', 'clandestine', 'vulnerability', 'encounters', 'schematics', 'simultaneously', 'protagonists', 'legions', 'narrative', 'culminates', 'trench', 'utilizes', 'mystical', 'annihilates' and their locations",
+      "files": ["starwars-jargon.md"],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "eval_name": "star-wars-refine",
+      "mode": "refine",
+      "prompt": "Here is a draft explainer about Star Wars (starwars-jargon.md) that uses too many big words. Fix it to pass the UpGoer5 word list. Keep the same meaning, just rephrase the non-permitted words or apply valid exceptions.",
+      "expected_output": "A corrected version of starwars-jargon.md that passes upgoer5 check",
+      "files": ["starwars-jargon.md"],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "eval_name": "abe-create-engineer",
+      "mode": "create",
+      "prompt": "Create an UpGoer5 explainer about Attribute Based Encryption (ABE). The audience is software engineers who need to understand the high-level concept — what problem it solves and how it's different from regular encryption. Target ~500 words.",
+      "expected_output": "A markdown explainer about ABE using only the 1000 most common English words that passes upgoer5 check",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}
