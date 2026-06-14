@@ -1,112 +1,140 @@
 ---
-title: "What Is BPF? BPF Explained Using 1000 Most Used English Words"
-date: 2026-06-12T16:32:41+08:00
-publishdate: 2026-06-12T16:32:41+08:00
-tags: ['ebpf', 'linux', 'devsecops', 'observability', 'ai']
-comments: true
-draft: true
+`title`: "What Is `eBPF`? `eBPF` `Explained` `Using` 1000 `Most` `Used` `English` `Words`"
+`date`: `2026`-`06`-`14``T``10`:`00`:`00`+`08`:`00`
+`publishdate`: `2026`-`06`-`14``T``10`:`00`:`00`+`08`:`00`
+`tags`: [`ebpf`, `linux`, `devsecops`, `observability`, `ai`]
+`comments`: `true`
+`draft`: `true`
 ---
 
-eBPF (extended Berkeley Packet Filter) is a safe way to run small pieces of work inside the heart of Linux. Before eBPF, if you wanted Linux to do something new, you had to change the very thing that is Linux — a slow, hard way that could take years. Or you used things that help but could only see a small part of what was going on. eBPF changed all of that. Now you can put a small piece of work inside the deepest part of a Linux computer, and it runs in a safe way — the heart of Linux checks it first to make sure it will not break anything.
+'eBPF' is a way to put small, safe 'pieces' of work deep inside 'Linux' — the part that 'runs' everything on a 'computer' — so you can see what is 'going' on without 'changing' anything. The 'value' ? For 'observability' of your 'Linux' 'infrastructure' and for 'observability' of 'AI' 'agents' that act on their own, 'eBPF' 'gives' you full, deep sight into what is really 'going' on — not what 'things' say they are 'doing' , but what they are actually 'doing' — with no 'changes' to 'running' 'code' and almost no 'cost' . How do you put it to work? 'eBPF' is already in every new 'Linux' . You do not need to add anything. You need to begin 'using' what is already there, and the 'fastest' way is through 'tools' like 'Cilium' for 'Kubernetes' and 'bpftrace' for 'one-line' 'answers' .
 
-For the first time, you can watch every new piece of work starting, every stored thing opened, every way computers talk to each other, every read and write to the part of the computer that keeps what you know — without changing what tells the computer what to do that is already running. No starting again. No new forms. No slowing down. Even across many far-away groups of computers and many places running Kubernetes.
+## What Is 'eBPF' ?
 
-For people who lead devsecops teams and are looking into AI that acts on its own, eBPF is the ground to build your watching and being-safe plan on. It is already in every new Linux. The question is not whether to use it — it is how fast you start.
+'eBPF' ( 'extended' 'Berkeley' 'Packet' 'Filter' ) 'lets' you put small 'pieces' of work inside the 'deepest' part of 'Linux' — the 'kernel' — and have them 'run' 'safely' . The 'kernel' is the most important part of any 'Linux' 'computer' . It 'controls' everything: how 'things' talk to each other, how 'stored' 'information' is read and 'written' , how work 'gets' done, and how 'memory' is 'used' . Before 'eBPF' , if you 'wanted' the 'kernel' to do something new, you had to change the 'kernel' 'itself' — a slow, hard way that could take 'years' . Or you 'used' 'tools' that could only see a small part of what was 'going' on, from outside, with a lot of 'cost' .
 
-## How We Got Here
+'eBPF' 'changed' this. Now you can put a small piece of work inside the 'kernel' , and before it 'runs' , a part of 'Linux' 'called' the 'verifier' 'checks' it to make sure it will not break anything. This is the key idea: the 'kernel' does not trust what you give it. It 'checks' everything first. If the piece of work is not safe, it does not 'run' . This 'makes' 'eBPF' safe by 'design' , not safe by hope.
 
-In 2014, Alexei Starovoitov had an idea. Working at PLUMgrid, he wanted to find a way to put small, safe pieces of work inside the heart of Linux — the deepest part of the computer that controls everything.
+As 'Alexei' 'Starovoitov' said in the 'eBPF' 'documentary' : "If in the past the whole 'kernel' would be maybe a hundred 'programmers' across the world, now a hundred 'thousand' people in the world can 'program' the 'kernel' 'thanks' to 'BPF' ." (['Unlocking' the 'Kernel' 'documentary' ](https://youtu.be/Wb_vD3XZYOA?si=q4dbyWfPR_TDa5Ja))
 
-His idea was big. The heart of Linux is the most important and most carefully guarded part of any computer that runs Linux. For good reason: if something goes wrong there, the whole computer can break. Only about a hundred people in the world really understood how to change it. Alexei's idea was to let anyone write a small piece of work that could run there, in a safe way.
+### So What?
 
-But early on, they hit a problem. After several hours of what the computers were sending to each other, the whole computer would break. Alexei realized something important: you can't trust the thing that builds what tells the computer what to do. The heart of Linux has to check everything on its own before it lets anything run. That is how the verifier came to be — a checker inside Linux that makes sure nothing bad can happen before a piece of work runs. The word "verifier" may be new, but the idea is easy: Linux checks each piece of work first, like a guard at the door.
+The "so what" is this: 'eBPF' 'takes' the 'kernel' — once a 'closed' box that only a hundred people in the world could change — and 'opens' it to everyone. You do not need to be a 'kernel' 'programmer' to see what your 'Linux' 'infrastructure' is 'doing' . You write a small, safe piece of work, and 'Linux' 'runs' it right there, inside, where everything 'happens' . No 'waiting' for 'years' . No 'risk' of 'breaking' the 'kernel' . No need to change 'running' 'code' .
 
-There was another problem. The people who guard Linux did not want a big change that made people worry. Alexei was told: make it look like something that is already there. So he took an old thing called BPF (Berkeley Packet Filter — a way to look at what moves between computers) and made it "extended." He called it eBPF. He made his new idea look like a small step forward to something people already knew, rather than a huge change.
+For 'observability' , this is a big deal. Before 'eBPF' , the 'ways' to see what 'Linux' was 'doing' were 'partial' and 'costly' . You could read from `/proc`, but it only gave you a small picture and took a lot of work from the 'computer' . You could add 'observability' 'code' inside your 'applications' , but that meant 'changing' 'running' 'code' , which could go wrong. Or you could 'use' 'older' 'tools' , but each one only did part of the job and they were often half done.
 
-He put his first change out there. Silence. One person asked a small question. No answer.
+'eBPF' 'gives' you one way to see everything from inside the 'kernel' , with almost no 'cost' . 'Brendan' 'Gregg' has 'written' over a hundred 'tools' for 'eBPF' 'observability' . 'BCC' 'gives' you 'tools' for many 'parts' of 'Linux' . 'bpftrace' 'lets' you ask quick 'questions' with one line. (['Brendan' 'Gregg's' 'eBPF' 'page' ](https://www.brendangregg.com/ebpf.html#eBPF))
 
-Then Daniel Borkmann saw it. He was going about his day, working on small fixes for Linux, when he found this change. He understood right away how powerful it could be. He walked into Thomas Graf's office and said: "This looks amazing. Can I work on this?"
+### Now What?
 
-Thomas, at Red Hat, felt the same way. A huge number of lights went off when he saw what eBPF could do. Together, Alexei and Daniel started pushing the changes, piece by piece. Not the whole thing at once — just small pieces, one at a time, so the group could see that each step was safe.
+'eBPF' is already in every new 'Linux' . It is not something you add — it is something you 'use' . Begin with what is already there. 'Run' `execsnoop` and see every new piece of work 'beginning' . 'Run' `opensnoop` and see every 'file' 'being' 'opened' . These are not 'toys' — they are the same 'tools' the 'biggest' 'companies' in the world 'use' to 'run' their 'infrastructure' .
 
-The group that worked on the way computers talk pushed back hard. They felt that what they already had was enough. So Alexei made a good move: he changed direction. Instead of showing eBPF only for the way computers talk to each other, he showed it for watching — for seeing what Linux was doing from the inside.
+## 'Observability' of 'Linux' 'Infrastructure'
 
-That is when Brendan Gregg entered the story. Brendan was at Netflix, trying to find a way to watch what was happening inside the computers running the huge thing that works for everyone. He had tried over ten different Linux things that help you watch, and they were all about half done. None could do everything he needed.
+### What?
 
-When Alexei came to Netflix and showed him eBPF, Brendan made a deal: if Alexei would add a way to watch things inside Linux, Brendan would write all the things that help people actually use it. That deal changed everything. Brendan made BCC — a set of over a hundred things that help you watch, which made eBPF real for people who were not deep inside the heart of Linux. Later, bpftrace made it even easier to use: you could write one line and see what was happening.
+'eBPF' 'observability' for 'Linux' 'infrastructure' 'means' 'seeing' everything that 'happens' inside your 'Linux' 'servers' and 'Kubernetes' 'clusters' — every 'process' that 'begins' , every 'file' that is 'opened' , every 'network' 'connection' that is made, every read and write to 'disk' , every 'CPU' 'scheduling' 'delay' — all from inside the 'kernel' , without 'changing' any 'running' 'code' .
 
-The big moment came in 2017. At DockerCon, Brendan, Thomas, and Liz Rice all happened to be on the same place talking about eBPF. After that, the group grew fast — people joined, started using it, started building on it.
+With 'eBPF' , you can see all of this with one line:
 
-Then Facebook showed the world what eBPF could really do. Their Katran thing that shares work between computers used eBPF and XDP to handle 15,000,000 pieces of what the computers know each second, spending just a tiny part of a second on each — ten times as fast as the old way.
+- `execsnoop` — every new 'process' 'beginning'
+- `opensnoop` — every 'file' 'being' 'opened'
+- `tcpconnect` — every 'network' 'connection' 'beginning'
+- `biolatency` — how long 'disk' 'reads' and 'writes' take
+- `runqlat` — how long 'things' wait before they can 'run'
+- `tcpretrans` — when 'network' 'connections' have to try again
+- `profile` — where your 'CPU' 'spends' its time
 
-Cilium came next, made by Thomas and Daniel, to bring eBPF's power to everyone — not just the huge businesses with their own teams deep inside Linux. Cilium made eBPF work for boxes and Kubernetes, with being safe built in from the start. Google started using Cilium for GKE and Anthos. Microsoft started working on eBPF for Windows. The eBPF Foundation was formed with Netflix, Google, Isovalent, and Microsoft.
+### So What?
 
-And then, after years of work, David Miller — the person who decided what went into the way computers talk in Linux — said yes and wrote: "Merged, thanks." Just two words. But it meant everything.
+The "so what" for your 'Linux' 'infrastructure' is three 'things' :
 
-As Alexei Starovoitov said: "If in the past the whole kernel would be maybe a hundred programmers across the world, now a hundred thousand people in the world can program the kernel thanks to BPF."
+**Full picture.** Before 'eBPF' , you had to pick: 'use' 'tools' that only gave you part of the picture, or add 'code' inside your 'applications' and hope it did not break anything. 'eBPF' 'sees' from inside the 'kernel' , where everything has to go through. Nothing is 'hidden' . Every 'process' , every 'network' 'call' , every 'file' open — all of it, in one place.
 
-## Watching Every Part of Your Computers
+**Low 'cost' .** 'eBPF' 'tools' 'run' inside the 'kernel' with almost no 'cost' . They do not add 'delay' . They do not 'use' a lot of 'memory' . They do not need you to change or 'restart' anything. This is very different from 'older' 'observability' 'tools' that had to be 'added' to 'code' and could slow 'things' down.
 
-Before eBPF, watching what your Linux computers were doing was hard. You could read stored what the computer knows in /proc — but it only showed a small part of the picture, and reading it took a lot of work from the computer. You could add watching what tells the computer what to do inside your things that run — but that meant changing running what tells the computer what to do, which could go wrong. Or you could use the old things that help you watch — but they were half done, each one only doing part of the job.
+**No trust 'needed' .** 'eBPF' does not ask 'applications' to tell the truth about what they are 'doing' . It 'sees' what they are actually 'doing' , at the 'kernel' 'level' . This 'means' you do not have to trust that every 'application' was 'built' to tell you what it is 'doing' — you can see for yourself.
 
-eBPF changed this completely. Now, with a single line, you can see:
+For 'devsecops' 'groups' 'running' 'multi-cloud' , 'multi-region' 'Kubernetes' , this is strong. You have one way to see everything across all your 'infrastructure' , without 'changing' 'running' 'code' , without 'restarting' , and without 'trusting' 'applications' to be 'honest' .
 
-- `execsnoop` — every new piece of work starting on your computer
-- `opensnoop` — every stored thing being opened
-- `tcpconnect` — every way computers talk starting up
-- `biolatency` — how long reads and writes to the part that keeps what you know take, shown as a picture
-- `runqlat` — how long things wait before they can run
-- `tcpretrans` — when ways computers talk have to try again
-- `profile` — where your computer spends its time
+### Now What?
 
-All of this without changing any of what tells the computer what to do, without starting anything again, and without slowing down the things that are already running. What the computer knows is picked up and brought together right there, inside the heart of Linux, so it is fast and complete.
+If you are 'running' 'Kubernetes' today, 'Cilium' is the most 'used' and 'proven' way to bring 'eBPF' into your world. 'Google' 'uses' it for 'GKE' and 'Anthos' . It 'gives' you better 'networking' and 'security' as a first step, and 'observability' 'comes' with it. Begin there.
 
-For teams running many far-away groups of computers and Kubernetes groups, this is a big deal. Instead of adding watching what tells the computer what to do to every thing that runs — which means changing what tells the computer, starting again, and hoping nothing breaks — you have one set of things that help you watch everything from the outside. Brendan Gregg has over a hundred of these where he writes about eBPF. BCC gives you things that help with many parts. bpftrace gives you easy one-line answers for quick questions.
+Then, build from the ground up. Try 'bpftrace' 'one-line' 'answers' on a 'server' you 'use' for 'trying' 'things' . These are the same 'tools' the most important 'businesses' in the world 'use' to 'run' their 'computers' . (['Brendan' 'Gregg's' 'eBPF' 'page' ](https://www.brendangregg.com/ebpf.html#eBPF))
 
-As Brendan Gregg said in the movie about eBPF, it is "like putting JavaScript into the kernel." It takes the heart of Linux — once a shut box that only a hundred people in the world could change — and makes it something anyone can watch and work with.
+## 'Observability' of 'AI' 'Agents'
 
-## Watching AI That Acts on Its Own
+### What?
 
-Now think about AI things that help — those pieces of work that act on their own, deciding what to do, calling other pieces of work, starting new things, and reaching out to other computers without you telling them to. They are different from usual things that run. They do not follow a fixed way of doing things. They decide what to do next from what they see. They call other things that help, start new pieces of work, and join one call after another in ways you can't always know ahead of time.
+'AI' 'agents' are different from normal 'software' . They do not follow a set way of 'doing' 'things' . They decide what to do next from what they see. They 'call' other 'agents' and 'APIs' , begin new 'processes' , and 'chain' 'calls' together in 'ways' you 'cannot' always know ahead of time.
 
-The old ways of watching don't work here. You would need to guess every way an AI thing that helps could go, or add watching what tells the computer what to do inside the AI thing that helps — which means changing the AI thing that helps, which is exactly the kind of chance of something going wrong you want to avoid when you are already dealing with something you can't completely know ahead of time.
+'eBPF' 'observability' for 'AI' 'agents' 'means' 'seeing' everything an 'AI' 'agent' does — every 'file' it 'opens' , every 'network' 'call' it 'makes' , every 'process' it 'begins' , every 'CPU' 'cycle' it 'uses' , every piece of 'memory' it 'touches' — from the 'kernel' , without 'touching' the 'agent' at all.
 
-eBPF watches from outside the AI thing that helps — from the heart of Linux. It sees:
+### So What?
 
-- Every stored thing the AI thing that helps opens
-- Every way it talks to other computers
-- Every new piece of work it starts
-- Every tiny part of a second of CPU it uses
-- Every piece of memory it touches
+This is where 'eBPF' 'becomes' not just 'useful' but 'needed' . Here is why, by 'putting' 'eBPF' side by side with 'older' 'ways' :
 
-This gives you four things you can't get any other way:
+**Old way: 'logging' inside the 'agent' .** You add 'code' to the 'agent' so it 'writes' down what it does. But 'AI' 'agents' decide what to do on the fly. They may not write down everything. They may not write down the right 'things' . And when something 'goes' wrong, the 'log' is often 'missing' or wrong because the 'agent' did not know it was 'doing' something important. 'Adding' 'code' inside the 'agent' also 'adds' 'risk' — exactly what you want to stay away from with something you 'cannot' 'fully' 'predict' .
 
-**Full tracking of what happened.** You can see what things the AI thing that helps called, in what order, and how long each step took. Not what the AI thing that helps says it did — what it actually did, at the deepest part of the computer.
+**Old way: 'distributed' 'tracing' from outside.** You 'use' 'distributed' 'tracing' 'tools' that follow 'requests' across 'services' . But 'AI' 'agents' do not always follow a 'request' . They may begin new work on their own, 'call' 'things' that are not 'traced' , or make 'connections' you did not plan for. 'Tracing' only 'sees' what it is told then to 'see' .
 
-**What you pay.** Which AI thing that helps used how much CPU, memory, the part that keeps what you know, and ways computers talk? When you have many AI things that help running, this matters. eBPF can tell you exactly who used what, because it watches from the heart of Linux where everything has to go through.
+**'eBPF' : 'see' from 'below' , not from inside.** 'eBPF' 'sits' in the 'kernel' , under everything. It 'sees' every 'file' open, every 'network' 'connection' , every 'process' begin — whether the 'agent' 'tells' you or not, whether the 'agent' 'knows' or not. This 'gives' you four 'things' you 'cannot' get any other way:
 
-**Finding problems when something goes wrong.** When an AI thing that helps does something you did not expect — and it will — eBPF shows you exactly what happened. Not what the AI thing that helps wrote down (which may be missing or wrong), but the real picture from the computer.
+1. **Full 'tracking' of what 'happened' .** You can 'see' what 'agents' 'called' , in what order, and how long each step took. Not what the 'agent' 'says' it did — what it actually did, at the 'deepest' part of the 'computer' .
 
-**Lines that keep things safe.** You can watch for AI things that help opening stored things they should not open, making ways to talk to computers they should not talk to, or starting new pieces of work they should not start. eBPF sees all of this because it sits under everything, in the heart of Linux where every act has to go through.
+2. **What you pay.** Which 'agent' 'used' how much 'CPU' , 'memory' , 'disk' , and 'network' ? When you have many 'agents' 'running' , this is important. 'eBPF' can tell you exactly who 'used' what, because it 'sees' from the 'kernel' where everything has to go through.
 
-The point is not that eBPF takes the place of your other things that help you watch. The point is that it gives you something no other way can: complete, full seeing into AI things that help — without changing what tells them what to do, without their help, and without trusting them to tell you what they did.
+3. **'Finding' 'problems' when something 'goes' wrong.** When an 'agent' does something you did not expect — and it will — 'eBPF' 'tells' you exactly what 'happened' . Not what the 'agent' 'wrote' down, but the real picture from the 'computer' .
 
-For a person who leads a devsecops team, this changes the whole picture. You can bring in AI things that help with more trust, because you have a way to see everything they do, even when they surprise you.
+4. **'Lines' that keep 'things' safe.** You can watch for 'agents' 'opening' 'files' they should not open, 'making' 'network' 'connections' they should not make, or 'beginning' 'processes' they should not begin. 'eBPF' 'sees' all of this because it 'sits' under everything, in the 'kernel' where every act has to go through.
 
-## Building Your Plan on eBPF
+### Now What?
 
-eBPF is not something you buy. It is already inside every new Linux — in your computers, in your Kubernetes groups, even in Android phones. The question is how fast you put it to work.
+For a 'leader' in 'devsecops' 'thinking' about 'AI' 'agents' , this 'changes' the whole picture. You can bring 'AI' 'agents' into your 'infrastructure' with more trust, because you have a way to 'see' everything they do — even when they surprise you.
 
-Here is a way to think about it:
+The 'groups' that lead will build 'eBPF' 'observability' into their 'AI' plan now. As 'agentic' 'AI' 'grows' , the 'agents' will 'become' more 'autonomous' and more 'complex' . The old 'ways' — 'logging' , 'tracing' , 'adding' 'code' inside — will not be enough. 'eBPF' is the only way to get full, deep sight into 'AI' 'agents' without 'changing' their 'code' and without 'trusting' them to be 'honest' about what they did.
 
-**Know what you already have.** eBPF is already running in your Linux computers. You do not need to add a new thing. You need to start using what is already there.
+## Key 'eBPF' 'Concepts' to Know
 
-**Start with things that are known to work.** Cilium is used by Google, Amazon, and others for Kubernetes ways computers talk and being safe. It is the most used and tried way to bring eBPF into your world. Start there, and you get better ways computers talk and being safe as a first step.
+To decide, put to work, and get the 'value' of 'eBPF' , here are the 'concepts' you need to know:
 
-**Build what you know from the ground up.** Try bpftrace one-line answers on a computer you use for trying things. Run `execsnoop` and see every new piece of work starting. Run `opensnoop` and see every stored thing being opened. These are not just for fun — they are the same things that help you watch that the most important businesses in the world use to run their computers.
+**The 'kernel' .** The 'deepest' part of 'Linux' that 'controls' everything. Every 'file' open, every 'network' 'packet' , every 'process' begin 'goes' through the 'kernel' . 'eBPF' 'lets' you put small 'pieces' of work right here, where everything 'happens' .
 
-**Make the big move about watching AI things that help.** eBPF is the only way to get full seeing into AI things that help without changing what tells them what to do. As AI that acts on its own grows, this becomes not just useful but something you must have. The people who lead will build this watching into their AI plan now, and they will have a real edge.
+**The 'verifier' .** Before any 'eBPF' 'program' 'runs' , the 'kernel' 'checks' it to make sure it is safe. It will not let anything 'run' that could break the 'kernel' . This is what 'makes' 'eBPF' safe by 'design' . The 'verifier' was 'born' from a hard 'lesson' : you 'cannot' trust the thing that 'builds' the 'code' . The 'kernel' has to check everything on its own.
 
-As the movie about eBPF puts it: "It's not an evolution, it's a revolution." The heart of Linux — once a shut box that only a hundred people in the world could change — is now something a hundred thousand people can work with. Brendan Gregg, who has been at the heart of this from the start, puts it completely: "We can do in one hour what would normally take weeks."
+**'Maps' .** 'eBPF' 'programs' can share what they find through 'data' 'structures' 'called' 'maps' . This is how 'eBPF' 'tools' 'bring' 'data' from inside the 'kernel' out to where you can 'see' it.
 
-That is not a small step forward. That is a change in what is possible. And for people thinking about the next ten years of the way computers work — especially with AI things that help becoming real — eBPF is the ground that makes it all watchable, safe, and fast.
+**'Hook' 'points' .** 'eBPF' 'programs' 'attach' to set 'places' in the 'kernel' — when a 'process' 'begins' , when a 'file' is 'opened' , when a 'network' 'packet' 'comes' in. You pick the 'place' where you want to 'see' , and 'eBPF' 'runs' your 'program' there.
+
+**'Helpers' .** 'eBPF' 'programs' can 'call' 'helper' 'functions' given by the 'kernel' to do 'things' like read 'process' 'data' , 'send' 'packets' , or store 'data' in 'maps' .
+
+## 'eBPF' in the World
+
+The story of 'eBPF' is a story of small 'steps' that 'added' up to something big. It 'began' when 'Alexei' 'Starovoitov' had the idea to put small, safe 'programs' inside the 'Linux' 'kernel' . He came to 'see' early on that you 'cannot' trust the 'compiler' — the 'kernel' has to check everything 'itself' . That is how the 'verifier' came to be.
+
+'Daniel' 'Borkmann' saw the power of the idea and came on 'board' . 'Thomas' 'Graf' felt the same — "a 'million' 'lights' went off" when he saw what 'eBPF' could do. Together, they 'moved' the 'changes' forward, piece by piece, so the 'community' could 'see' each step was safe.
+
+The 'networking' 'community' 'pushed' back at first. So 'Alexei' 'changed' direction: instead of 'showing' 'eBPF' only for 'networking' , he 'showed' it for 'tracing' — for 'seeing' what 'Linux' was 'doing' from inside. 'Brendan' 'Gregg' at 'Netflix' made a deal: if 'Alexei' would add 'tracing' to 'eBPF' , 'Brendan' would build the 'tools' that made it real for people. 'BCC' — over a hundred 'observability' 'tools' — was 'born' . 'bpftrace' made it even 'easier' .
+
+Then 'Facebook' 'showed' what 'eBPF' could do at 'scale' : 'Katran' with 'XDP' 'handled' 'fifteen' 'million' 'packets' 'per' second — ten 'times' as fast as the old way. (['Unlocking' the 'Kernel' 'documentary' ](https://youtu.be/Wb_vD3XZYOA?si=q4dbyWfPR_TDa5Ja))
+
+'Cilium' brought 'eBPF' to 'Kubernetes' and 'containers' , with 'security' 'built' in from the start. 'Google' began 'using' it. 'Microsoft' began 'working' on 'eBPF' for 'Windows' . The 'eBPF' 'Foundation' was 'formed' .
+
+And then, after 'years' of work, 'David' 'Miller' — the person who 'decided' what went into 'Linux' 'networking' — 'wrote' : " 'Merged' , 'thanks' ." Two 'words' . But 'puts' it all together.
+
+As the 'documentary' 'puts' it: "It's not an 'evolution' , it's a 'revolution' ." (['Unlocking' the 'Kernel' 'documentary' ](https://youtu.be/Wb_vD3XZYOA?si=q4dbyWfPR_TDa5Ja))
+
+## The Case for 'eBPF' Now
+
+For 'Frankie' — a 'devsecops' 'leader' with 'multi-cloud' , 'multi-region' 'Kubernetes' 'infrastructure' , part 'owner' of a 'private' 'fintech' , and someone 'looking' into 'agentic' 'AI' — here is why 'eBPF' 'matters' now:
+
+**Your 'Linux' 'infrastructure' is already 'running' it.** Every new 'Linux' 'kernel' has 'eBPF' 'built' in. You do not need to buy anything or add anything. You need to begin 'using' what is already there.
+
+**Your 'Kubernetes' 'clusters' can be 'safer' and more 'observable' .** 'Cilium' — 'used' by 'Google' , 'Amazon' , and 'others' — 'brings' 'eBPF' 'networking' and 'security' to 'Kubernetes' with almost no 'cost' . Better 'networking' , better 'security' , and full 'observability' as a 'result' .
+
+**Your 'AI' 'agents' need a different kind of 'observability' .** 'AI' 'agents' are 'autonomous' . They decide what to do on their own. Old 'ways' of 'observability' — 'logging' inside the 'agent' , 'tracing' from outside — do not work well for 'things' that change their own 'path' . 'eBPF' 'sees' from 'below' , not from inside. It does not need the 'agent' to be 'honest' . It does not need you to change the 'agent' . It just 'sees' everything, because everything 'goes' through the 'kernel' .
+
+**The 'groups' that lead will build 'eBPF' 'observability' into their 'AI' plan now.** Not next year. Not after something 'goes' wrong. Now. Because when 'agentic' 'AI' 'becomes' 'common' , the 'groups' that can 'see' what their 'agents' are actually 'doing' — not what the 'agents' say they are 'doing' — will have a real edge.
+
+'eBPF' is not a small step forward. It is a change in what is possible. And for 'groups' 'thinking' about the next ten 'years' of 'infrastructure' — especially with 'AI' 'agents' 'becoming' real — 'eBPF' is the ground that 'makes' it all 'observable' , safe, and fast.
